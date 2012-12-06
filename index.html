@@ -4,34 +4,37 @@
 	<head>
 		<meta charset="utf-8" />
 
-<!-- ====================== STYLESHEET INCLUDES ====================== -->
+		<!-- ====================== STYLESHEET INCLUDES ====================== -->
 		<link href="https://fonts.googleapis.com/css?family=Oswald|Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
 		media="screen" rel="stylesheet" type="text/css" />
 		<link href="css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
 		<link href="css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="./css/extra.css" type="text/css">
-<!-- 		<link href="css/fontawesome.css" media="screen" rel="stylesheet" type="text/css" /> -->
+		<!-- 		<link href="css/fontawesome.css" media="screen" rel="stylesheet" type="text/css" /> -->
 		<!-- <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" /> -->
 		<!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
 		for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 		-->
 
-<!-- ====================== JAVASCRIPT INCLUDES ====================== -->
+		<!-- ====================== JAVASCRIPT INCLUDES ====================== -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 		<script src="js/bootstrap.js"></script>
-
+		<script src="js/chosen/chosen.jquery.js"></script>
+		<script type="text/javascript">
+			$(".chzn-select").chosen()
+		</script>
 		<title>MightyMarks</title>
 	</head>
 
 	<body>
-<!-- ====================== NAVBAR ====================== -->
+		<!-- ====================== NAVBAR ====================== -->
 		<div id="nav-cream" class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="rectangle-1">
 					<img class="padTop5" src="img/logo/mighty-mouse-black-30x75.png" />
-				</div>				
+				</div>
 				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -72,6 +75,60 @@
 					<div id="search-wrap" class="navbar navbar-fixed-top span6 padTopShort">
 						<form id="search-form" class="navbar-search block-display" action="">
 							<input type="text" id="search" class="search-query span4" placeholder="Search">
+							<div>
+								<em>Multiple Select with Groups</em>
+								<select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chzn-select" multiple tabindex="6">
+									<option value=""></option>
+									<optgroup label="NFC EAST">
+										<option>Dallas Cowboys</option>
+										<option>New York Giants</option>
+										<option>Philadelphia Eagles</option>
+										<option>Washington Redskins</option>
+									</optgroup>
+									<optgroup label="NFC NORTH">
+										<option>Chicago Bears</option>
+										<option>Detroit Lions</option>
+										<option>Green Bay Packers</option>
+										<option>Minnesota Vikings</option>
+									</optgroup>
+									<optgroup label="NFC SOUTH">
+										<option>Atlanta Falcons</option>
+										<option>Carolina Panthers</option>
+										<option>New Orleans Saints</option>
+										<option>Tampa Bay Buccaneers</option>
+									</optgroup>
+									<optgroup label="NFC WEST">
+										<option>Arizona Cardinals</option>
+										<option>St. Louis Rams</option>
+										<option>San Francisco 49ers</option>
+										<option>Seattle Seahawks</option>
+									</optgroup>
+									<optgroup label="AFC EAST">
+										<option>Buffalo Bills</option>
+										<option>Miami Dolphins</option>
+										<option>New England Patriots</option>
+										<option>New York Jets</option>
+									</optgroup>
+									<optgroup label="AFC NORTH">
+										<option>Baltimore Ravens</option>
+										<option>Cincinnati Bengals</option>
+										<option>Cleveland Browns</option>
+										<option>Pittsburgh Steelers</option>
+									</optgroup>
+									<optgroup label="AFC SOUTH">
+										<option>Houston Texans</option>
+										<option>Indianapolis Colts</option>
+										<option>Jacksonville Jaguars</option>
+										<option>Tennessee Titans</option>
+									</optgroup>
+									<optgroup label="AFC WEST">
+										<option>Denver Broncos</option>
+										<option>Kansas City Chiefs</option>
+										<option>Oakland Raiders</option>
+										<option>San Diego Chargers</option>
+									</optgroup>
+								</select>
+							</div>
 						</form>
 					</div>
 				</div>
@@ -79,7 +136,7 @@
 			</div>
 		</div>
 
-<!-- ====================== MAIN BODY ====================== -->
+		<!-- ====================== MAIN BODY ====================== -->
 
 		<div id="below-nav" class="container-fluid">
 
