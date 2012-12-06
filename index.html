@@ -23,7 +23,10 @@
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/chosen/chosen.jquery.js"></script>
+		
+		<script src="js/utilities/jquery.raty.js"></script><!-- Star ratings -->
 		<script src="js/views/search-view.js"></script><!-- File to render All Yelp Categories in Search Multi-Select -->
+		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->
 		<title>MightyMarks</title>
 	</head>
 
@@ -75,55 +78,6 @@
 						<form id="search-form" class="navbar-search block-display" action="">
 							<!-- <input type="text" id="search" class="search-query span4" placeholder="Search"> -->
 							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6">
-								<option value=""></option>
-								<optgroup label="NFC EAST">
-									<option>Dallas Cowboys</option>
-									<option>New York Giants</option>
-									<option>Philadelphia Eagles</option>
-									<option>Washington Redskins</option>
-								</optgroup>
-								<optgroup label="NFC NORTH">
-									<option>Chicago Bears</option>
-									<option>Detroit Lions</option>
-									<option>Green Bay Packers</option>
-									<option>Minnesota Vikings</option>
-								</optgroup>
-								<optgroup label="NFC SOUTH">
-									<option>Atlanta Falcons</option>
-									<option>Carolina Panthers</option>
-									<option>New Orleans Saints</option>
-									<option>Tampa Bay Buccaneers</option>
-								</optgroup>
-								<optgroup label="NFC WEST">
-									<option>Arizona Cardinals</option>
-									<option>St. Louis Rams</option>
-									<option>San Francisco 49ers</option>
-									<option>Seattle Seahawks</option>
-								</optgroup>
-								<optgroup label="AFC EAST">
-									<option>Buffalo Bills</option>
-									<option>Miami Dolphins</option>
-									<option>New England Patriots</option>
-									<option>New York Jets</option>
-								</optgroup>
-								<optgroup label="AFC NORTH">
-									<option>Baltimore Ravens</option>
-									<option>Cincinnati Bengals</option>
-									<option>Cleveland Browns</option>
-									<option>Pittsburgh Steelers</option>
-								</optgroup>
-								<optgroup label="AFC SOUTH">
-									<option>Houston Texans</option>
-									<option>Indianapolis Colts</option>
-									<option>Jacksonville Jaguars</option>
-									<option>Tennessee Titans</option>
-								</optgroup>
-								<optgroup label="AFC WEST">
-									<option>Denver Broncos</option>
-									<option>Kansas City Chiefs</option>
-									<option>Oakland Raiders</option>
-									<option>San Diego Chargers</option>
-								</optgroup>
 							</select>
 						</form>
 					</div>
@@ -139,23 +93,34 @@
 			<div class="row-fluid">
 				<span class="span12">
 					<div class="well">
-						<div class="btn-group">
-							<button class="btn btn-large btn-inverse span2 btn-2">
+						<div class="btn-group hbox">
+							<button class="flex_child_1 btn btn-large btn-primary btn-2">
 								My Marks
 							</button>
-							<button class="btn btn-large btn-inverse span2 btn-3">
-								Yelp Categories
+							<button class="flex_child_1 btn btn-large ybtn-primary btn-3"><!-- USING YELP COLORS -->
+								Yelp Categories (and colors)
 							</button>
-							<button class="btn btn-large btn-inverse span2 btn-4">
-								****** Rating
+							<button class="flex_child_1 btn btn-large btn-4">
+								Rating
 							</button>
-							<button class="btn btn-large btn-inverse span2 btn-5">
-								$$ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Price&nbsp;
-							</button>
-							<button class="btn btn-large btn-inverse span2 btn-6">
+							<div class="flex_child_1 btn btn-large btn-5">
+								
+								<!-- <span id="raty">
+									<span class="star"></span>
+									<span class="star"></span>
+									<span class="star"></span>
+									<span class="star"></span>
+									<span class="star"></span>
+									<span class="star"></span>
+								</span>
+								Price -->
+								<div id="raty"></div>
+								<div id="mouseover-target"></div>
+							</div>
+							<button class="flex_child_1 btn btn-large btn-inverse btn-6">
 								Friends
 							</button>
-							<button class="btn btn-large btn-inverse span3 btn-7">
+							<button class="flex_child_1 btn btn-large btn-inverse btn-7">
 								Friends
 							</button>
 						</div>

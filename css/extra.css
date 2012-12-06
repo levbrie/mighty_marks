@@ -85,6 +85,57 @@ h4.movietitle {color: #333;}
 
 #below-nav { margin-top: 100px;}
 
+	/* HORIZONTAL BUTTONS */
+	/* use html5 to stretch to make each button the right size independent of how many there are */
+	
+	.hbox {
+		display: -webkit-box;
+		-webkit-box-orient: horizontal;
+		-webkit-box-align: stretch;
+		display: -moz-box;
+		-moz-box-orient: horizontal;
+		-moz-box-align: stretch;
+		display: box;
+		box-orient: horizontal;
+		box-align: stretch;
+		width: 100%;
+		height: auto;
+	}
+	
+	.hbox > *, .vbox > * {
+		text-align: center;
+	}
+	
+	.flex_child_1 {
+		-webkit-box-flex: 1;
+		-moz-box-flex: 1;
+		box-flex: 1;
+	}
+
+	.ybtn-primary {
+	    background-color: #D80B06;
+	    background-image: linear-gradient(#EA050B, #C41200);
+	    border: 1px solid #A50508;
+	    color: white;
+	    text-shadow: 0 -1px 1px #B80806;
+	}
+	.ybtn {
+	    border-radius: 4px 4px 4px 4px;
+	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+	    cursor: pointer;
+	    display: inline-block;
+	    font-size: 12px;
+	    font-weight: bold;
+	    line-height: 20px;
+	    margin: 0 0 1px;
+	    padding: 3px 16px;
+	    position: relative;
+	    text-align: center;
+	    vertical-align: middle;
+	}
+	#raty {float: left;padding-left: 50px;}
+	#mouseover-target {float:left; padding-left: 15px; padding-top: 2px;width: 50px; color: #777;} /* for $$$$ ratings on main selection button group */
+
 	/* MODAL */
 	#alert-holder {position: absolute; top: 165px; left: 20%; width: 60%;  margin: 0 auto;}
 	#myModal {z-index: 12000;}
