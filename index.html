@@ -10,6 +10,7 @@
 		<link href="css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
 		<link href="css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="./css/extra.css" type="text/css">
+		<link rel="stylesheet" href="./css/chosen.css" type="text/css">
 		<!-- 		<link href="css/fontawesome.css" media="screen" rel="stylesheet" type="text/css" /> -->
 		<!-- <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" /> -->
 		<!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
@@ -23,8 +24,74 @@
 		<script src="js/bootstrap.js"></script>
 		<script src="js/chosen/chosen.jquery.js"></script>
 		<script type="text/javascript">
-			$(".chzn-select").chosen()
+			jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
+				jQuery(document).ready(function() {
+					// let's add in all of the yelp categories to our select box
+					// (in the future let's use mustache templates)
+					$.getJSON('./json/category.json', function(data) {
+						var str = JSON.stringify(data, undefined, 2);
+						$("#native-json").append(str);
+						var jtext = "<option value=''></option>";
+						$.each(data, function(key, val) {
+							jtext += "<option class='opt-cat-level1'>" + val.title + "</option>";
+							// jtext += " CATEGORY: " + val.title + " ";
+							// jtext += " ALIAS: " + val.alias + " ";
+							$.each(val.category, function(k, v) {
+								if (v.category) {
+									jtext += "<option class='opt-cat-level2'>" + v.title + "</option>";
+									$.each(v.category, function(thirdKey, thirdVal) {
+										jtext += "<option class='opt-single-cat'>" + thirdVal.title + "</option>";
+									});
+								} else {
+									jtext += "<option class='opt-single-cat'>" + v.title + "</option>";
+								}
+							});
+							// jtext += "</optgroup>";
+						});
+						$(".chzn-select").html(jtext);
+						$(".chzn-select").chosen();
+						$(".chzn-choices").addClass("search-query span4");
+					});
+
+					// $(".chzn-select").chosen();
+					// // start chosen for enable multi-select in search form
+					// $(".chzn-choices").addClass("search-query span4");
+
+					// test class to parse json and print it
+					// $.getJSON('./json/category.json', function(data) {
+						// var str = JSON.stringify(data, undefined, 2);
+						// $("#native-json").append(str);
+						// var jtext = "";
+						// $.each(data, function(key, val) {
+							// console.log("key=" + key + " " + "val=" + val);
+							// jtext += "key=" + key + " " + "val=" + val;
+							// jtext += " CATEGORY: " + val.title + " ";
+							// jtext += " ALIAS: " + val.alias + " ";
+							// $.each(val.category, function(k, v) {
+								// jtext += " SUB-CATEGORY: " + v.title + " ";
+								// jtext += " SUB-ALIAS: " + v.alias + " ";
+								// if (v.category) {
+									// $.each(v.category, function(thirdKey, thirdVal) {
+										// jtext += " THIRD-CATEGORY: " + thirdVal.title + " ";
+										// jtext += " THIRD-ALIAS: " + thirdVal.alias + " ";
+										// if (thirdVal.category) {
+											// jtext += " OBJECT: " + thirdVal.category + " ";
+											// $.each(thirdVal.category, function(fourthKey, fourthVal) {// shouldn't be a fourth level
+												// jtext += " FOURTH-CATEGORY: " + fourthVal.title + " ";
+												// jtext += " FOURTH-ALIAS: " + fourthVal.alias + " ";
+											// });
+										// }
+									// });
+								// }
+							// });
+						// });
+// 
+						// document.getElementById('json-holder').innerHTML = jtext;
+					// });
+				})
+			});
 		</script>
+		<script type="text/javascript"></script>
 		<title>MightyMarks</title>
 	</head>
 
@@ -74,61 +141,58 @@
 				<div id="search-wrapper">
 					<div id="search-wrap" class="navbar navbar-fixed-top span6 padTopShort">
 						<form id="search-form" class="navbar-search block-display" action="">
-							<input type="text" id="search" class="search-query span4" placeholder="Search">
-							<div>
-								<em>Multiple Select with Groups</em>
-								<select data-placeholder="Your Favorite Football Team" style="width:350px;" class="chzn-select" multiple tabindex="6">
-									<option value=""></option>
-									<optgroup label="NFC EAST">
-										<option>Dallas Cowboys</option>
-										<option>New York Giants</option>
-										<option>Philadelphia Eagles</option>
-										<option>Washington Redskins</option>
-									</optgroup>
-									<optgroup label="NFC NORTH">
-										<option>Chicago Bears</option>
-										<option>Detroit Lions</option>
-										<option>Green Bay Packers</option>
-										<option>Minnesota Vikings</option>
-									</optgroup>
-									<optgroup label="NFC SOUTH">
-										<option>Atlanta Falcons</option>
-										<option>Carolina Panthers</option>
-										<option>New Orleans Saints</option>
-										<option>Tampa Bay Buccaneers</option>
-									</optgroup>
-									<optgroup label="NFC WEST">
-										<option>Arizona Cardinals</option>
-										<option>St. Louis Rams</option>
-										<option>San Francisco 49ers</option>
-										<option>Seattle Seahawks</option>
-									</optgroup>
-									<optgroup label="AFC EAST">
-										<option>Buffalo Bills</option>
-										<option>Miami Dolphins</option>
-										<option>New England Patriots</option>
-										<option>New York Jets</option>
-									</optgroup>
-									<optgroup label="AFC NORTH">
-										<option>Baltimore Ravens</option>
-										<option>Cincinnati Bengals</option>
-										<option>Cleveland Browns</option>
-										<option>Pittsburgh Steelers</option>
-									</optgroup>
-									<optgroup label="AFC SOUTH">
-										<option>Houston Texans</option>
-										<option>Indianapolis Colts</option>
-										<option>Jacksonville Jaguars</option>
-										<option>Tennessee Titans</option>
-									</optgroup>
-									<optgroup label="AFC WEST">
-										<option>Denver Broncos</option>
-										<option>Kansas City Chiefs</option>
-										<option>Oakland Raiders</option>
-										<option>San Diego Chargers</option>
-									</optgroup>
-								</select>
-							</div>
+							<!-- <input type="text" id="search" class="search-query span4" placeholder="Search"> -->
+							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6">
+								<option value=""></option>
+								<optgroup label="NFC EAST">
+									<option>Dallas Cowboys</option>
+									<option>New York Giants</option>
+									<option>Philadelphia Eagles</option>
+									<option>Washington Redskins</option>
+								</optgroup>
+								<optgroup label="NFC NORTH">
+									<option>Chicago Bears</option>
+									<option>Detroit Lions</option>
+									<option>Green Bay Packers</option>
+									<option>Minnesota Vikings</option>
+								</optgroup>
+								<optgroup label="NFC SOUTH">
+									<option>Atlanta Falcons</option>
+									<option>Carolina Panthers</option>
+									<option>New Orleans Saints</option>
+									<option>Tampa Bay Buccaneers</option>
+								</optgroup>
+								<optgroup label="NFC WEST">
+									<option>Arizona Cardinals</option>
+									<option>St. Louis Rams</option>
+									<option>San Francisco 49ers</option>
+									<option>Seattle Seahawks</option>
+								</optgroup>
+								<optgroup label="AFC EAST">
+									<option>Buffalo Bills</option>
+									<option>Miami Dolphins</option>
+									<option>New England Patriots</option>
+									<option>New York Jets</option>
+								</optgroup>
+								<optgroup label="AFC NORTH">
+									<option>Baltimore Ravens</option>
+									<option>Cincinnati Bengals</option>
+									<option>Cleveland Browns</option>
+									<option>Pittsburgh Steelers</option>
+								</optgroup>
+								<optgroup label="AFC SOUTH">
+									<option>Houston Texans</option>
+									<option>Indianapolis Colts</option>
+									<option>Jacksonville Jaguars</option>
+									<option>Tennessee Titans</option>
+								</optgroup>
+								<optgroup label="AFC WEST">
+									<option>Denver Broncos</option>
+									<option>Kansas City Chiefs</option>
+									<option>Oakland Raiders</option>
+									<option>San Diego Chargers</option>
+								</optgroup>
+							</select>
 						</form>
 					</div>
 				</div>
@@ -216,6 +280,12 @@
 					</div>
 				</li>
 			</ul>
+			<div id="json-holder">
+
+			</div>
+			<div id="native-json">
+
+			</div>
 		</div>
 	</body>
 

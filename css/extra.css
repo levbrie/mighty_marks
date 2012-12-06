@@ -49,7 +49,12 @@ h4.movietitle {color: #333;}
 
 h1#title { 	font-size: 40px; font-family: "oswald"; font-size: 17pt; font-weight: 400; color: #666;
     		left: 129px; position: relative; width: 130px; text-align: left;  float: left;}
-#search-form {float:none;}
+
+/* SEARCH */
+.chzn-container .chzn-results li.opt-cat-level1 {font-family: sans-serif; font-size: 14px; color: #999;cursor: default;font-weight: bold; text-align: left; padding: 5px 10px;}
+.chzn-container .chzn-results li.opt-cat-level2 {font-family: sans-serif; font-size: 12px; color: #444;cursor: default; text-align: left; padding-left: 20px;}
+.chzn-container .chzn-results li.opt-single-cat {padding-left: 30px;}
+#search-form {float:none; text-align:left;}
 #search {margin: 0 auto;}
 #search-wrap {display:block; width: 25%; margin: 0 auto;}
 .toggle-holder {float: right; margin-right: 30px; margin-top: 5px;}
