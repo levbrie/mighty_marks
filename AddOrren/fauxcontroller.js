@@ -113,7 +113,7 @@ model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_lon
 
 
 /**** Controlller ****/
-
+// listener for search 
 $('#submit').live('click',function(){
 	alert("click");
 	search($('#search').val());
