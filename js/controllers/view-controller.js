@@ -30,3 +30,7 @@ var yelpObjects
 function fetchCurrentYelpObjects() {
 	
 }
+
+function performSearch() {
+	
+}
