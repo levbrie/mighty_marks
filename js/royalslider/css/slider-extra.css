@@ -1,0 +1,73 @@
+      #gallery-1 {
+  width: 50%;
+  margin: 24px 25% 66px;
+  color: #FFF;
+}
+.visibleNearby {
+  background: #141414;
+  width: 100%;
+  overflow: hidden;
+}
+.visibleNearby .rsGCaption {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 18px;
+  padding-bottom: 16px;
+}
+.visibleNearby .rsGCaption span {
+  display: block;
+  clear: both;
+  color: #bbb;
+  font-size: 14px;
+  line-height: 22px;
+}
+.visibleNearby .rsOverflow,
+.visibleNearby .rsSlide {
+  background: none;
+}
+.visibleNearby .rsOverflow {
+  overflow: visible;
+}
+
+
+/* Scaling transforms */
+.visibleNearby .rsSlide img {
+  opacity: 0.45;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+
+  -webkit-transform: scale(0.9);  
+  -moz-transform: scale(0.9); 
+  -ms-transform: scale(0.9);
+  -o-transform: scale(0.9);
+  transform: scale(0.9);
+}
+.visibleNearby .rsActiveSlide img {
+  opacity: 1;
+  -webkit-transform: scale(1);  
+  -moz-transform: scale(1); 
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+
+/* Non-linear resizing on smaller screens */
+@media screen and (min-width: 0px) and (max-width: 900px) { 
+   #gallery-1 {
+    width: 62%;
+    margin-left: 19%;
+    padding: 12px 0 12px;
+    color: #FFF;
+  }
+  #gallery-1 .rsOverflow,
+  .royalSlider#gallery-1 {
+    height: 400px !important;
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 500px) { 
+  #gallery-1 .rsOverflow,
+  .royalSlider#gallery-1 {
+    height: 300px !important;
+  }
+}

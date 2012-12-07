@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <style>
+
+      .hbox {
+        display: -webkit-box;
+        -webkit-box-orient: horizontal;
+        -webkit-box-align: stretch;
+      
+        display: -moz-box;
+        -moz-box-orient: horizontal;
+        -moz-box-align: stretch;
+      
+        display: box;
+        box-orient: horizontal;
+        box-align: stretch;
+      
+        width: 100%;
+        height: 100px;
+        background-color: wheat;
+        border: 2px solid peru;
+      }
+      
+      .hbox > *, .vbox > * {
+        border: 1px solid black;
+        font: 16px/50px Arial;
+        text-align: center;
+      }
+      
+      .flex_child_1 {
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        box-flex: 1;
+      }
+      
+      .flex_child_2 {
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        box-flex: 1;
+      }
+      
+      button { margin-top: 30px; }  
+      p { font: 20px Arial; }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <p>Horizontal Box</p>
+
+    <div class="hbox">
+
+      <div class="flex_child_1"></div>
+
+      <div class="flex_child_2"></div>
+		<div class="flex_child_2"></div>
+    </div>
+
+<!--     <p>Vertical Box</p>
+
+    <div class="vbox">
+
+      <div class="flex_child_1" style="height: 50px;"></div>
+
+      <div class="flex_child_2" style="height: 50px;"></div>
+
+    </div> -->
+
+<!--     <button id="switch-button" type="button" value="flex">Disable Flexibility!</button> -->
+
+    <script>
+
+      /* Convert a NodeList to an Array */
+      function toArray(nodelist) {
+        return Array.prototype.slice.call(nodelist);
+      }
+      
+      var flex_children = [
+            toArray(document.getElementsByClassName('flex_child_1')),
+            toArray(document.getElementsByClassName('flex_child_2'))
+          ];
+      
+      /* Update the displayed size number of inner boxes */
+      function updateDisplayInfo() {
+        var hbox = toArray(document.querySelectorAll('.hbox > *'));
+        // var vbox = toArray(document.querySelectorAll('.vbox > *'));
+      
+        hbox.forEach( function(node) {
+          node.innerHTML = 'w: ' + getComputedStyle(node, null).getPropertyValue('width');
+        });
+      
+        // vbox.forEach( function(node) {
+          // node.innerHTML = 'h: ' + getComputedStyle(node, null).getPropertyValue('height');
+        // });
+      }
+      
+      // var button = document.getElementById('switch-button');
+//       
+      // button.addEventListener('click', function() {
+        // if (this.value == 'flex') {
+          // this.value = 'inflex';
+          // this.innerHTML = 'Enable Flexibility!';
+          // flex_children.forEach( function(array) {
+            // array.forEach( function(node) {
+              // node.removeAttribute('class');
+            // });
+          // });
+        // } else {
+          // this.value = 'flex';
+          // this.innerHTML = 'Disable Flexibility!';
+          // flex_children.forEach( function(array, index) {
+            // array.forEach( function(node) {
+              // node.setAttribute('class', 'flex_child_' + (index + 1));
+            // });
+          // });
+        // }
+        // updateDisplayInfo();   
+      // }, false);
+      
+      updateDisplayInfo();
+
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- ====================== STYLESHEET INCLUDES ====================== -->
+		<link href="https://fonts.googleapis.com/css?family=Oswald|Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
+		media="screen" rel="stylesheet" type="text/css" />
+		<link href="css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		<link href="css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="./css/extra.css" type="text/css">
+		<link rel="stylesheet" href="./css/chosen.css" type="text/css">
+		<link rel="stylesheet" href="./css/hover.css" type="text/css">
+		<!-- for grid styling -->
+		<!-- 		<link href="css/fontawesome.css" media="screen" rel="stylesheet" type="text/css" /> -->
+		<!-- <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" /> -->
+		<!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
+		for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		-->
+
+		<!-- ====================== JAVASCRIPT INCLUDES ====================== -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/chosen/chosen.jquery.js"></script>
+		<script src="js/utilities/isotope.js"></script>
+		<script src="js/utilities/jquery.raty.js"></script><!-- Star ratings -->
+		<script src="js/views/search-view.js"></script><!-- File to render All Yelp Categories in Search Multi-Select -->
+		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->
+		<title>MightyMarks</title>
+	</head>
+
+	<body>
+		<!-- ====================== NAVBAR ====================== -->
+		<div id="nav-cream" class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="rectangle-1">
+					<img class="padTop5" src="img/logo/mighty-mouse-black-30x75.png" />
+				</div>
+				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="./index.html"><h1 id="title">MightyMarks</h1></a>
+				<div class="nav-collapse collapse">
+					<div class="nav btn-toolbar pull-right padTopShort">
+						<div class="btn-group">
+							<a class="btn" href="#"><i class="icon-map-marker"></i></a>
+							<a class="btn" href="#"><i class="icon-th-large"></i></a>
+							<a class="btn" href="#"><i class="icon-th-list"></i></a>
+						</div>
+					</div>
+					<ul class="nav pull-right padTopShort">
+						<li class="divider-vertical"></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Action</a>
+								</li>
+								<li>
+									<a href="#">Another action</a>
+								</li>
+								<li>
+									<a href="#">Something else here</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="#">Separated link</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- END NAV-COLLAPSE -->
+				<div id="search-wrapper">
+					<div id="search-wrap" class="navbar navbar-fixed-top span6 padTopShort">
+						<form id="search-form" class="navbar-search block-display" action="">
+							<!-- <input type="text" id="search" class="search-query span4" placeholder="Search"> -->
+							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- ====================== MAIN BODY ====================== -->
+
+		<div id="below-nav" class="container-fluid">
+
+			<div class="row-fluid">
+				<span class="span12">
+					<div class="well">
+						<div class="btn-group hbox">
+							<button class="flex_child_1 btn btn-large btn-primary btn-2">
+								My Marks
+							</button>
+							<button class="flex_child_1 btn btn-large ybtn-primary btn-3">
+								<!-- USING YELP COLORS -->
+								Yelp Categories (and colors)
+							</button>
+							<button class="flex_child_1 btn btn-large btn-4">
+								Rating
+							</button>
+							<div class="flex_child_1 btn btn-large btn-5">
+
+								<!-- <span id="raty">
+								<span class="star"></span>
+								<span class="star"></span>
+								<span class="star"></span>
+								<span class="star"></span>
+								<span class="star"></span>
+								<span class="star"></span>
+								</span>
+								Price -->
+								<div id="raty"></div>
+								<div id="mouseover-target"></div>
+							</div>
+							<button class="flex_child_1 btn btn-large btn-inverse btn-6">
+								Friends
+							</button>
+							<button class="flex_child_1 btn btn-large btn-inverse btn-7">
+								Friends
+							</button>
+						</div>
+					</div>
+				</span>
+			</div>
+		</div>
+		<!--start: Container -->
+		<div class="container">
+
+			<!-- start: Portfolio -->
+			<div id="portfolio-wrapper" class="row">
+
+				<div class="span3 portfolio-item restaurant spanish grocery">
+					<div class="picture">
+						<a href="project.html" title="Title"><img src="img/temp/despana.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="hbox">
+							<div class="flex_child_3">
+								<h5><a href="project.html">Despaña</a></h5>
+								<p>
+									This is a full-service, fully-stocked gourmet Spanish food store...
+								</p>								
+							</div>
+							<div class="flex_child_1">
+								<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+							</div>
+						</div>
+<!-- 						<div class="item-description alt">
+
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div> --><!-- Some changes -->
+					</div>
+				</div>
+
+				<div class="box span3 portfolio-item nature people">
+					<div class="box-header">
+						<h2><i class="icon-tasks"></i><span class="break"></span>Tasks in Progress</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="icon-wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="icon-remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<div class="progressBarValue">
+							<span>iOS App Development</span><span class="progressCustomValueVal">20</span>
+							<div class="progressSlim progressCustomValue progressRed"></div>
+						</div>
+						<div class="progressBarValue">
+							<span>Android App Development</span><span class="progressCustomValueVal">40</span>
+							<div class="progressSlim progressCustomValue progressOrange"></div>
+						</div>
+						<div class="progressBarValue">
+							<span>A/B Tests</span><span class="progressCustomValueVal">60</span>
+							<div class="progressSlim progressCustomValue progressYellow"></div>
+						</div>
+						<div class="progressBarValue">
+							<span>Server Load Tests</span><span class="progressCustomValueVal">80</span>
+							<div class="progressSlim progressCustomValue progressGreen"></div>
+						</div>
+						<div class="progressBarValue">
+							<span>Django Backend Development</span><span class="progressCustomValueVal">100</span>
+							<div class="progressSlim progressCustomValue progressBlue"></div>
+						</div>
+					</div>
+				</div>
+				<div class="span3 portfolio-item scenery">
+					<div class="picture">
+						<a href="project.html" title="Title"><img src="img/temp/photo3.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="item-description alt">
+							<h5><a href="project.html">Project no. 3</a></h5>
+							<p>
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+							</p>
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="span3 portfolio-item world scenery">
+					<div class="picture">
+						<a href="project.html" title="Title"><img src="img/temp/photo5.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="item-description alt">
+							<h5><a href="project.html">Project no. 5</a></h5>
+							<p>
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+							</p>
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="span3 portfolio-item nature scenery">
+					<div class="picture">
+						<a href="project.html" title="Title"><img src="img/temp/photo6.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="item-description alt">
+							<h5><a href="project.html">Project no. 6</a></h5>
+							<p>
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</p>
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="span3 portfolio-item world">
+					<div class="picture">
+						<a href="project.html" title="Title"><img src="img/temp/photo4.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="item-description alt">
+							<h5><a href="project.html">Project no. 4</a></h5>
+							<p>
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</p>
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="span3 portfolio-item world people">
+					<div class="picture">
+						<a href="project.html"><img src="img/temp/photo8.jpg" alt=""/><div class="image-overlay-link"></div></a>
+						<div class="item-description alt">
+							<h5><a href="project.html">Project no. 8</a></h5>
+							<p>
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</p>
+						</div>
+						<div class="post-meta">
+							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- end: Portfolio -->
+
+		</div>
+		<!--end: Container-->
+		<div id="below-nav" class="container-fluid">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<span class="span12">
+					<ul class="thumbnails">
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image" src="http://placehold.it/900x600">
+							</div>
+						</li>
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image-1" src="http://placehold.it/900x600">
+							</div>
+						</li>
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image-2" src="http://placehold.it/900x600">
+							</div>
+						</li>
+					</ul>
+					<ul class="thumbnails">
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image-3" src="http://placehold.it/900x600">
+							</div>
+						</li>
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image-4" src="http://placehold.it/900x600">
+							</div>
+						</li>
+						<li class="span4">
+							<div class="thumbnail">
+								<img class="image-5" src="http://placehold.it/900x600">
+							</div>
+						</li>
+					</ul> </span>
+			</div>
+			<ul class="thumbnails">
+				<li class="span4">
+					<div class="thumbnail">
+						<img class="image-6" src="http://placehold.it/900x600">
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail">
+						<img class="image-7" src="http://placehold.it/900x600">
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail">
+						<img class="image-8" src="http://placehold.it/900x600">
+					</div>
+				</li>
+			</ul>
+			<div id="json-holder">
+
+			</div>
+			<div id="native-json">
+
+			</div>
+		</div>
+	</body>
+
+</html>

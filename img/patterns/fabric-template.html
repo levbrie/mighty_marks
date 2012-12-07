@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="https://raw.github.com/kangax/fabric.js/master/dist/all.js"></script>
+	</head>
+	<body>
+		<canvas id="c" width="800" height="800" style="border:1px solid #ccc"></canvas>
+
+		<script>
+			(function() {
+
+				var canvas = new fabric.Canvas('c');
+				fabric.Image.fromURL('http://blog.talentmadehere.com/wp-content/uploads/2012/09/robot.jpg', function(img) {
+					var img1 = img.scale(0.1).set({
+						left : 100,
+						top : 100
+					});
+
+					fabric.Image.fromURL('/img/originals/printio.png', function(img) {
+						var img2 = img.scale(0.1).set({
+							left : 175,
+							top : 175
+						});
+
+						fabric.Image.fromURL('./img/originals/printio.png', function(img) {
+							var img3 = img.scale(0.1).set({
+								left : 250,
+								top : 250
+							});
+
+							canvas.add(new fabric.Group([img1, img2, img3], {
+								left : 200,
+								top : 200
+							}))
+						});
+					});
+				});
+			})();
+
+		</script>
+	</body>
+</html>

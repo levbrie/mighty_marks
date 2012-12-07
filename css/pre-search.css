@@ -1,0 +1,6 @@
+#textured {
+	background: url('../img/patterns/darkdenim3.png') top left repeat;
+}
+#padTop {padding-top: 190px;}
+.padTop {padding-top: 190px;}
+.padTopShort {padding-top: 100px;}
