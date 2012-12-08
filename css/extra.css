@@ -240,3 +240,26 @@ h4.movietitle {color: #333;}
 .portfolio-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
 .portfolio-item span {font-size: 11px;}
 .portfolio-item h5, .portfolio-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
+
+/* copy for if isotope cretaes its own .isotope-item elements */
+#portfolio-wrapper .isotope-item {
+	margin-bottom: 20px;
+}
+
+.isotope-item a {color: #4c004c;}
+.isotope-item a:hover {color: #A319A3;}
+.isotope-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
+.isotope-item span {font-size: 11px;}
+.isotope-item h5, .portfolio-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}

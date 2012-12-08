@@ -150,14 +150,21 @@ function yelp_result_handler(data){
 		// i++;
 	// }
 	// results = data;
-		var gridDiv = document.getElementById("portfolio-wrapper");
-		gridDiv.innerHTML = "";
+		// var gridDiv = document.getElementById("portfolio-wrapper");
+		// gridDiv.innerHTML = "";
 		var businesses = data.businesses;
+		var divText = "";
+		
+        // var selector = ".portfolio-item";
+        // var $removable = $container.find( selector );
+        // $container.isotope( 'remove', $removable );
+
 		for(var i = 0; i < businesses.length; i++) {
 			var yelpObject = businesses[i];
-			var div = document.createElement("div");
-			div.setAttribute("class", "span3 portfolio-item");
-			var divText = "<div class='picture'>";			
+			// alert("PAST BUSINESS " + i);
+			// var div = document.createElement("div");
+			// div.setAttribute("class", "span3 portfolio-item");
+			divText += "<div class='span3 portfolio-item'><div class='picture'>";			
 			divText += "<a href='" + yelpObject.url + "' title='Title'>"
 			divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
 			divText += "<div class='image-overlay-link'></div>";
@@ -179,10 +186,17 @@ function yelp_result_handler(data){
 			divText += "</div>";
 			// jtext += " CATEGORY: " + val.title + " ";
 			// jtext += " ALIAS: " + val.alias + " ";
-			divText += "</div><!-- end picture -->";
-			div.innerHTML = divText;
-			gridDiv.appendChild(div);
+			divText += "</div><!-- end picture --></div><!-- end portfolio-item -->";
+			// div.innerHTML = divText;
+			// gridDiv.appendChild(div);		
 		}
+		alert("ALL PARSED");
+		// addIsotopeItems(divText);
+		var $newItems = $(divText);
+		$('#portfolio-wrapper').isotope( 'insert', $newItems );
+		
+		// try inserting items using isotope so they can then be filtered and sorted:
+		
 		// $.each(data, function(key, bus) {
 			// jtext += "<div class='span3 portfolio-item'>";
 			// jtext += "<div class='picture'>";			
@@ -217,4 +231,7 @@ function yelp_result_handler(data){
 	
 }
 
-
+// function addIsotopeItems(text) {
+	// var $newItems = $(divText);
+		// $('#portfolio-wrapper').isotope( 'insert', $newItems );
+// }

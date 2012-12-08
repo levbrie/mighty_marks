@@ -48,7 +48,22 @@
 			// });
 
 			jQuery(function($) {
-				$('#searchButton').click(function() {
+				
+
+				
+				$('#searchButton').click(function(jQEvent) { // jQEvent added for isotope
+					// isotope stuff 
+					var $container = $('#portfolio-wrapper');
+					$container.isotope({
+						itemSelector : '.element'
+					}); 
+					// end isotope
+					var selector = $(this).attr('data-option-value');
+					// isotope stuff
+					var $removable = $container.find(selector);
+					$container.isotope('remove', $removable);
+					jQEvent.preventDefault(); 
+					// end isotope stuff
 					alert("WORKING");
 					$('.result-selected').each(function(index, value) { 	// loop through each element of class .result-selected
 						alert("ALERT " + value.innerHTML);					// print whatever element holds
@@ -57,7 +72,13 @@
 					search(searchTermToUse);
 				});
 			});
-
+// 
+      // $('#removable a').click( function( jQEvent ) {
+        // var selector = $(this).attr('data-option-value');
+        // var $removable = $container.find( selector );
+        // $container.isotope( 'remove', $removable );
+        // jQEvent.preventDefault();
+      // });
 
 					});
 
