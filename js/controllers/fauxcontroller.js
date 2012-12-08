@@ -54,25 +54,25 @@ function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl
 	
 }
 
-function list(listname){
-	
-	alert("new!");
-	
-	this.name = listname;
-	this.bookmarks = [];
-	
-	this.addBookmark = function(object){
-		this.bookmarks.push(object);
-	}
-	
-	this.removeBookmark = function (object) { 
-	     //??? how do i do this....
-	};
-	
-	this.getBookmarks = function () { 
-	     return this.bookmarks;
-	};
-}
+// function list(listname){
+// 	
+	// alert("new!");
+// 	
+	// this.name = listname;
+	// this.bookmarks = [];
+// 	
+	// this.addBookmark = function(object){
+		// this.bookmarks.push(object);
+	// }
+// 	
+	// this.removeBookmark = function (object) { 
+	     // //??? how do i do this....
+	// };
+// 	
+	// this.getBookmarks = function () { 
+	     // return this.bookmarks;
+	// };
+// }
 
 // LIST TESTER: 
 /*
@@ -82,27 +82,27 @@ function list(listname){
   alert(bookmarks1[0]);
 */
 
-function add_bookmark(object, list_name){
-	
-	alert("add");
-	
-	list = MM_retrieve(list_name);
-	if(list){
-		alert("found!");
-		alert(list.bookmarks[1]); //should be .name for a full object!@!
-	}
-	else{
-		alert("none");
-		alert(list_name);
-		// Create a new list and add bookmark as first item.
-		newlist = new list(list_name);
-		newlist.addBookmark(object);
-		bookmarks1 = newlist.getBookmarks();
-		alert(bookmarks1[0]);
-		// Store in datastore with name as key.
-		MM_store(list_name, newlist);
-	}	
-}
+// function add_bookmark(object, list_name){
+// 	
+	// alert("add");
+// 	
+	// list = MM_retrieve(list_name);
+	// if(list){
+		// alert("found!");
+		// alert(list.bookmarks[1]); //should be .name for a full object!@!
+	// }
+	// else{
+		// alert("none");
+		// alert(list_name);
+		// // Create a new list and add bookmark as first item.
+		// newlist = new list(list_name);
+		// newlist.addBookmark(object);
+		// bookmarks1 = newlist.getBookmarks();
+		// alert(bookmarks1[0]);
+		// // Store in datastore with name as key.
+		// MM_store(list_name, newlist);
+	// }	
+// }
 /*
 model = new model;
 //model.addbookmark("some stuff!", "list2");
@@ -114,17 +114,17 @@ model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_lon
 
 /**** Controlller ****/
 // listener for search 
-$('#submit').live('click',function(){
-	alert("click");
-	search($('#search').val());
-});
+// $('#submit').live('click',function(){
+	// alert("click");
+	// search($('#search').val());
+// });
 
-function search(value){
+function search(values){
 	
 	alert("yes");
 	// Set query params to search string
-	var terms = $('#search').val();
-
+	// var terms = $('#search').val();
+	var terms = values;
 	// Optional: only added to query if set to new value
 	var offset = 0; // # of result to start from, for pagination (need to add automatic pagination in sets of 20)
 	var sort = 0; // 0 = best matched, 1 = distance, 2 = highest rated
@@ -144,14 +144,77 @@ function yelp_result_handler(data){
 	
 	// Do something with the response.. e.g. store in dataStore, retrieve, and alert name #6
 	
-	var i = 0;
-	while(i<=19){
-		$('#biz').append("<div class='result' id='"+i+"'>"+data.businesses[i].name+"</div>")
-		i++;
-	}
-	results = data;
+	// var i = 0;
+	// while(i<=19){
+		// $('#biz').append("<div class='result' id='"+i+"'>"+data.businesses[i].name+"</div>")
+		// i++;
+	// }
+	// results = data;
+		var gridDiv = document.getElementById("portfolio-wrapper");
+		gridDiv.innerHTML = "";
+		var businesses = data.businesses;
+		for(var i = 0; i < businesses.length; i++) {
+			var yelpObject = businesses[i];
+			var div = document.createElement("div");
+			div.setAttribute("class", "span3 portfolio-item");
+			var divText = "<div class='picture'>";			
+			divText += "<a href='" + yelpObject.url + "' title='Title'>"
+			divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
+			divText += "<div class='image-overlay-link'></div>";
+			divText += "</a>";		
+			divText += "<div class='item-description alt'>";
+			divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
+			if(yelpObject.categories) {
+				var cats = yelpObject.categories;
+				divText += "<h6>Categories: ";
+				for(var j = 0; j < cats.length; cats++) {
+					divText += cats[j][0] + " ";
+				}
+				divText += "</h6>";		
+			}
+			divText += "<p>" + yelpObject.snippet_text + "</p>";
+			divText += "</div>";
+			divText += "<div class='post-meta'>";
+			divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-ico-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+			divText += "</div>";
+			// jtext += " CATEGORY: " + val.title + " ";
+			// jtext += " ALIAS: " + val.alias + " ";
+			divText += "</div><!-- end picture -->";
+			div.innerHTML = divText;
+			gridDiv.appendChild(div);
+		}
+		// $.each(data, function(key, bus) {
+			// jtext += "<div class='span3 portfolio-item'>";
+			// jtext += "<div class='picture'>";			
+			// jtext += "<a href='project.html' title='Title'>"
+			// jtext += "<img src='" + bus.image_url + "' alt=''/>";
+			// jtext += "<div class='image-overlay-link'></div>";
+			// jtext += "</a>";		
+			// jtext += "<div class='item-description alt'>";
+			// jtext += "<h5><a href='project.html'>Despaña</a></h5>";
+			// if(bus.categories) {
+				// jtext += "<h2>Categories: ";
+				// $.each(bus.categories, function(k, v) {
+					// jtext += v[0] + ", ";
+				// });
+				// jtext += "</h2>";		
+			// }
+			// jtext += "<p>This is a full-service, fully-stocked gourmet Spanish food store...</p>";
+			// jtext += "</div>";
+			// jtext += "<div class='post-meta'>";
+			// jtext += "<span><i class='mini-ico-calendar'></i>1 June 2011</span><span><i class='mini-ico-user'></i> <a href='#'>lucas</a></span><span><i class='mini-ico-comment'></i><a href='#'>89 comments</a></span>";
+			// jtext += "</div>";
+			// // jtext += " CATEGORY: " + val.title + " ";
+			// // jtext += " ALIAS: " + val.alias + " ";
+			// jtext += "</div><!-- end picture -->";
+			// jtext += "</div><!-- end portfolio-item -->";
+// 
+		// });
+		// $("#portfolio-wrapper").html(jtext); 
+
 
 //	console.log(JSON.stringify(data));
 	
 }
+
 

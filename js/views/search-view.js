@@ -52,8 +52,9 @@
 					alert("WORKING");
 					$('.result-selected').each(function(index, value) { 	// loop through each element of class .result-selected
 						alert("ALERT " + value.innerHTML);					// print whatever element holds
-						alert("SEARCH FOR: " + searchTermToUse);
+						alert("SEARCH FOR: " + searchTermToUse);				
 					});
+					search(searchTermToUse);
 				});
 			});
 
