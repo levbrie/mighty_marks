@@ -27,6 +27,37 @@
 						$(".chzn-select").html(jtext);
 						$(".chzn-select").chosen();
 						$(".chzn-choices").addClass("search-query span4");
+
+			
+			
+			// had to place here so everything could load and then we could create listeners
+			// must move soon!!
+			// var butt = document.getElementById("searchButton");
+			// alert("THERE");
+			// function handleSearchSubmit() {
+				// alert("BUTTON CLICKED");
+			// }
+// 
+// 
+			// butt.onclick = handleSearchSubmit;
+// 			
+// 
+			// $('#searchButton').live('click', function() {
+				// alert("click");
+				// // search($('#search').val());
+			// });
+
+			jQuery(function($) {
+				$('#searchButton').click(function() {
+					alert("WORKING");
+					$('.result-selected').each(function(index, value) { 	// loop through each element of class .result-selected
+						alert("ALERT " + value.innerHTML);					// print whatever element holds
+						alert("SEARCH FOR: " + searchTermToUse);
+					});
+				});
+			});
+
+
 					});
 
 					// $(".chzn-select").chosen();

@@ -21,6 +21,11 @@
 		-->
 
 		<!-- ====================== JAVASCRIPT INCLUDES ====================== -->
+		<!-- oauth js libraries for connecting to yelp, can be at bottom of page -->
+		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+		<script type="text/javascript" src="js/models/YelpApiCall.js"></script>
+		<script type="text/javascript" src="js/controllers/fauxcontroller.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 		<script src="js/bootstrap.js"></script>
@@ -29,6 +34,7 @@
 		<script src="js/utilities/jquery.raty.js"></script><!-- Star ratings -->
 		<script src="js/views/search-view.js"></script><!-- File to render All Yelp Categories in Search Multi-Select -->
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->
+		<!-- <script src="js/controllers/view-controller.js"></script> -->
 		<title>MightyMarks</title>
 	</head>
 
@@ -77,9 +83,14 @@
 				</div><!-- END NAV-COLLAPSE -->
 				<div id="search-wrapper">
 					<div id="search-wrap" class="navbar navbar-fixed-top span6 padTopShort">
-						<form id="search-form" class="navbar-search block-display" action="performSearch">
-							<!-- <input type="text" id="search" class="search-query span4" placeholder="Search"> -->
-							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select>
+						<form id="search-form" class="navbar-search block-display" action="">
+<!-- 							<input type="text" id="search" class="search-query span4" placeholder="Search"> -->
+<!-- 							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select> -->
+							<div class="input-append">
+<!-- 								<input type="text" name="searchInput" id="search" class="search-query input-xxlarge" /> -->
+								<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select>
+								<input type="button" name="button" value="Search" id="searchButton" class="btn btn-inverse" />
+							</div>
 						</form>
 					</div>
 				</div>
