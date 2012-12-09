@@ -58,7 +58,8 @@
 						itemSelector : '.element'
 					}); 
 					// end isotope
-					var selector = $(this).attr('data-option-value');
+					// var selector = $(this).attr('data-option-value');
+					var selector = ".nature";
 					// isotope stuff
 					var $removable = $container.find(selector);
 					$container.isotope('remove', $removable);
