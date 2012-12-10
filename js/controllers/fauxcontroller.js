@@ -18,35 +18,40 @@ function Model(){
 	
 	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
 	 
-	this.addbookmark = function(object, list_name){
+	this.addbookmark = function(object, listname){
 		add_bookmark(object, list_name);
 	};
 	
 	this.deletebookmark = function(object, listname){
-		//todo
+		delete_bookmark(object, listname);
 	};
 	
-	this.createlist = function(object, listname){ 
-		// Need to understand when controller will need this and how, it will require different structure
-		// e.g. check if there is an object or not?
+	this.createlist = function(listname){ 
 		 
 		// Create an empty list and store it
 		list = new List();
-		MM_store(list,listname);
+		MM_store(list, listname);
 	};
 	
-	this.deletelist = function(listname){
-		localStorage.removeItem(listname); // Need to test, support null entry
+	this.deletelist = function(listname){ 
+		
+		// Delete old entry from storage
+		localStorage.removeItem(listname); 
+	
+		// Delete old entry from list index
+		index = JSON.parse(localStorage.getItem("list_index"));
+		index.splice(index.indexOf(listname), 1);
+		localStorage.setItem("list_index", JSON.stringify(index));
 	};
 	
-	this.renamelist = function(newname, listname){ // Need to test, support null entry
+	this.renamelist = function(listname, newname){ 
 		
 		// Retrieve list and re-store under new name
 		list = MM_retrieve(listname);
 		MM_store(newname, list);
-		
+
 		// Delete old entry
-		localStorage.removeItem(listname);
+		this.deletelist(listname);
 	}
 	
 	this.getlist = function(listname){
@@ -58,6 +63,7 @@ function Model(){
 	}
 	
 }
+
 
 
 /*--------- Helper Functions for Model Class ----------*/
@@ -99,7 +105,19 @@ function List(listname, list){
 	}
 
 	this.removeBookmark = function (object) { 
-	      //??? how do i do this....
+	
+		// Loop through bookmarks array
+		for(var j in list.bookmarks){
+			
+			// Check bookmark name for object name, and if there's a match:
+			var name = list.bookmarks[j].name;
+			if(name.indexOf(object.name) != -1) {
+		
+				// Delete entry from bookmarks array
+				this.bookmarks.splice(j, 1);
+				return true;
+			}
+		}	
 	};
 
 	this.getBookmarks = function () { 
@@ -108,25 +126,38 @@ function List(listname, list){
 }
 
 /* Bookmark Adder */
-function add_bookmark(object, list_name){
+function add_bookmark(object, listname){
  	
 	// Get the list from storage and reinstantiate it as a List object
-	list = MM_retrieve(list_name);
+	list = MM_retrieve(listname);
 	if(list){
-		list = new List(list_name, list);
+		list = new List(listname, list);
 		// Add bookmark to list and store it
 		list.addBookmark(object);
-		MM_store(list_name, list);
+		MM_store(listname, list);
 	}
 	else{ // If it doesn't exist:	
 		// Create a new list and add bookmark as first item.
-		newlist = new List(list_name, "");
+		newlist = new List(listname, "");
 		newlist.addBookmark(object);
 
 		// Store in datastore with name as key.
-		MM_store(list_name, newlist);
+		MM_store(listname, newlist);
 
 	 }	
+}
+
+function delete_bookmark(object, listname){
+	
+	// Get the list from storage and reinstantiate it as a List object
+	list = MM_retrieve(listname);
+	if(list){
+		list = new List(listname, list);
+		// Find the bookmark and delete it from the list
+		list.removeBookmark(object);
+		// Re-store the list
+		MM_store(listname, list);
+	}	
 }
 
 /* Bookmark Searcher */
@@ -179,17 +210,18 @@ function bookmark_search(terms, category_filter){
 				//if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
 				//}
 			}	
-	}
+		}
+	}	
 	
 	console.log(results); /* Notes to self:
 	// send return results objects to MM_result_handler, which needs to be written
 	// do cat match: .categories[0], which contains an array of cats, so need to check each... 
 	// also requires seperating out any cats by commas
-	// need to support multiple search terms, categories
+	// need to support multiple search terms, categories */
 
 }
 //TESTER:
-bookmark_search("dining","thai");
+//bookmark_search("dining","thai");
 
 
 
@@ -197,8 +229,6 @@ bookmark_search("dining","thai");
 
 /* Stores a bookmarks list */ 
 function MM_store(list_name, list){
-
-	console.log(list);
 
 	// Turn into string and store
 	localStorage.setItem(list_name, JSON.stringify(list));
@@ -221,7 +251,7 @@ function MM_retrieve(list_name){
 
 /* Adds new lists to list index */
 function addList_toIndex(listname){
-	
+
 	// Get list index from storage and check it 
 	index = localStorage.getItem("list_index");
 	if(index){ // If index exists
@@ -244,8 +274,7 @@ function addList_toIndex(listname){
 
 /* List Retriever */
 function getList(listname){
-	list = localStorage.getItem(listname);
-	list = JSON.parse(list);
+	list = JSON.parse(localStorage.getItem(listname));
 	return list;
 }
 
@@ -260,7 +289,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 	
 	// Set query params to search string
 	// var terms = $('#search').val();
-	var terms = values;
+	var terms = searchterms;
 	// Optional: only added to query if set to new value
 	var offset = 0; // # of result to start from, for pagination (need to add automatic pagination in sets of 20)
 	var sort = 0; // 0 = best matched, 1 = distance, 2 = highest rated
@@ -276,7 +305,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
-//init_search("thai+food+upper+east+side");
+//init_search("thai+food+upper+east+side", "");
 
 
 /* Handles Yelp Search Results */
@@ -355,3 +384,15 @@ function yelp_result_handler(data){
 
 	/* get index tester */
 	//console.log(model.getlist_index());
+	
+	/* rename tester */
+	//console.log(model.getlist_index());
+	//model.renamelist("list2", "mylist");
+	//console.log(model.getlist_index());
+	
+	/* delete list tester */
+	//console.log(model.getlist_index());
+	//model.deletelist("somelist");
+	//console.log(model.getlist_index());
+	
+	
