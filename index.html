@@ -3,7 +3,6 @@
 
 	<head>
 		<meta charset="utf-8" />
-
 		<!-- ====================== STYLESHEET INCLUDES ====================== -->
 		<link href="https://fonts.googleapis.com/css?family=Oswald|Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
 		media="screen" rel="stylesheet" type="text/css" />
@@ -26,7 +25,7 @@
 		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
 		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 		<script type="text/javascript" src="js/models/YelpApiCall.js"></script>
-		<script type="text/javascript" src="js/controllers/fauxcontroller.js"></script>
+		<script type="text/javascript" src="js/controllers/lev-controller.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 		<script src="js/bootstrap.js"></script>
@@ -36,6 +35,234 @@
 		<script src="js/views/search-view.js"></script><!-- File to render All Yelp Categories in Search Multi-Select -->
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->
 		<!-- <script src="js/controllers/view-controller.js"></script> -->
+		<script type="text/javascript">
+			var currentView = "grid";		// set current view to the default view, which is grid
+			jQuery(function($) {			// using failsafe $ alias to ensure jQuery loading
+				// listeners for view choice buttons
+				document.getElementById("display-grid").onclick = function() {
+					if(currentView != "grid") {
+						deleteView(currentView);
+						currentView = "grid";
+						displayView("grid");
+					}					
+				};
+				document.getElementById("display-list").onclick = function() {
+					if(currentView != "list") {
+						deleteView(currentView);
+						currentView = "list";
+						displayView("list");
+					}					
+				};
+				document.getElementById("display-map").onclick = function() {
+					if(currentView != "map") {						
+						deleteView(currentView);
+						currentView = "map";
+						displayView("map");
+					}					
+				};
+				
+				// $('#myModal').on('hidden', function() {
+					// // canvasForModal.restore();
+				// })
+				// $('#myModal').on('shown', function() {
+					// var winWidth = window.innerWidth * 0.8;
+					// var winHeight = window.innerHeight * 0.8;
+					// canvasForModal = document.getElementById('myCanvas');
+					// canvasForModal.clearRect(0, 0, winWidth, winHeight);
+				// })
+
+			});
+			
+			function deleteView(view) {
+				switch(view) {
+					case "list": 
+						document.getElementById('list-wrapper').innerHTML = "";
+						break;
+					case "grid":
+						document.getElementById('grid-wrapper').innerHTML = "";
+						break;
+					case "map":
+						document.getElementById('map-wrapper').innerHTML = "";
+						break;
+					default: 
+						document.getElementById('map-wrapper').innerHTML = "";
+				}				
+			}
+			
+			function displayView(view) {
+				switch(view) {
+					case "list": 
+						displayList();
+						break;
+					case "grid":
+						displayGrid();
+						break;
+					case "map":
+						displayMap()
+						break;
+					default: 
+						displayGrid();
+				}				
+			}
+
+			// function toggleGrid() {
+				// if ($('#grid-toggle-icon').hasClass('icon-th-large')) {
+					// $("#grid-toggle-icon").removeClass("icon-th-large").addClass("icon-play-circle");
+					// displayGrid();
+				// } else {// we're in grid view so move to slideshow view
+					// $("#grid-toggle-icon").removeClass("icon-play-circle").addClass("icon-th-large");
+					// displaySlider();
+				// }
+			// }
+
+			function displayGrid() {
+				var businesses = resultsData.businesses;
+				var divText = "";
+
+				for(var i = 0; i < businesses.length; i++) {
+					var yelpObject = businesses[i];
+					divText += "<div class='span3 grid-item'><div class='picture'>";			
+					divText += "<a href='" + yelpObject.url + "' title='Title'>";
+					divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
+					divText += "<div class='image-overlay-link'></div>";
+					divText += "</a>";		
+					divText += "<div class='item-description alt'>";
+					divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
+					divText += catsToHTML(yelpObject);
+					// if(yelpObject.categories) {
+						// var cats = yelpObject.categories;
+						// divText += "<h6>Categories: ";
+						// for(var j = 0; j < cats.length; cats++) {
+							// divText += cats[j][0] + " ";
+						// }
+						// divText += "</h6>";		
+					// }
+					divText += "<p>" + yelpObject.snippet_text + "</p>";
+					divText += "</div>";
+					divText += "<div class='post-meta'>";
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					divText += "</div>";
+					divText += "</div><!-- end picture --></div><!-- end grid-item -->";	
+				}
+				// addIsotopeItems(divText);
+				// var $newItems = $(divText);
+				// $('#grid-wrapper').isotope( 'insert', $newItems );
+
+				// now wire click events for each
+				// for(i = 0; i<20; i++) {
+					// var currimg = i+1;
+					// var imgId = "image-" + currimg;
+					// alert("imgId - " + imgId);
+					// var elem = document.getElementById(imgId)
+					// alert("elem: " + elem.innerHTML);
+					// elem.onclick = function(evt) { displaySliderWith(currimg); };
+				// }
+				document.getElementById('grid-wrapper').innerHTML = divText;
+			}
+			
+			function displayList() {
+				var businesses = resultsData.businesses;
+				var divText = "";
+
+				for(var i = 0; i < businesses.length; i++) {
+					var yelpObject = businesses[i];
+					divText += "<div class='list-item row'>";			
+					divText += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
+					divText += "<div class='image-overlay-link'></div>";	
+					divText += "<div class='span8'><h5>";
+					divText += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
+					divText += yelpObject.name + "</a></h5>";
+					divText += catsToHTML(yelpObject);
+					divText += "<p>" + yelpObject.snippet_text + "</p>";
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					divText += "</div>";
+					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
+					divText += "</div><!-- end list-item -->";	
+				}
+				// addIsotopeItems(divText);
+				// var $newItems = $(divText);
+				// $('#grid-wrapper').isotope( 'insert', $newItems );
+
+				// now wire click events for each
+				// for(i = 0; i<20; i++) {
+					// var currimg = i+1;
+					// var imgId = "image-" + currimg;
+					// alert("imgId - " + imgId);
+					// var elem = document.getElementById(imgId)
+					// alert("elem: " + elem.innerHTML);
+					// elem.onclick = function(evt) { displaySliderWith(currimg); };
+				// }
+				document.getElementById('grid-wrapper').innerHTML = divText;
+			}
+			
+			function catsToHTML(obj) {
+				if(obj.categories) {
+					var cats = obj.categories;
+					var text = "<h6>Categories: ";
+					for(var j = 0; j < cats.length; cats++) {
+						text += cats[j][0] + " ";
+					}
+					text += "</h6>";		
+					return text;
+				}
+			}
+/*			
+						<div id="list-wrapper">
+				<div class="list-item">
+					<div class="row">
+						<div class="span2">
+							<img src="img/temp/despana.jpg" alt=""/>
+						</div>
+						<div class="span8">
+							<h5><a href="project.html">Olives</a></h5> 
+							<h6>Categories: American (New) </h6>
+							<p>
+								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
+							</p>
+							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
+							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
+							<span> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
+						</div>
+						<div class="span1 pull-right">
+							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+*/
+			// function displaySlider() {
+				// deleteGrid();
+				// isFull = true;
+				// resizeCanvas(isFull);
+				// var listHTML = "";
+				// for ( i = 0; i < 20; i++) {
+					// var current = i + 1;
+					// listHTML += "<a class='rsImg' href='img/originals/missliss/spring" + current + ".jpg'>Melissa Lauren Spring Collection<span>Piece # " + current + "</span></a>";
+				// }
+				// var sliderHTML = document.getElementById("galleryhtml").innerHTML;
+				// document.getElementById('slider-wrapper').innerHTML = sliderHTML;
+				// document.getElementById('gallery-1').innerHTML = listHTML;
+				// createSlider();
+			// }
+// 			
+			// function displaySliderWith(numberOfImage) {
+				// // alert("DISPLAYING IMAGE " + numberOfImage);
+				// toggleGrid();
+				// sliderInstance.goTo(numberOfImage);
+			// }
+// 
+// 
+			// function createAlert(text) {
+				// var alertHTML = '<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">&times;</a>' + text + '</div>';
+// 
+				// document.getElementById('alert-holder').innerHTML = alertHTML;
+			// }
+// 
+			// function killAlert() {
+				// $(".alert").alert('close');
+			// }
+
+		</script>
 		<title>MightyMarks</title>
 	</head>
 
@@ -55,9 +282,9 @@
 				<div class="nav-collapse collapse">
 					<div class="nav btn-toolbar pull-right padTopShort">
 						<div class="btn-group">
-							<a class="btn" href="#"><i class="icon-map-marker"></i></a>
-							<a class="btn" href="#"><i class="icon-th-large"></i></a>
-							<a class="btn" href="#"><i class="icon-th-list"></i></a>
+							<a class="btn" id="display-map" href="#"><i class="icon-map-marker"></i></a>
+							<a class="btn" id="display-grid" href="#"><i class="icon-th-large"></i></a>
+							<a class="btn" id="display-list" href="#"><i class="icon-th-list"></i></a>
 						</div>
 					</div>
 					<ul class="nav pull-right padTopShort">
@@ -145,16 +372,16 @@
 		<!--start: Container -->
 		<div class="container">
 <div id="biz"></div>
-			<!-- start: Portfolio -->
-			<div id="portfolio-wrapper" class="row">
+			<!-- start: Grid -->
+			<div id="grid-wrapper" class="row">
 
-				<div class="span3 portfolio-item nature">
+				<div class="span3 grid-item nature">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/despana.jpg" alt=""/><div class="image-overlay-link"></div></a>
 
 							<div class="item-description alt">
 								<div class="left-col">
-									<h5><a href="project.html">Despa–a</a></h5>
+									<h5><a href="project.html">Despaï¿½a</a></h5>
 									<p>
 										This is a full-service, fully-stocked gourmet Spanish food store...
 									</p>
@@ -182,7 +409,7 @@
 					</div>
 				</div>
 
-				<div class="box span3 portfolio-item nature people">
+				<div class="box span3 grid-item nature people">
 					<div class="box-header">
 						<h2><i class="icon-tasks"></i><span class="break"></span>Tasks in Progress</h2>
 						<div class="box-icon">
@@ -214,7 +441,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="span3 portfolio-item nature scenery">
+				<div class="span3 grid-item nature scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo3.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -229,7 +456,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world scenery">
+				<div class="span3 grid-item nature world scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo5.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -244,7 +471,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature scenery">
+				<div class="span3 grid-item nature scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo6.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -259,7 +486,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world">
+				<div class="span3 grid-item nature world">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo4.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -274,7 +501,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world people">
+				<div class="span3 grid-item nature world people">
 					<div class="picture">
 						<a href="project.html"><img src="img/temp/photo8.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -290,9 +517,33 @@
 				</div>
 
 			</div>
-			<!-- end: Portfolio -->
-
-		</div>
+			<!-- end: Grid -->
+			<!-- start: Grid -->
+			<div id="list-wrapper">
+				<div class="list-item">
+					<div class="row">
+						<div class="span2">
+							<img src="img/temp/despana.jpg" alt=""/>
+						</div>
+						<div class="span8">
+							<h5><a href="project.html">Olives</a></h5> 
+							<h6>Categories: American (New) </h6>
+							<p>
+								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
+							</p>
+							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
+							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
+							<span> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
+						</div>
+						<div class="span1 pull-right">
+							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="map-wrapper">
+				
+			</div>
 		<!--end: Container-->
 		<div id="below-nav" class="container-fluid">
 		<div class="container-fluid">

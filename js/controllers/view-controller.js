@@ -32,7 +32,7 @@ jQuery(function($) {
 			alert("ALERT " + $(this).value);
 		});
 	});
-}
+});
 
 
 // update the view with results from query
@@ -42,13 +42,13 @@ function updateResults(yelpResponseText, mightyResponseText) {
 
 // temp method to choose update yelp results
 function updateYelpResults(yelpResponseText) {
-	var resultsDiv = document.getElementById("portfolio-wrapper");
+	var resultsDiv = document.getElementById("grid-wrapper");
 	resultsDiv.innerHTML = yelpResponseText;
 	var reults = JSON.parse(yelpResponseText);
 	for(var i=0; i < results.length; i++) {
 		var result = results[i];
 		var div = document.createElement("div");
-		div.setAttribute("class", "portfolio-item");
+		div.setAttribute("class", "grid-item");
 		div.innerHTML = result.name;
 		resultsDiv.appendChild(div);
 	}

@@ -171,38 +171,18 @@ h4.movietitle {color: #333;}
 
 /* Images Overlay
 =================================================================== */
-.picture {
-	position: relative;
-
-	}
+.picture { position: relative; }
 	
-.picture .item-description {
-	padding: 5px 15px;
-	border: none;
-	margin: 0px;
-}
+.picture .item-description { padding: 5px 15px; border: none; margin: 0px; }
 
 .post .picture,
-#portfolio-wrapper .picture {
-	position: relative;
-	background: #fff;
-	padding: 3px; 
-	border: 1px solid #fcfcfc;
-	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.25);
-    box-shadow: 0px 1px 1px rgba(0,0,0,.25);
-	}
+#grid-wrapper .picture { position: relative; background: #fff; padding: 3px;  border: 1px solid #fcfcfc;
+	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.25); box-shadow: 0px 1px 1px rgba(0,0,0,.25); }
 
 .post .picture,	
-#portfolio-wrapper .picture .item-description {
-	margin-bottom: 0px;
-	padding: 5px;
-	border: none;
-	margin: 0px;
-}
-
-#portfolio-wrapper .portfolio-item {
-	margin-bottom: 20px;
-}
+#grid-wrapper .picture .item-description { margin-bottom: 0px; padding: 5px; border: none; margin: 0px; }
+#grid-wrapper .grid-item, #list-wrapper .list-item {margin-bottom: 20px;}
+.list-item {    border: 1px solid #E5E5E5; border-radius: 4px 4px 4px 4px; padding: 5px; margin-bottom: 2px;}
 
 	
 .picture img {width: 100%; height: auto; }
@@ -235,14 +215,13 @@ h4.movietitle {color: #333;}
 .image-overlay-zoom {
 	background-image: url(../img/overlay-icon-02.png);
 }
-.portfolio-item a {color: #4c004c;}
-.portfolio-item a:hover {color: #A319A3;}
-.portfolio-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
-.portfolio-item span {font-size: 11px;}
-.portfolio-item h5, .portfolio-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
-
+.grid-item a, .list-item a {color: #4c004c;}
+.grid-item a:hover, .list-item a:hover {color: #A319A3;}
+.grid-item p, .list-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
+.grid-item span, .list-item span {font-size: 11px;}
+.grid-item h5, .grid-item h6, .list-item h5, .list-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
 /* copy for if isotope cretaes its own .isotope-item elements */
-#portfolio-wrapper .isotope-item {
+#grid-wrapper .isotope-item {
 	margin-bottom: 20px;
 }
 
@@ -250,7 +229,7 @@ h4.movietitle {color: #333;}
 .isotope-item a:hover {color: #A319A3;}
 .isotope-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
 .isotope-item span {font-size: 11px;}
-.isotope-item h5, .portfolio-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
+.isotope-item h5, .grid-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
 
 /**** disabling Isotope CSS3 transitions ****/
 
