@@ -255,7 +255,7 @@ function getList(listname){
 /*--------- Controller Functions (Unrelated to Model!) ----------*/
 
 /* Initiates a Search */
-function init_search(searchterms){
+function init_search(searchterms, categories){
 	
 	// Set query params to search string
 	// var terms = $('#search').val();
@@ -263,7 +263,7 @@ function init_search(searchterms){
 	// Optional: only added to query if set to new value
 	var offset = 0; // # of result to start from, for pagination (need to add automatic pagination in sets of 20)
 	var sort = 0; // 0 = best matched, 1 = distance, 2 = highest rated
-	var category_filter = "";// can be a list of comma delimited categories
+	var category_filter = categories;// can be a list of comma delimited categories
 	var radius_filter = ""; // search radius in meters.
 	var tl_lat = ""; //mapBounds.getSouthWest().lat() 
 	var tl_long = ""; //mapBounds.getSouthWest().lng() 
