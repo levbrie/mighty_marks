@@ -77,11 +77,9 @@
 						$('.result-selected').each(function(index, value) {
 							alert("ALERT " + value.innerHTML);
 						});
-						search(searchTermToUse);
+						(searchTermToUse);
 						return false;
 					}
-
-
 				}); 
 			});
 			

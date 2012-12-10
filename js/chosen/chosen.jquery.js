@@ -61,7 +61,9 @@
             disabled: group_disabled === true ? group_disabled : option.disabled,
             group_array_index: group_position,
             classes: option.className,
-            style: option.style.cssText
+            style: option.style.cssText,
+            // @levbrie attempting to add data-alias attribute
+            alias: option.getAttribute('data-alias')
           });
         } else {
           this.parsed.push({
@@ -186,7 +188,8 @@ Copyright (c) 2011 by Harvest
     };
 
     AbstractChosen.prototype.result_add_option = function(option) {
-      var classes, style;
+      // @levbrie adding in data-alias attribute with var attribute
+      var classes, style, alias;
       if (!option.disabled) {
         option.dom_id = this.container_id + "_o_" + option.array_index;
         classes = option.selected && this.is_multiple ? [] : ["active-result"];
@@ -199,8 +202,11 @@ Copyright (c) 2011 by Harvest
         if (option.classes !== "") {
           classes.push(option.classes);
         }
+        // @levbrie adding in data-alias attribute to enable passing of alias to yelp search
+        alias = " data-alias=\"" + option.alias + "\" ";
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
+        // @levbrie added in alias here to make each result list item contain the alias for its respective category
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + alias + style + '>' + option.html + '</li>';
       } else {
         return "";
       }
@@ -862,8 +868,8 @@ Copyright (c) 2011 by Harvest
             if (found) {
               if (searchText.length) {
                 startpos = option.html.search(zregex);
-                text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
-                text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
+                // text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length);
+                // text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               } else {
                 text = option.html;
               }

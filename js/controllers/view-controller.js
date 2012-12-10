@@ -165,4 +165,29 @@
 				}
 				return text;
 			}
+			
+			// updates Breadcrumb with new categories and search terms
+			function updateBreadcrumbs(catString, searchTerms) {
+				var div = document.getElementById('breadcrumb');
+				var text = "<ul class='breadcrumb'>";
+				alert("CATSTRING " + catString);
+				text += parseCatsToBreadcrumbs(catString);
+				text += "<li class='active'>Search Terms: ";
+				text += searchTerms + "</li>";
+				text += "</ul>";
+				div.innerHTML = text;
+			}
+			
+			// parses comma-delimited string of categories and separates them into formatted breadcrumbs
+			function parseCatsToBreadcrumbs(catsCommas) {
+				var catsArray = catsCommas.split(',');
+				alert("CATS ARRAY 0 " + catsArray[0]);
+				var text = "";
+				for(var i=0; i < catsArray.length; i++) {
+					text += "<li><a href='#'>";
+					text += catsArray[i];
+					text += "</a><span class='divider'>/</span></li>"
+				}
+				return text;
+			}
 
