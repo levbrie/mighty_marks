@@ -32,6 +32,12 @@ jQuery(function($) {
 			alert("ALERT " + $(this).value);
 		});
 	});
+	// Runs search on enter
+	// $("#search-button").keypress(function(event) {
+		// $('.result-selected').each(function() {
+			// alert("ALERT " + $(this).value);
+		// });
+	// });
 });
 
 

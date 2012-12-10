@@ -1,7 +1,76 @@
 
 var resultsData;
-/** Model Class **/
 
+// initializes chosen with all the yelp categories 
+// and then sets up listeners for search bar
+jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
+	jQuery(document).ready(function() {
+		// let's add in all of the yelp categories to our select box
+		// (in the future let's use mustache templates)
+		$.getJSON('./json/category.json', function(data) {
+			var str = JSON.stringify(data, undefined, 2);
+			$("#native-json").append(str);
+			var jtext = "<option value=''></option>";
+			$.each(data, function(key, val) {
+				jtext += "<option class='opt-cat-level1'>" + val.title + "</option>";	
+				$.each(val.category, function(k, v) {
+					if (v.category) {
+						jtext += "<option class='opt-cat-level2'>" + v.title + "</option>";
+						$.each(v.category, function(thirdKey, thirdVal) {
+							jtext += "<option class='opt-single-cat'>" + thirdVal.title + "</option>";
+						});
+					} else {
+						jtext += "<option class='opt-single-cat'>" + v.title + "</option>";
+					}
+				});		
+			});
+		
+			$(".chzn-select").html(jtext);
+			$(".chzn-select").chosen();
+			$(".chzn-choices").addClass("search-query span4");
+			// jQuery(function($) {			
+				$('#searchButton').click(function(jQEvent) { // jQEvent added for isotope
+					// isotope stuff 
+					var $container = $('#grid-wrapper');
+					$container.isotope({
+						itemSelector : '.element'
+					}); 
+					// end isotope
+					// var selector = $(this).attr('data-option-value');
+					var selector = ".nature";
+					// isotope stuff
+					var $removable = $container.find(selector);
+					$container.isotope('remove', $removable);
+					jQEvent.preventDefault(); 
+					// end isotope stuff
+					alert("WORKING");
+					$('.result-selected').each(function(index, value) { 	// loop through each element of class .result-selected
+						alert("ALERT " + value.innerHTML);					// print whatever element holds
+						alert("SEARCH FOR: " + searchTermToUse);				
+					});
+					search(searchTermToUse);
+				});
+			// });
+			// search when user hits return
+			// jQuery(function($) {
+				$(".default").keypress(function(event) {
+					if (event.which == 13) {
+						$('.result-selected').each(function(index, value) {
+							alert("ALERT " + value.innerHTML);
+						});
+						search(searchTermToUse);
+						return false;
+					}
+	
+	
+				}); 
+			// });
+		});
+	});
+});
+
+
+/** Model Class **/
 function model(){
 	
 	this.bookmark = function(object){
@@ -112,7 +181,7 @@ model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_lon
 */
 
 
-/**** Controlller ****/
+/**** Controller ****/
 // listener for search 
 // $('#submit').live('click',function(){
 	// alert("click");
@@ -141,56 +210,4 @@ function search(values){
 function yelp_result_handler(data){
 	resultsData = data;
 	displayView(currentView);
-	// // Do something with the response.. e.g. store in dataStore, retrieve, and alert name #6
-// 	
-	// // var i = 0;
-	// // while(i<=19){
-		// // $('#biz').append("<div class='result' id='"+i+"'>"+data.businesses[i].name+"</div>")
-		// // i++;
-	// // }
-	// // results = data;
-		// // var gridDiv = document.getElementById("portfolio-wrapper");
-		// // gridDiv.innerHTML = "";
-		// var businesses = data.businesses;
-		// var divText = "";
-// 		
-        // // var selector = ".portfolio-item";
-        // // var $removable = $container.find( selector );
-        // // $container.isotope( 'remove', $removable );
-// 
-		// for(var i = 0; i < businesses.length; i++) {
-			// var yelpObject = businesses[i];
-			// // alert("PAST BUSINESS " + i);
-			// // var div = document.createElement("div");
-			// // div.setAttribute("class", "span3 portfolio-item");
-			// divText += "<div class='span3 portfolio-item'><div class='picture'>";			
-			// divText += "<a href='" + yelpObject.url + "' title='Title'>"
-			// divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
-			// divText += "<div class='image-overlay-link'></div>";
-			// divText += "</a>";		
-			// divText += "<div class='item-description alt'>";
-			// divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
-			// if(yelpObject.categories) {
-				// var cats = yelpObject.categories;
-				// divText += "<h6>Categories: ";
-				// for(var j = 0; j < cats.length; cats++) {
-					// divText += cats[j][0] + " ";
-				// }
-				// divText += "</h6>";		
-			// }
-			// divText += "<p>" + yelpObject.snippet_text + "</p>";
-			// divText += "</div>";
-			// divText += "<div class='post-meta'>";
-			// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-ico-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
-			// divText += "</div>";
-			// // jtext += " CATEGORY: " + val.title + " ";
-			// // jtext += " ALIAS: " + val.alias + " ";
-			// divText += "</div><!-- end picture --></div><!-- end portfolio-item -->";
-			// // div.innerHTML = divText;
-			// // gridDiv.appendChild(div);		
-		// }
-		// alert("ALL PARSED");
-		// // addIsotopeItems(divText);
-		// var $newItems = $(divText);
-		// $('#grid-wrapper').isotope( 'insert', $newItems );
 }

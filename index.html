@@ -25,15 +25,17 @@
 		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
 		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 		<script type="text/javascript" src="js/models/YelpApiCall.js"></script>
-		<script type="text/javascript" src="js/controllers/lev-controller.js"></script>
+		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-		<script src="js/bootstrap.js"></script>
+		<script src="js/bootstrap/js/bootstrap.js"></script>
 		<script src="js/chosen/chosen.jquery.js"></script>
 		<script src="js/utilities/isotope.js"></script><!-- plugin for animating and sorting items, see http://isotope.metafizzy.co/ for more details -->
 		<script src="js/utilities/jquery.raty.js"></script><!-- Star ratings -->
-		<script src="js/views/search-view.js"></script><!-- File to render All Yelp Categories in Search Multi-Select -->
+		<!-- <script src="js/views/search-view.js"></script> --><!-- File to render All Yelp Categories in Search Multi-Select -->
+		<script src="js/controllers/lev-controller.js"></script>
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->
+		
 		<!-- <script src="js/controllers/view-controller.js"></script> -->
 		<script type="text/javascript">
 			var currentView = "grid";		// set current view to the default view, which is grid
@@ -60,7 +62,7 @@
 						displayView("map");
 					}					
 				};
-				
+				// $('#popover-tag').popover('show');
 				// $('#myModal').on('hidden', function() {
 					// // canvasForModal.restore();
 				// })
@@ -137,7 +139,8 @@
 						// }
 						// divText += "</h6>";		
 					// }
-					divText += "<p>" + yelpObject.snippet_text + "</p>";
+					divText += reviewToHTML(yelpObject.snippet_text);
+					// divText += "<p>" + yelpObject.snippet_text + "</p>";
 					divText += "</div>";
 					divText += "<div class='post-meta'>";
 					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
@@ -173,7 +176,7 @@
 					divText += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
 					divText += yelpObject.name + "</a></h5>";
 					divText += catsToHTML(yelpObject);
-					divText += "<p>" + yelpObject.snippet_text + "</p>";
+					divText += reviewToHTML(yelpObject.snippet_text);
 					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
 					divText += "</div>";
 					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
@@ -206,6 +209,49 @@
 					return text;
 				}
 			}
+			
+			// converts the review snippet to html to hold review in a nice content bubble
+			function reviewToHTML(snippet) {
+				var text = "<div class='review-container'>";
+				text += "<div class='review'><p>";
+				text += snippet;
+				text += "</p></div>";
+				text += "<div class='review-bg'></div>";
+				text += "<div class='review-author'>Anonymous Yelp Reviewer</div>";
+				text += "</div>";
+				return text;
+			}
+			
+			function createBookmarkPopover(yelpid) {
+				var text = "<a class='btn' data-content='<form class='form-inline'>";
+				text += "'<input type='text' class='popover-input' placeholder='Start a new MightyList...'>";
+				text += "<!-- <button type='submit' class='btn'>Add</button> -->";
+				text += "</form>";
+				text += createPopoverList(yelpid);
+				text += "rel='popover' href='#' data-original-title='Add a bookmark:'";
+				text += " data-html='true'>Click to toggle popover</a>";
+				return text;
+			}
+			
+			function createPopoverList(yelpid) {
+				var text = "";
+				for(var i=0; i < bookmarkList.length; i++) {
+					text += "<a class='popover-item' href='levbrie.com' data-list-name='";
+					text += bookmarkList.id + "' data-yelpid='" + yelpid + "' title=''><span>";
+					text += bookmarkList.listName + "</span></a>";
+				}
+				return text;
+			}
+			
+			// <a class="btn btn-large btn-danger" data-content="<form class='form-inline'>
+										// <input type='text' class='popover-input' placeholder='Start a new MightyList...'>
+										// <!-- <button type='submit' class='btn'>Add</button> -->
+										// </form>
+										// <a class='popover-item' href='levbrie.com' title=''>List 1</a>
+										// <a class='popover-item' href='levbrie.com' title=''><span>List 2</span></a>
+										// <a class='popover-item last' href='levbrie.com' title=''>List 3</a>" 
+									// rel="popover" href="#" data-original-title="Add a bookmark:"
+									// data-html="true">Click to toggle popover</a>
 /*			
 						<div id="list-wrapper">
 				<div class="list-item">
@@ -528,12 +574,36 @@
 						<div class="span8">
 							<h5><a href="project.html">Olives</a></h5> 
 							<h6>Categories: American (New) </h6>
-							<p>
+							<div class="review-container">
+								<div class="review">
+									<p>
+										I have a thing for the W hotel chain. It makes no sense... 
+										Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. 
+										My friend...
+									</p>
+								</div>
+								<div class="review-bg"></div>
+								<div class="review-author">Anonymous Yelp Reviewer</div>
+							</div>
+<!-- 							<p>
 								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
-							</p>
+							</p> -->
 							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
 							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
-							<span> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
+							<span id="popover-tag"> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
+							<td>Popover</td>
+								<td>
+									<a class="btn btn-large btn-danger" data-content="<form class='form-inline'>
+										<input type='text' class='popover-input' placeholder='Start a new MightyList...'>
+										<!-- <button type='submit' class='btn'>Add</button> -->
+										</form>
+										<a class='popover-item' href='levbrie.com' title=''>List 1</a>
+										<a class='popover-item' href='levbrie.com' title=''><span>List 2</span></a>
+										<a class='popover-item last' href='levbrie.com' title=''>List 3</a>" 
+									rel="popover" href="#" data-original-title="Add a bookmark:"
+									data-html="true">Click to toggle popover</a>
+								</td>
+							
 						</div>
 						<div class="span1 pull-right">
 							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>

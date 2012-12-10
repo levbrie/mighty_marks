@@ -219,7 +219,7 @@ h4.movietitle {color: #333;}
 .grid-item a:hover, .list-item a:hover {color: #A319A3;}
 .grid-item p, .list-item p {font-size: 12px; line-height: 1.2; margin: 0;} /* reduce from bootstrap 0 0 10px */
 .grid-item span, .list-item span {font-size: 11px;}
-.grid-item h5, .grid-item h6, .list-item h5, .list-item h6 {margin: 5px 0;} /* reduce the margins in grid of results from bootstrap default */
+.grid-item h5, .grid-item h6, .list-item h5, .list-item h6 {margin: 5px 0; line-height: 1.0;} /* reduce the margins in grid of results from bootstrap default */
 /* copy for if isotope cretaes its own .isotope-item elements */
 #grid-wrapper .isotope-item {
 	margin-bottom: 20px;
@@ -242,3 +242,26 @@ h4.movietitle {color: #333;}
        -o-transition-duration: 0s;
           transition-duration: 0s;
 }
+
+
+/*************** LIST ****************/
+
+/********** REVIEW BUBBLE STYLING ************/
+.review-container{}
+.review{background:#eee;border:1px solid #eee;padding:5px 10px;line-height:21px;-webkit-box-shadow:0 1px 1px 0 rgba(180,180,180,0.1);box-shadow:0 1px 1px 0 rgba(180,180,180,0.1);}
+.review-bg{background:url(../img/shapes/reviews-bg.png) no-repeat;margin-top:-1px;display:block;width:200px;height:23px;}
+.review-author{color:#666;float:left;display:block;margin-left:60px;margin-top:-26px;font-size:11px;font-style:italic;}
+.review-author span{color:#a0a0a0;font-size:10px;}
+
+/************* BOOKMARK STYLING ***************/
+
+/************* BOOKMARK POPOVER ***************/
+.popover-content a.popover-item {display: block; width: 100%; height: 15px;background-color: #E7E7E7; border-bottom: 1px solid #B8B8B8; font-size: 14px; line-height: 14px; padding: 8px 0; margin: 0;}
+.popover-content a:hover {background-color: #eee;}
+.popover-content span {padding-left: 15px;}
+.popover-item {}
+.form-inline input.popover-input {padding: 6px 0px;text-align: center;}
+    
+    
+    
+   

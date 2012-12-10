@@ -47,13 +47,10 @@
 				// // search($('#search').val());
 			// });
 
-			jQuery(function($) {
-				
-
-				
+			jQuery(function($) {			
 				$('#searchButton').click(function(jQEvent) { // jQEvent added for isotope
 					// isotope stuff 
-					var $container = $('#portfolio-wrapper');
+					var $container = $('#grid-wrapper');
 					$container.isotope({
 						itemSelector : '.element'
 					}); 
@@ -73,6 +70,21 @@
 					search(searchTermToUse);
 				});
 			});
+			// search when user hits return
+			jQuery(function($) {
+				$(".default").keypress(function(event) {
+					if (event.which == 13) {
+						$('.result-selected').each(function(index, value) {
+							alert("ALERT " + value.innerHTML);
+						});
+						search(searchTermToUse);
+						return false;
+					}
+
+
+				}); 
+			});
+			
 // 
       // $('#removable a').click( function( jQEvent ) {
         // var selector = $(this).attr('data-option-value');
