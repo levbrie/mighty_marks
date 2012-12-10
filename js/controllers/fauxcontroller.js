@@ -1,21 +1,8 @@
 
 
-/** Model Class **/
+/*** Model Class ***/
 
 function model(){
-	
-	this.bookmark = function(object){
-		alert(object);
-
-		var animal = {};
-
-        animal.sayHello = function() {
-            alert("Hello, my name is " + object);
-        }
-		animal.sayHello();
-		
-		return animal;
-	};
 	
 	this.search = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
@@ -23,7 +10,6 @@ function model(){
 	};
 	
 	this.addbookmark = function(object, list_name){
-		alert("addbook!");
 		add_bookmark(object, list_name);
 	};
 	
@@ -39,10 +25,18 @@ function model(){
 		
 	};
 	
+	this.getlist = function(listname){
+		return getList(listname);
+	}
+	
+	this.getlist_index = function(){ //need to support an empty response in controller!!!
+		return getList("list_index");	
+	}
+	
 }
 
 
-/** Helper Function for Model Class **/
+/** Helper Functions for Model Class **/
 
 function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 	
@@ -54,25 +48,58 @@ function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl
 	
 }
 
-// function list(listname){
-// 	
-	// alert("new!");
-// 	
-	// this.name = listname;
-	// this.bookmarks = [];
-// 	
-	// this.addBookmark = function(object){
-		// this.bookmarks.push(object);
-	// }
-// 	
-	// this.removeBookmark = function (object) { 
-	     // //??? how do i do this....
-	// };
-// 	
-	// this.getBookmarks = function () { 
-	     // return this.bookmarks;
-	// };
-// }
+// List constructor
+function List(listname, list){
+
+	// Set name
+	this.name = listname;
+	
+	// If it's a new list
+	if(list == ""){
+	this.bookmarks = [];
+	}
+	
+	// If reinstantiating a previous list
+	else{
+		this.bookmarks = list.bookmarks;
+	}
+	
+	/* List methods */
+	this.addBookmark = function(object){
+		this.bookmarks.push(object);
+	}
+
+	this.removeBookmark = function (object) { 
+	      //??? how do i do this....
+	};
+
+	this.getBookmarks = function () { 
+	     return this.bookmarks; 
+	};
+}
+
+function add_bookmark(object, list_name){
+ 	
+	// Get the list from storage and reinstantiate it as a List object
+	list = MM_retrieve(list_name);
+	if(list){
+		list = new List(list_name, list);
+		list.addBookmark(object);
+		MM_store(list_name, list);
+	}
+	else{ // if it's not there:	
+		// Create a new list and add bookmark as first item.
+		newlist = new List(list_name, "");
+		newlist.addBookmark(object);
+		console.log(newlist);
+
+		// Store in datastore with name as key.
+		MM_store(list_name, newlist);
+
+	 }	
+}
+
+/*** TESTER FUNCTIONS ***/
 
 // LIST TESTER: 
 /*
@@ -82,42 +109,30 @@ function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl
   alert(bookmarks1[0]);
 */
 
-// function add_bookmark(object, list_name){
-// 	
-	// alert("add");
-// 	
-	// list = MM_retrieve(list_name);
-	// if(list){
-		// alert("found!");
-		// alert(list.bookmarks[1]); //should be .name for a full object!@!
-	// }
-	// else{
-		// alert("none");
-		// alert(list_name);
-		// // Create a new list and add bookmark as first item.
-		// newlist = new list(list_name);
-		// newlist.addBookmark(object);
-		// bookmarks1 = newlist.getBookmarks();
-		// alert(bookmarks1[0]);
-		// // Store in datastore with name as key.
-		// MM_store(list_name, newlist);
-	// }	
-// }
-/*
+// SEARCH TESTER: 
+//model = new model;
+//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+
+// STORAGE CLEANER:
+//localStorage.clear();
+
+// MODEL METHOD TESTERs:
 model = new model;
-//model.addbookmark("some stuff!", "list2");
-model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-//model.bookmark("dog");
-//alert(model.getInfo("g"));        // Call Method
-*/
+	
+	/* search tester */
+	//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	
+	/* add bookmark and get list testers */
+	//model.addbookmark("what stuff?", "list3");
+	//list = model.getlist("list3");
+	//console.log(list);
+
+	/* get index tester */
+	//console.log(model.getlist_index());
 
 
-/**** Controlller ****/
-// listener for search 
-// $('#submit').live('click',function(){
-	// alert("click");
-	// search($('#search').val());
-// });
+
+/*** CONTROLLER STUFF ***/
 
 function search(values){
 	
@@ -139,6 +154,7 @@ function search(values){
 	model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
+
 
 function yelp_result_handler(data){
 	
