@@ -1,4 +1,5 @@
-
+// this holds the results of the latest search so they can be retrieved 
+// for changing views, adding bookmarks, etc.
 var resultsData;
 
 // initializes chosen with all the yelp categories 
