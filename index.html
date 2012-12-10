@@ -12,13 +12,6 @@
 		<link rel="stylesheet" href="./css/icons.css" type="text/css">
 		<link rel="stylesheet" href="./css/chosen.css" type="text/css">
 		<link rel="stylesheet" href="./css/hover.css" type="text/css">
-		<!-- for grid styling -->
-		<!-- 		<link href="css/fontawesome.css" media="screen" rel="stylesheet" type="text/css" /> -->
-		<!-- <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" /> -->
-		<!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
-		for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
-		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-		-->
 
 		<!-- ====================== JAVASCRIPT INCLUDES ====================== -->
 		<!-- oauth js libraries for connecting to yelp, can be at bottom of page -->
@@ -66,156 +59,61 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Action</a>
-								</li>
-								<li>
-									<a href="#">Another action</a>
-								</li>
-								<li>
-									<a href="#">Something else here</a>
-								</li>
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
 								<li class="divider"></li>
-								<li>
-									<a href="#">Separated link</a>
-								</li>
+								<li><a href="#">Separated link</a></li>
 							</ul>
 						</li>
 					</ul>
 				</div><!-- END NAV-COLLAPSE -->
+				<!-- SEARCH -->
 				<div id="search-wrapper">
 					<div id="search-wrap" class="navbar navbar-fixed-top span6 padTopShort">
 						<form id="search-form" class="navbar-search block-display" action="">
-<!-- 							<input type="text" id="search" class="search-query span4" placeholder="Search"> -->
-<!-- 							<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select> -->
 							<div class="input-append">
-<!-- 								<input type="text" name="searchInput" id="search" class="search-query input-xxlarge" /> -->
 								<select id="chosen-select" data-placeholder="Search and Add Filters" style="width:350px;" class="chzn-select" multiple tabindex="6"></select>
 								<input type="button" name="button" value="Search" id="searchButton" class="btn btn-inverse" />
 							</div>
 						</form>
 					</div>
 				</div>
-
+				<!-- END SEARCH -->
 			</div>
 		</div>
 
 		<!-- ====================== MAIN BODY ====================== -->
-
+		
+		<!-- FILTERS AND SORTING NAV BAR -->
 		<div id="below-nav" class="container-fluid">
-
 			<div class="row-fluid">
 				<span class="span12">
 					<div class="well">
 						<div class="btn-group hbox">
-							<button class="flex_child_1 btn btn-large btn-primary btn-2">
-								My Marks
-							</button>
-							<button class="flex_child_1 btn btn-large ybtn-primary btn-3">
-								<!-- USING YELP COLORS -->
-								Yelp Categories (and colors)
-							</button>
-							<button class="flex_child_1 btn btn-large btn-4">
-								Rating
-							</button>
+							<button class="flex_child_1 btn btn-large btn-primary btn-2">My Marks</button>
+							<!-- USING YELP COLORS -->
+							<button class="flex_child_1 btn btn-large ybtn-primary btn-3">Yelp Categories (and colors)</button>
+							<button class="flex_child_1 btn btn-large btn-4">Rating</button>
 							<div class="flex_child_1 btn btn-large btn-5">
-
-								<!-- <span id="raty">
-								<span class="star"></span>
-								<span class="star"></span>
-								<span class="star"></span>
-								<span class="star"></span>
-								<span class="star"></span>
-								<span class="star"></span>
-								</span>
-								Price -->
-								<div id="raty"></div>
+								<div id="raty"></div><!-- WHERE DOLLAR CHOICE GOES -->
 								<div id="mouseover-target"></div>
 							</div>
-							<button class="flex_child_1 btn btn-large btn-inverse btn-6">
-								Friends
-							</button>
-							<button class="flex_child_1 btn btn-large btn-inverse btn-7">
-								Friends
-							</button>
+							<button class="flex_child_1 btn btn-large btn-inverse btn-6">Friends</button>
 						</div>
 					</div>
 				</span>
 			</div>
 		</div>
-		<!--start: Container -->
+		
+		<!-- START: CONTAINER -->
 		<div class="container">
-<div id="biz"></div>
-<div id="breadcrumb"></div>
-			<!-- start: Grid -->
+			<div id="biz"></div>
+			<div id="breadcrumb"></div>
+			<!-- START: GRID -->
 			<div id="grid-wrapper" class="row">
-
-				<div class="span3 grid-item nature">
-					<div class="picture">
-						<a href="project.html" title="Title"><img src="img/temp/despana.jpg" alt=""/><div class="image-overlay-link"></div></a>
-							<div class="item-description alt">
-								<div class="left-col">
-									<h5><a href="project.html">Despa�a</a></h5>
-									<p>
-										This is a full-service, fully-stocked gourmet Spanish food store...
-									</p>
-								</div>
-								<div class="right-col">
-									<div class="bookmark-grid">
-										<p>Business Name</p>
-										<p>Categories:</p>
-										<p><span class="rating-img">Rating Image here</span>"Snippet about the restaurant goes here."</p>
-									</div>
-									<div class="rating-grid">
-										<img id="businessid" src="./img/logo/mighty-mouse-black-30x75.png" alt="" width="30" />
-									</div>
-								</div>
-							</div>
-					</div>
-				</div>
-				<div class="span3 grid-item nature world scenery">
-					<div class="picture">
-						<a href="project.html" title="Title"><img src="img/temp/photo5.jpg" alt=""/><div class="image-overlay-link"></div></a>
-						<div class="item-description alt">
-							<h5><a href="project.html">Project no. 5</a></h5>
-							<p>
-								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-							</p>
-						</div>
-						<div class="post-meta">
-							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
-						</div>
-					</div>
-				</div>
-				<div class="span3 grid-item nature scenery">
-					<div class="picture">
-						<a href="project.html" title="Title"><img src="img/temp/photo6.jpg" alt=""/><div class="image-overlay-link"></div></a>
-						<div class="item-description alt">
-							<h5><a href="project.html">Project no. 6</a></h5>
-							<p>
-								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-							</p>
-						</div>
-						<div class="post-meta">
-							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
-						</div>
-					</div>
-				</div>
-				<div class="span3 grid-item nature world">
-					<div class="picture">
-						<a href="project.html" title="Title"><img src="img/temp/photo4.jpg" alt=""/><div class="image-overlay-link"></div></a>
-						<div class="item-description alt">
-							<h5><a href="project.html">Project no. 4</a></h5>
-							<p>
-								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-							</p>
-						</div>
-						<div class="post-meta">
-							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
-						</div>
-					</div>
-				</div>
-				<div class="span3 grid-item nature world people">
+<!-- EXAMPLE GRID ITEM
+ 				<div class="span3 grid-item nature world people">
 					<div class="picture">
 						<a href="project.html"><img src="img/temp/photo8.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -228,11 +126,12 @@
 							<span><i class="mini-ico-calendar"></i>1 June 2011</span><span><i class="mini-ico-user"></i> <a href="#">lucas</a></span><span><i class="mini-ico-comment"></i><a href="#">89 comments</a></span>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
-			<!-- end: Grid -->
-			<!-- start: Grid -->
+			<!-- END: GRID -->
+			<!-- START: LIST -->
 			<div id="list-wrapper">
+				<!-- SAMPLE LIST ITEM WITH POPOVER -->
 				<div class="list-item">
 					<div class="row">
 						<div class="span2">
@@ -243,18 +142,13 @@
 							<h6>Categories: American (New) </h6>
 							<div class="review-container">
 								<div class="review">
-									<p>
-										I have a thing for the W hotel chain. It makes no sense... 
-										Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. 
-										My friend...
-									</p>
+									<p>I have a thing for the W hotel chain. It makes no sense... 
+									Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. 
+									My friend...</p>
 								</div>
 								<div class="review-bg"></div>
 								<div class="review-author">Anonymous Yelp Reviewer</div>
 							</div>
-<!-- 							<p>
-								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
-							</p> -->
 							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
 							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
 							<span id="popover-tag"> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
@@ -269,27 +163,23 @@
 										<a class='popover-item last' href='levbrie.com' title=''>List 3</a>" 
 									rel="popover" href="#" data-original-title="Add a bookmark:"
 									data-html="true">Click to toggle popover</a>
-								</td>
-							
+								</td>						
 						</div>
 						<div class="span1 pull-right">
 							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>
 						</div>
 					</div>
 				</div>
+				<!-- END SAMPLE LIST ITEM -->
 			</div>
-			<div id="map-wrapper">
-				
+			<!-- END: LIST -->
+			<!-- START: MAP -->
+			<div id="map-wrapper">				
 			</div>
-		<!--end: Container-->
-		<div id="below-nav" class="container-fluid">
-		<div class="container-fluid">
-
+			<!-- END: MAP -->
 			<div id="json-holder">
-
 			</div>
 			<div id="native-json">
-
 			</div>
 		</div>
 	</body>
