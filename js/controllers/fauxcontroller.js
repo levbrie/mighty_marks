@@ -1,24 +1,34 @@
 
 
-/*** Model Class ***/
+/*--------- Model Class ----------*/
+
 
 function Model(){
 	
+	/*---- Model Methods: Search ----*/
+	
 	this.dosearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
+			
+			// Searches Yelp and sends results to yelp_result_handler()
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-			//function for searching through bookmarks? note: only if offset = 0!
+			
+			// Function for searching through bookmarks. Need to add qualifiers, e.g. if offset = 0.
+			//bookmark_search(terms, category_filter);
 	};
 	
+	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
+	 
 	this.addbookmark = function(object, list_name){
 		add_bookmark(object, list_name);
 	};
 	
 	this.deletebookmark = function(object, listname){
-		
+		//todo
 	};
 	
-	this.createlist = function(object, listname){ // need to test!!! also, what is the order of inter/actions here btwn this and add bookmarks?
-		//check if there is an object or not, if not just:
+	this.createlist = function(object, listname){ 
+		// Need to understand when controller will need this and how, it will require different structure
+		// e.g. check if there is an object or not?
 		 
 		// Create an empty list and store it
 		list = new List();
@@ -26,41 +36,47 @@ function Model(){
 	};
 	
 	this.deletelist = function(listname){
-		localStorage.removeItem(listname); // need to test!!! also, what happens if list doesn't exist?
+		localStorage.removeItem(listname); // Need to test, support null entry
 	};
+	
+	this.renamelist = function(newname, listname){ // Need to test, support null entry
+		
+		// Retrieve list and re-store under new name
+		list = MM_retrieve(listname);
+		MM_store(newname, list);
+		
+		// Delete old entry
+		localStorage.removeItem(listname);
+	}
 	
 	this.getlist = function(listname){
 		return getList(listname);
 	}
 	
-	this.getlist_index = function(){ //need to support an empty response in controller!!!
+	this.getlist_index = function(){ 
 		return getList("list_index");	
-	}
-	
-	this.rename_list = function(newname, listname){ //need to test. also, what happens if list doesn't exist?
-		// Retrieve list and restore under new name
-		list = MM_retrieve(listname);
-		MM_store(newname, list);
-		// Delete old entry
-		localStorage.removeItem(listname);
 	}
 	
 }
 
 
-/** Helper Functions for Model Class **/
+/*--------- Helper Functions for Model Class ----------*/
+
+/*---- Yelp Helper Functions ----*/
 
 function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 	
 	// Set standard location
 	var near = 'New_York';
 	
-	// Call api
+	// Call Yelp API
 	yelp_api_get(terms, near, offset, sort, category_filter, radius_filter, tl_lat, tl_long, br_lat, br_long, yelp_result_handler);
 	
 }
 
-// List constructor
+/*--- Might Marks Helper Functions ---*/
+
+/* List Constructor */
 function List(listname, list){
 
 	// Set name
@@ -76,7 +92,8 @@ function List(listname, list){
 		this.bookmarks = list.bookmarks;
 	}
 	
-	/* List methods */
+	// List methods:
+	
 	this.addBookmark = function(object){
 		this.bookmarks.push(object);
 	}
@@ -90,6 +107,7 @@ function List(listname, list){
 	};
 }
 
+/* Bookmark Adder */
 function add_bookmark(object, list_name){
  	
 	// Get the list from storage and reinstantiate it as a List object
@@ -111,7 +129,8 @@ function add_bookmark(object, list_name){
 	 }	
 }
 
-function bookmark_search(terms, category_filter){ // NEED TO ADD SUPPORT FOR MULTIPLE SEARCH TERMS and CATS!!
+/* Bookmark Searcher */
+function bookmark_search(terms, category_filter){ 
 	
 	// Init. results array
 	var results = [];
@@ -162,22 +181,19 @@ function bookmark_search(terms, category_filter){ // NEED TO ADD SUPPORT FOR MUL
 			}	
 	}
 	
-	console.log(results);
-	// send return results objects to MM_result_handler
+	console.log(results); /* Notes to self:
+	// send return results objects to MM_result_handler, which needs to be written
+	// do cat match: .categories[0], which contains an array of cats, so need to check each... 
+	// also requires seperating out any cats by commas
+	// need to support multiple search terms, categories
 
 }
-
-//do cat match, also requires seperating out any cats by columnas
-
-//search: name, snippet_text. cats: .categories[0], which contains an array of cats, so need to check each... 
-//look for modern, thai, dining, kick, 
+//TESTER:
 bookmark_search("dining","thai");
 
-function term_match(list, terms){
-	// check 
-}
 
-/********** STORAGE STUFF **********/
+
+/*--------- Local Storage Helper Functions for Model Class ----------*/
 
 /* Stores a bookmarks list */ 
 function MM_store(list_name, list){
@@ -203,6 +219,7 @@ function MM_retrieve(list_name){
 	
 }
 
+/* Adds new lists to list index */
 function addList_toIndex(listname){
 	
 	// Get list index from storage and check it 
@@ -225,6 +242,7 @@ function addList_toIndex(listname){
 	}
 }
 
+/* List Retriever */
 function getList(listname){
 	list = localStorage.getItem(listname);
 	list = JSON.parse(list);
@@ -234,10 +252,11 @@ function getList(listname){
 
 
 
+/*--------- Controller Functions (Unrelated to Model!) ----------*/
 
-/*** CONTROLLER STUFF ***/
 
-function init_search(values, categories){ //@levbrie added categories parameter for search with category_filter
+/* Initiates a Search */
+function init_search(searchterms, categories){ //@levbrie added categories parameter for search with category_filter
 	
 	// Set query params to search string
 	// var terms = $('#search').val();
@@ -256,9 +275,11 @@ function init_search(values, categories){ //@levbrie added categories parameter 
 	model.dosearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
-
+//TESTER:
 //init_search("thai+food+upper+east+side");
 
+
+/* Handles Yelp Search Results */
 function yelp_result_handler(data){
 	
 		var businesses = data.businesses;
@@ -303,7 +324,7 @@ function yelp_result_handler(data){
 }
 
 
-/******* TESTER FUNCTIONS ********/
+/*--------- Model Tester Functions ----------*/
 
 // LIST TESTER: 
 /*
