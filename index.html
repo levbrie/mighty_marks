@@ -122,36 +122,29 @@
 
 				for(var i = 0; i < businesses.length; i++) {
 					var yelpObject = businesses[i];
-					// alert("PAST BUSINESS " + i);
-					// var div = document.createElement("div");
-					// div.setAttribute("class", "span3 portfolio-item");
-					divText += "<div class='span3 portfolio-item'><div class='picture'>";			
-					divText += "<a href='" + yelpObject.url + "' title='Title'>"
+					divText += "<div class='span3 grid-item'><div class='picture'>";			
+					divText += "<a href='" + yelpObject.url + "' title='Title'>";
 					divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
 					divText += "<div class='image-overlay-link'></div>";
 					divText += "</a>";		
 					divText += "<div class='item-description alt'>";
 					divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
-					if(yelpObject.categories) {
-						var cats = yelpObject.categories;
-						divText += "<h6>Categories: ";
-						for(var j = 0; j < cats.length; cats++) {
-							divText += cats[j][0] + " ";
-						}
-						divText += "</h6>";		
-					}
+					divText += catsToHTML(yelpObject);
+					// if(yelpObject.categories) {
+						// var cats = yelpObject.categories;
+						// divText += "<h6>Categories: ";
+						// for(var j = 0; j < cats.length; cats++) {
+							// divText += cats[j][0] + " ";
+						// }
+						// divText += "</h6>";		
+					// }
 					divText += "<p>" + yelpObject.snippet_text + "</p>";
 					divText += "</div>";
 					divText += "<div class='post-meta'>";
-					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-ico-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
 					divText += "</div>";
-					// jtext += " CATEGORY: " + val.title + " ";
-					// jtext += " ALIAS: " + val.alias + " ";
-					divText += "</div><!-- end picture --></div><!-- end portfolio-item -->";
-					// div.innerHTML = divText;
-					// gridDiv.appendChild(div);		
+					divText += "</div><!-- end picture --></div><!-- end grid-item -->";	
 				}
-				alert("ALL PARSED");
 				// addIsotopeItems(divText);
 				// var $newItems = $(divText);
 				// $('#grid-wrapper').isotope( 'insert', $newItems );
@@ -167,7 +160,77 @@
 				// }
 				document.getElementById('grid-wrapper').innerHTML = divText;
 			}
+			
+			function displayList() {
+				var businesses = resultsData.businesses;
+				var divText = "";
 
+				for(var i = 0; i < businesses.length; i++) {
+					var yelpObject = businesses[i];
+					divText += "<div class='list-item row'>";			
+					divText += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
+					divText += "<div class='image-overlay-link'></div>";	
+					divText += "<div class='span8'><h5>";
+					divText += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
+					divText += yelpObject.name + "</a></h5>";
+					divText += catsToHTML(yelpObject);
+					divText += "<p>" + yelpObject.snippet_text + "</p>";
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					divText += "</div>";
+					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
+					divText += "</div><!-- end list-item -->";	
+				}
+				// addIsotopeItems(divText);
+				// var $newItems = $(divText);
+				// $('#grid-wrapper').isotope( 'insert', $newItems );
+
+				// now wire click events for each
+				// for(i = 0; i<20; i++) {
+					// var currimg = i+1;
+					// var imgId = "image-" + currimg;
+					// alert("imgId - " + imgId);
+					// var elem = document.getElementById(imgId)
+					// alert("elem: " + elem.innerHTML);
+					// elem.onclick = function(evt) { displaySliderWith(currimg); };
+				// }
+				document.getElementById('grid-wrapper').innerHTML = divText;
+			}
+			
+			function catsToHTML(obj) {
+				if(obj.categories) {
+					var cats = obj.categories;
+					var text = "<h6>Categories: ";
+					for(var j = 0; j < cats.length; cats++) {
+						text += cats[j][0] + " ";
+					}
+					text += "</h6>";		
+					return text;
+				}
+			}
+/*			
+						<div id="list-wrapper">
+				<div class="list-item">
+					<div class="row">
+						<div class="span2">
+							<img src="img/temp/despana.jpg" alt=""/>
+						</div>
+						<div class="span8">
+							<h5><a href="project.html">Olives</a></h5> 
+							<h6>Categories: American (New) </h6>
+							<p>
+								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
+							</p>
+							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
+							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
+							<span> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
+						</div>
+						<div class="span1 pull-right">
+							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+*/
 			// function displaySlider() {
 				// deleteGrid();
 				// isFull = true;
@@ -310,10 +373,10 @@
 		<!--start: Container -->
 		<div class="container">
 <div id="biz"></div>
-			<!-- start: Portfolio -->
+			<!-- start: Grid -->
 			<div id="grid-wrapper" class="row">
 
-				<div class="span3 portfolio-item nature">
+				<div class="span3 grid-item nature">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/despana.jpg" alt=""/><div class="image-overlay-link"></div></a>
 
@@ -347,7 +410,7 @@
 					</div>
 				</div>
 
-				<div class="box span3 portfolio-item nature people">
+				<div class="box span3 grid-item nature people">
 					<div class="box-header">
 						<h2><i class="icon-tasks"></i><span class="break"></span>Tasks in Progress</h2>
 						<div class="box-icon">
@@ -379,7 +442,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="span3 portfolio-item nature scenery">
+				<div class="span3 grid-item nature scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo3.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -394,7 +457,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world scenery">
+				<div class="span3 grid-item nature world scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo5.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -409,7 +472,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature scenery">
+				<div class="span3 grid-item nature scenery">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo6.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -424,7 +487,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world">
+				<div class="span3 grid-item nature world">
 					<div class="picture">
 						<a href="project.html" title="Title"><img src="img/temp/photo4.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -439,7 +502,7 @@
 					</div>
 				</div>
 
-				<div class="span3 portfolio-item nature world people">
+				<div class="span3 grid-item nature world people">
 					<div class="picture">
 						<a href="project.html"><img src="img/temp/photo8.jpg" alt=""/><div class="image-overlay-link"></div></a>
 						<div class="item-description alt">
@@ -455,47 +518,26 @@
 				</div>
 
 			</div>
-			<!-- end: Portfolio -->
-			<!-- start: Portfolio -->
+			<!-- end: Grid -->
+			<!-- start: Grid -->
 			<div id="list-wrapper">
-				<div class="accordion-group">
-					<div class="accordion-heading row">
+				<div class="list-item">
+					<div class="row">
 						<div class="span2">
 							<img src="img/temp/despana.jpg" alt=""/>
 						</div>
-						<div class="span2">
-							<a class="accordion-toggle" href="#collapse457729" data-parent="#resultHolder" data-toggle="collapse"> <h4 class="movietitle">Despana</h4> </a>
-						</div>
-						<div class="span3">
-							<p>					
-								This is a full-service, fully-stocked gourmet Spanish food store...									
+						<div class="span8">
+							<h5><a href="project.html">Olives</a></h5> 
+							<h6>Categories: American (New) </h6>
+							<p>
+								I have a thing for the W hotel chain. It makes no sense... Anywho, I was only in the lounge/bar area and found it to be cozy, but really loud. My friend...
 							</p>
+							<span> <i class="mini-ico-comment"></i> 180 Reviews </span>
+							<span> <i class="mini-ico-iphone"></i> <a href="#"> 2123538345 </a> </span>
+							<span> <i class="mini-ico-tags"></i> <a href="#"> No tags yet!!</a> </span>
 						</div>
-						<div class="span5">
-							<a href="http://movies.nytimes.com/2011/03/04/movies/04adjust.html"> </a>
-						</div>
-						<div class="span1 rightfloat">
-							<a class="accordion-toggle btn collapsed" href="#collapse457729" data-parent="#resultHolder" data-toggle="collapse"> More <span class="caret"></span> </a>
-						</div>
-					</div>
-					<div id="collapse457729" class="accordion-body collapse" style="height: 0px;">
-						<div id="grayInfo" class="row">
-							<div class="span5 additionalInfo">
-								<h3>Additional Info:</h3>
-								<p>
-									Categories: 
-								</p>
-								<p>
-									Rating
-								</p>
-								<p>
-									Comments
-								</p>
-							</div>
-							<div class="span5 additionalInfo">
-								<h4><a href="http://movies.nytimes.com/2011/03/04/movies/04adjust.html">Creepy People With a Plan, and a Couple on the Run</a></h4>
-								Matt Damon and Emily Blunt, in a metaphysical mess, in George Nolfi’s “Adjustment Bureau.”
-							</div>
+						<div class="span1 pull-right">
+							<a class="btn collapsed" href="#"> More <span class="caret"></span> </a>
 						</div>
 					</div>
 				</div>

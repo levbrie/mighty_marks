@@ -120,8 +120,6 @@ model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_lon
 // });
 
 function search(values){
-	
-	alert("yes");
 	// Set query params to search string
 	// var terms = $('#search').val();
 	var terms = values;
