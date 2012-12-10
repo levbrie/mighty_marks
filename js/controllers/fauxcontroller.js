@@ -2,9 +2,9 @@
 
 /*** Model Class ***/
 
-function model(){
+function Model(){
 	
-	this.search = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
+	this.dosearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 			//function for searching through bookmarks? note: only if offset = 0!
 	};
@@ -111,60 +111,71 @@ function add_bookmark(object, list_name){
 	 }	
 }
 
-function bookmark_search(terms, category_filter){
+function bookmark_search(terms, category_filter){ // NEED TO ADD SUPPORT FOR MULTIPLE SEARCH TERMS and CATS!!
 	
-	var bookmarks = "";
+	// Init. results array
+	var results = [];
 	
-	// Get all the lists and loop through to get each lists' bookmarks
+	// Get list index, loop through lists
 	index = getList("list_index");
-	for(var i in index){
+	for(var i in index){  
 		var list = getList(index[i]);
-		var matches = term_match(list, terms);
-		if(category_filter != ""){  // CONTROLLER HAS TO KNOW TO SEND EMPTY STRING!
-			//do cat match, also requires seperating out any cats by columnas
-		}
+		
+		// Loop through bookmarks array
+		for(var j in list.bookmarks){
+			
+			// Check bookmark name for search term, and if there's a match:
+			var name = list.bookmarks[j].name;
+			if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+				
+				// Check if it's already in the results array and add it if it isn't 
+				var found = $(results).filter(function(){
+				        return this.name == list.bookmarks[j].name;
+					});
+				if(found.length <= 0){
+					results.push(list.bookmarks[j]);
+				}
+			}
+			
+			// Check bookmark snippet for search term, and if there's a match:
+			var snippet = list.bookmarks[j].snippet_text;
+			if(snippet.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+				if($.inArray(list.bookmarks[j], results) == -1){
+					
+					// Check if it's already in the results array and add it if it isn't 
+					var found = $(results).filter(function(){
+					        return this.name == list.bookmarks[j].name;
+						});
+					if(found.length <= 0){
+						results.push(list.bookmarks[j]);
+					}
+				}
+			}
+			
+			// Check bookmark categories for category filter if it exists. And if there's a match:
+			if(category_filter != ""){
+				//can probably use grep, filter, or in array for this since it should be an exact match
+				// with the categories array content.
+				//var cat = list.bookmarks[j].name;
+				//if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+				//}
+			}	
 	}
+	
+	console.log(results);
+	// send return results objects to MM_result_handler
 
 }
-bookmark_search("","");
+
+//do cat match, also requires seperating out any cats by columnas
+
+//search: name, snippet_text. cats: .categories[0], which contains an array of cats, so need to check each... 
+//look for modern, thai, dining, kick, 
+bookmark_search("dining","thai");
 
 function term_match(list, terms){
 	// check 
 }
-
-/******* TESTER FUNCTIONS ********/
-
-// LIST TESTER: 
-/*
-  list1 = new list("list1");
-  list1.addBookmark("some bookmark");
-  bookmarks1 = list1.getBookmarks();
-  alert(bookmarks1[0]);
-*/
-
-// SEARCH TESTER: 
-//model = new model;
-//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-
-// STORAGE CLEANER:
-//localStorage.clear();
-
-// MODEL METHOD TESTERS:
-
-	//model = new model;
-	
-	/* search tester */
-	//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-	
-	/* add bookmark and get list testers */
-	//model.addbookmark("what stuff?", "list3"); 
-	//list = model.getlist("list3");
-	//console.log(list);
-
-	/* get index tester */
-	//console.log(model.getlist_index());
-
-
 
 /********** STORAGE STUFF **********/
 
@@ -196,10 +207,13 @@ function addList_toIndex(listname){
 	
 	// Get list index from storage and check it 
 	index = localStorage.getItem("list_index");
-	if(index){ // if index exists
+	if(index){ // If index exists
 		index = JSON.parse(index);
-		index.push(listname);
-		localStorage.setItem("list_index", JSON.stringify(index));
+		// Check index for list name, and add it if it's not in the index
+		if($.inArray(listname, index) == -1){
+			index.push(listname);
+			localStorage.setItem("list_index", JSON.stringify(index));
+		}
 	}
 	else{
 		// Create array with list as first item
@@ -223,9 +237,8 @@ function getList(listname){
 
 /*** CONTROLLER STUFF ***/
 
-function search(values){
+function init_search(values){
 	
-	alert("yes");
 	// Set query params to search string
 	// var terms = $('#search').val();
 	var terms = values;
@@ -239,30 +252,17 @@ function search(values){
 	var br_lat = ""; //mapBounds.getNorthEast().lat()
 	var br_long = ""; //mapBounds.getNorthEast().lng()
 
-	model = new model;
-	model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	model = new Model;
+	model.dosearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
 
+//init_search("thai+food+upper+east+side");
 
 function yelp_result_handler(data){
 	
-	// Do something with the response.. e.g. store in dataStore, retrieve, and alert name #6
-	
-	// var i = 0;
-	// while(i<=19){
-		// $('#biz').append("<div class='result' id='"+i+"'>"+data.businesses[i].name+"</div>")
-		// i++;
-	// }
-	// results = data;
-		// var gridDiv = document.getElementById("portfolio-wrapper");
-		// gridDiv.innerHTML = "";
 		var businesses = data.businesses;
 		var divText = "";
-		
-        // var selector = ".portfolio-item";
-        // var $removable = $container.find( selector );
-        // $container.isotope( 'remove', $removable );
 
 		for(var i = 0; i < businesses.length; i++) {
 			var yelpObject = businesses[i];
@@ -299,44 +299,38 @@ function yelp_result_handler(data){
 		// addIsotopeItems(divText);
 		var $newItems = $(divText);
 		$('#portfolio-wrapper').isotope( 'insert', $newItems );
-		
-		// try inserting items using isotope so they can then be filtered and sorted:
-		
-		// $.each(data, function(key, bus) {
-			// jtext += "<div class='span3 portfolio-item'>";
-			// jtext += "<div class='picture'>";			
-			// jtext += "<a href='project.html' title='Title'>"
-			// jtext += "<img src='" + bus.image_url + "' alt=''/>";
-			// jtext += "<div class='image-overlay-link'></div>";
-			// jtext += "</a>";		
-			// jtext += "<div class='item-description alt'>";
-			// jtext += "<h5><a href='project.html'>Despaña</a></h5>";
-			// if(bus.categories) {
-				// jtext += "<h2>Categories: ";
-				// $.each(bus.categories, function(k, v) {
-					// jtext += v[0] + ", ";
-				// });
-				// jtext += "</h2>";		
-			// }
-			// jtext += "<p>This is a full-service, fully-stocked gourmet Spanish food store...</p>";
-			// jtext += "</div>";
-			// jtext += "<div class='post-meta'>";
-			// jtext += "<span><i class='mini-ico-calendar'></i>1 June 2011</span><span><i class='mini-ico-user'></i> <a href='#'>lucas</a></span><span><i class='mini-ico-comment'></i><a href='#'>89 comments</a></span>";
-			// jtext += "</div>";
-			// // jtext += " CATEGORY: " + val.title + " ";
-			// // jtext += " ALIAS: " + val.alias + " ";
-			// jtext += "</div><!-- end picture -->";
-			// jtext += "</div><!-- end portfolio-item -->";
-// 
-		// });
-		// $("#portfolio-wrapper").html(jtext); 
-
-
-//	console.log(JSON.stringify(data));
 	
 }
 
-// function addIsotopeItems(text) {
-	// var $newItems = $(divText);
-		// $('#portfolio-wrapper').isotope( 'insert', $newItems );
-// }
+
+/******* TESTER FUNCTIONS ********/
+
+// LIST TESTER: 
+/*
+  list1 = new list("list1");
+  list1.addBookmark("some bookmark");
+  bookmarks1 = list1.getBookmarks();
+  alert(bookmarks1[0]);
+*/
+
+// SEARCH TESTER: 
+//model = new Model;
+//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+
+// STORAGE CLEANER:
+//localStorage.clear();
+
+// MODEL METHOD TESTERS:
+
+	//model = new Model;
+	
+	/* search tester */
+	//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	
+	/* add bookmark and get list testers */
+	//model.addbookmark("what stuff?", "list3"); 
+	//list = model.getlist("list3");
+	//console.log(list);
+
+	/* get index tester */
+	//console.log(model.getlist_index());
