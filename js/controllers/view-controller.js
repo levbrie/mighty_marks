@@ -42,7 +42,7 @@ function updateResults(yelpResponseText, mightyResponseText) {
 
 // temp method to choose update yelp results
 function updateYelpResults(yelpResponseText) {
-	var resultsDiv = document.getElementById("portfolio-wrapper");
+	var resultsDiv = document.getElementById("grid-wrapper");
 	resultsDiv.innerHTML = yelpResponseText;
 	var reults = JSON.parse(yelpResponseText);
 	for(var i=0; i < results.length; i++) {
