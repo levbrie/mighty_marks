@@ -6,7 +6,7 @@ function model(){
 	
 	this.search = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-			//function for searching through bookmarks?
+			//function for searching through bookmarks? note: only if offset = 0!
 	};
 	
 	this.addbookmark = function(object, list_name){
@@ -17,12 +17,16 @@ function model(){
 		
 	};
 	
-	this.createlist = function(object, listname){
-		//check if there is an object or not, if not just create an empty list
+	this.createlist = function(object, listname){ // need to test!!! also, what is the order of inter/actions here btwn this and add bookmarks?
+		//check if there is an object or not, if not just:
+		 
+		// Create an empty list and store it
+		list = new List();
+		MM_store(list,listname);
 	};
 	
 	this.deletelist = function(listname){
-		
+		localStorage.removeItem(listname); // need to test!!! also, what happens if list doesn't exist?
 	};
 	
 	this.getlist = function(listname){
@@ -31,6 +35,14 @@ function model(){
 	
 	this.getlist_index = function(){ //need to support an empty response in controller!!!
 		return getList("list_index");	
+	}
+	
+	this.rename_list = function(newname, listname){ //need to test. also, what happens if list doesn't exist?
+		// Retrieve list and restore under new name
+		list = MM_retrieve(listname);
+		MM_store(newname, list);
+		// Delete old entry
+		localStorage.removeItem(listname);
 	}
 	
 }
@@ -84,14 +96,14 @@ function add_bookmark(object, list_name){
 	list = MM_retrieve(list_name);
 	if(list){
 		list = new List(list_name, list);
+		// Add bookmark to list and store it
 		list.addBookmark(object);
 		MM_store(list_name, list);
 	}
-	else{ // if it's not there:	
+	else{ // If it doesn't exist:	
 		// Create a new list and add bookmark as first item.
 		newlist = new List(list_name, "");
 		newlist.addBookmark(object);
-		console.log(newlist);
 
 		// Store in datastore with name as key.
 		MM_store(list_name, newlist);
@@ -99,7 +111,28 @@ function add_bookmark(object, list_name){
 	 }	
 }
 
-/*** TESTER FUNCTIONS ***/
+function bookmark_search(terms, category_filter){
+	
+	var bookmarks = "";
+	
+	// Get all the lists and loop through to get each lists' bookmarks
+	index = getList("list_index");
+	for(var i in index){
+		var list = getList(index[i]);
+		var matches = term_match(list, terms);
+		if(category_filter != ""){  // CONTROLLER HAS TO KNOW TO SEND EMPTY STRING!
+			//do cat match, also requires seperating out any cats by columnas
+		}
+	}
+
+}
+bookmark_search("","");
+
+function term_match(list, terms){
+	// check 
+}
+
+/******* TESTER FUNCTIONS ********/
 
 // LIST TESTER: 
 /*
@@ -116,19 +149,75 @@ function add_bookmark(object, list_name){
 // STORAGE CLEANER:
 //localStorage.clear();
 
-// MODEL METHOD TESTERs:
-model = new model;
+// MODEL METHOD TESTERS:
+
+	//model = new model;
 	
 	/* search tester */
 	//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 	
 	/* add bookmark and get list testers */
-	//model.addbookmark("what stuff?", "list3");
+	//model.addbookmark("what stuff?", "list3"); 
 	//list = model.getlist("list3");
 	//console.log(list);
 
 	/* get index tester */
 	//console.log(model.getlist_index());
+
+
+
+/********** STORAGE STUFF **********/
+
+/* Stores a bookmarks list */ 
+function MM_store(list_name, list){
+
+	console.log(list);
+
+	// Turn into string and store
+	localStorage.setItem(list_name, JSON.stringify(list));
+	
+	// Add listname to list index in storage
+	addList_toIndex(list_name);
+	
+	return true;
+}
+
+/* Retrieves a bookmarks list */ 
+function MM_retrieve(list_name){
+
+	// Retrieve the object from storage and destringify
+	var retrievedObject = localStorage.getItem(list_name);
+	var object = JSON.parse(retrievedObject);	
+	return object;	
+	
+}
+
+function addList_toIndex(listname){
+	
+	// Get list index from storage and check it 
+	index = localStorage.getItem("list_index");
+	if(index){ // if index exists
+		index = JSON.parse(index);
+		index.push(listname);
+		localStorage.setItem("list_index", JSON.stringify(index));
+	}
+	else{
+		// Create array with list as first item
+		listarray = [];
+		listarray.push(listname);
+		
+		// Create index with list_index as key, index array as value 
+		localStorage.setItem("list_index", JSON.stringify(listarray));
+	}
+}
+
+function getList(listname){
+	list = localStorage.getItem(listname);
+	list = JSON.parse(list);
+	return list;
+}
+
+
 
 
 
