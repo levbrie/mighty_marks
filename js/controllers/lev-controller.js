@@ -31,7 +31,6 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 
 			createListeners();										// set up listeners for page		
 			
-
 		});
 	});
 });
