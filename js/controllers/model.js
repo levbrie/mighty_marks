@@ -271,8 +271,7 @@ function bookmark_search(terms, category_filter){
 				//var cat = list.bookmarks[j].name;
 				//if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
 				//}
-			}	
-		}
+		}	
 	}	
 
 	console.log(results); /* Notes to self:
@@ -389,7 +388,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
-//init_search("indian+food+upper+east+side", "");
+init_search("indian+food+upper+east+side", "");
 
 
 /* Handles Yelp Search Results */
