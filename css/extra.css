@@ -120,13 +120,17 @@ h4.movietitle {color: #333;}
 	    color: white;
 	    text-shadow: 0 -1px 1px #B80806;
 	}
-	.ybtn-primary:hover {
-		background-color: #D80B06;
-	    background-image: linear-gradient(#EA050B, #C41200);
-	    border: 1px solid #A50508;
-	    color: #e8e8e8;
-	    text-shadow: 0 -1px 1px #B80806;
-	}
+
+/* hover like twitter */	
+.ybtn-primary:hover,
+.ybtn-primary:active,
+.ybtn-primary.active,
+.ybtn-primary.disabled,
+.ybtn-primary[disabled] {
+  color: #ffffff;
+  background-color: #C41200;
+  *background-color: #D80B06;
+}
 	.ybtn {
 	    border-radius: 4px 4px 4px 4px;
 	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
@@ -281,7 +285,7 @@ h4.movietitle {color: #333;}
    
    
 /***************** MANAGER ******************/
-.box-header {
+.box-header, .box-inner {
     background-color: #FAFAFA;
     background-image: linear-gradient(to bottom, #FAFAFA, #EFEFEF);
     border: 1px solid #DDDDDD;
@@ -301,11 +305,12 @@ h4.movietitle {color: #333;}
     margin-top: 2px;
     text-shadow: 0 1px 0 #FFFFFF;
 }
-.box-header .box-icon {
+.box-inner h2 {color: #777; float: left; font-size: 14px; font-style: italic; line-height: 14px; margin-top: 2px;}
+.box-header .box-icon, .box-inner .box-icon {
     float: right;
     margin-top: 1px;
 }
-.box-header .box-icon a {
+.box-header .box-icon a, .box-inner .box-icon a {
     margin: 0 5px;
 }
 a {

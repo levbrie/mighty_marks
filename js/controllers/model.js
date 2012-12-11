@@ -30,8 +30,7 @@ function Model(){
 		delete_bookmark(object, listname);
 	};
 	
-	this.createList = function(listname){ 
-		 
+	this.createList = function(listname){ 		 
 		// Create an empty list and store it
 		list = new List(listname, "");
 		console.log(list);
@@ -411,7 +410,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 	var br_lat = ""; //mapBounds.getNorthEast().lat()
 	var br_long = ""; //mapBounds.getNorthEast().lng()
 
-	model = new Model;
+	// model = new Model;
 	model.doYelpSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
@@ -425,6 +424,12 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 function yelp_result_handler(data){
 	resultsData = data;
 	displayView(currentView);
+}
+
+function MM_result_handler(data) {
+	mightyData = data;
+	// displayMightyData(currentView);
+	// FORMAT OF ARRAY: ["nameoflist", [bookmarks array]]
 }
 
 /*--------- Model Tester Functions ----------*/

@@ -39,8 +39,11 @@
 		<script src="js/controllers/view-controller.js"></script>
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->		
 		<script>
-			var myModel = new Model();		// create global myModel variable
+			var model = new Model();		// create global model variable
+			  // @levbrie
+ 			var searchTermToUse = "";		// global variable to get search term to search
 			jQuery(function($) {// using failsafe $ alias to ensure jQuery loading
+				
 				    $('#myModal').modal({
 				    	show: false,
 				    	keyboard: true
