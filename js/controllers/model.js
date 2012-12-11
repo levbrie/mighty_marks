@@ -173,7 +173,7 @@ function add_bookmark(object, listname){
 
 		// Store in datastore with name as key.
 		MM_store(listname, newlist);
-
+		
 	 }	
 }
 
@@ -412,7 +412,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 	var br_long = ""; //mapBounds.getNorthEast().lng()
 
 	model = new Model;
-	model.doSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	model.doYelpSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
 //TESTER:
