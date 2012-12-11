@@ -7,8 +7,8 @@ var mightyData;
 jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
 	jQuery(document).ready(function() {
 		
-		//
-		
+		// Display bookmarks onload.
+		displayAllMightyMarks();
 		
 		// let's add in all of the yelp categories to our select box
 		// (in the future let's use mustache templates)

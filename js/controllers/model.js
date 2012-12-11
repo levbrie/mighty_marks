@@ -422,7 +422,8 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 /* Handles Yelp Search Results */
 function yelp_result_handler(data){
 	resultsData = data;
-	displayView(currentView);
+	displayView("grid");
+	displayView("list");
 }
 
 function MM_result_handler(data) {
