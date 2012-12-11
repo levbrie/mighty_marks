@@ -7,15 +7,19 @@ function Model(){
 	
 	/*---- Model Methods: Search ----*/
 	
-	this.doSearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
+	this.doYelpSearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 			
 			// Searches Yelp and sends results to yelp_result_handler()
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 			
 			// Function for searching through bookmarks. Need to add qualifiers, e.g. if offset = 0.
-			//bookmark_search(terms, category_filter);
+			//
 	};
 	
+	this.doMMSearch = function(terms, category_filter){
+	
+		bookmark_search(terms, category_filter);
+	}
 	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
 	 
 	this.addBookmark = function(object, listname){
@@ -240,10 +244,13 @@ function bookmark_search(terms, category_filter){
 
 					// Check if it's already in the results array and add it if it isn't 
 					var found = $(results).filter(function(){
-					        return this.name == list.bookmarks[j].name;
+					        if(this[1] !== undefined && this[1].name !== undefined){
+								return this[1].name == list.bookmarks[j].name;
+							}
+					        else{return false};
 						});
 					if(found.length <= 0){
-						results.push(list.bookmarks[j]);
+						results.push([index[i], list.bookmarks[j]]);
 					}
 				}
 
@@ -254,10 +261,13 @@ function bookmark_search(terms, category_filter){
 
 						// Check if it's already in the results array and add it if it isn't 
 						var found = $(results).filter(function(){
-						        return this.name == list.bookmarks[j].name;
+						        if(this[1] !== undefined && this[1].name !== undefined){
+									return this[1].name == list.bookmarks[j].name;
+								}
+						        else{return false};
 							});
 						if(found.length <= 0){
-							results.push(list.bookmarks[j]);
+							results.push([index[i], list.bookmarks[j]]);
 						}
 					}
 				}
@@ -265,44 +275,43 @@ function bookmark_search(terms, category_filter){
 			
 			// Looking through each category filter:
 			for(var l in category_filters){
-				console.log(category_filters[l]);
+				
 					// Loop through categories
 					for(var m in list.bookmarks[j].categories){
 						cats = list.bookmarks[j].categories[m];
 						for(var z in cats){
-							console.log(cats[z]);
+							
 							
 							// If there's a match:
-							if(cat[z].toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+							if(cats[z].toLowerCase().indexOf(category_filters[l].toLowerCase()) != -1) {
 
 								// Check if it's already in the results array and add it if it isn't 
 								var found = $(results).filter(function(){
-								        return this.name == list.bookmarks[j].name;
+										if(this[1] !== undefined && this[1].name !== undefined){
+											return this[1].name == list.bookmarks[j].name;
+										}
+								        else{return false};
 									});
+									
 								if(found.length <= 0){
-									results.push(list.bookmarks[j]);
+									results.push([index[i], list.bookmarks[j]]);
 								}
 							}
 							
 						}
 					}	
 			}
-			
-			
 				
 		}
 			
 	}	
 
-	console.log(results); /* Notes to self:
-	// send return results objects to MM_result_handler, which needs to be written
-	// do cat match: .categories[0], which contains an array of cats, so need to check each... 
-	// also requires seperating out any cats by commas
-	// need to support multiple search terms, categories */
+	console.log(results); 
+	MM_result_handler(results);
 
 }
 //TESTER:
-//bookmark_search("eclectic luscious with indian noodles","thai,indian");
+bookmark_search("eclectic luscious with indian noodles","thai,indian");
 
 
 function termsplitter(terms, marker, result){
