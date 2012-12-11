@@ -272,3 +272,44 @@ h4.movietitle {color: #333;}
 .dropdown {display:inline-block;}
 
    
+   
+/***************** MANAGER ******************/
+.box-header {
+    background-color: #FAFAFA;
+    background-image: linear-gradient(to bottom, #FAFAFA, #EFEFEF);
+    border: 1px solid #DDDDDD;
+    border-radius: 2px 2px 0 0;
+    box-shadow: none;
+    height: 20px;
+    margin-bottom: -1px;
+    overflow: hidden;
+    padding: 10px;
+}
+.box-header h2 {
+    color: #646464;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 16px;
+    margin-top: 2px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+.box-header .box-icon {
+    float: right;
+    margin-top: 1px;
+}
+.box-header .box-icon a {
+    margin: 0 5px;
+}
+a {
+    color: #646464;
+}
+
+.box-content {
+    background: none repeat scroll 0 0 #FCFCFC;
+    border: 1px solid #DDDDDD;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    margin-top: -1px;
+    padding: 10px;
+}
