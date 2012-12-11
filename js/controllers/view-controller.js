@@ -113,7 +113,11 @@
 					divText += yelpObject.name + "</a></h5>";
 					divText += catsToHTML(yelpObject);
 					divText += reviewToHTML(yelpObject.snippet_text);
-					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+					divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+					divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+					divText += "  No tags yet!!" + "</a></span>";
+					divText += "<span>" + createBookmarkPopover(i) + "</span>";
 					divText += "</div>";
 					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
 					divText += "</div><!-- end list-item -->";	
@@ -147,7 +151,7 @@
 			
 			function createBookmarkPopover(yelpid) {
 				var text = "<a class='btn' data-content='<form class='form-inline'>";
-				text += "'<input type='text' class='popover-input' placeholder='Start a new MightyList...'>";
+				text += "'<input type='text' data-yelpid='" + yelpid + "' class='popover-input' placeholder='Start a new MightyList...'>";
 				text += "<!-- <button type='submit' class='btn'>Add</button> -->";
 				text += "</form>";
 				text += createPopoverList(yelpid);
@@ -158,13 +162,15 @@
 			
 			function createPopoverList(yelpid) {
 				var text = "";
-				for(var i=0; i < bookmarkList.length; i++) {
-					text += "<a class='popover-item' href='levbrie.com' data-list-name='";
-					text += bookmarkList.id + "' data-yelpid='" + yelpid + "' title=''><span>";
-					text += bookmarkList.listName + "</span></a>";
+				var listNames = model.getListNames();
+				for(var i=0; i < listNames.length; i++) {
+					text += "<a href='#' class='popover-item' href='levbrie.com' data-list-name='";
+					text += listNames[i] + "' data-yelpid='" + yelpid + "' title=''><span>";
+					text += listNames[i] + "</span></a>";
 				}
 				return text;
 			}
+			
 			
 			// updates Breadcrumb with new categories and search terms
 			function updateBreadcrumbs(catString, searchTerms) {

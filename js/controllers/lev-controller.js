@@ -29,112 +29,137 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 			$(".chzn-select").html(jtext);							// add the parsed categories to the chosen.js dropdown
 			$(".chzn-select").chosen();								// initialize chosen
 			$(".chzn-choices").addClass("search-query span4");		// add classes to chosen.js ul tag in order to size search bar
-			// jQuery(function($) {			
-				$('#searchButton').click(function(jQEvent) { // jQEvent added for isotope
-					jQEvent.preventDefault(); 
-					alert("WORKING");
-					var catFilterString = "";
-					var categoryString = "";
-					var count = 0;
-					$('.result-selected').each(function(index, value) {
-						if(count != 0) { categoryString +=","; catFilterString += "," } 	// adds , BUT NO SPACE!! except before first and after last
-						alert("ALERT " + value.innerHTML + " ATTRIBUTE ALIAS: " + value.getAttribute('data-alias'));		// print whatever element holds
-						catFilterString += value.getAttribute('data-alias');
-						categoryString += value.innerHTML;
-						count++;
-					});
-					alert("SEARCHING " + searchTermToUse);
-					init_search(searchTermToUse, catFilterString);
-					alert("SEARCHED");
-					updateBreadcrumbs(categoryString, searchTermToUse);
-				});
-			// });
-			// search when user hits return
-			// jQuery(function($) {
-				$(".default").keypress(function(event) {				
-					if (event.which == 13) {
-						var categoryString = "";
-						var count = 0;
-						$('.result-selected').each(function(index, value) {
-							if(count != 0) { categoryString +="," } 	// adds , BUT NO SPACE except before first and after last
-							alert("ALERT " + value.innerHTML + " ATTRIBUTE ALIAS: " + value.getAttribute('data-alias'));		// print whatever element holds
-							categoryString += value.getAttribute('data-alias');
-							count++;
-						});
-						init_search(searchTermToUse, categoryString);
-						updateBreadcrumbs(categoryString, searchTermToUse);
-						return false;
-					}
-				}); 
-			// });
+
+			// set up listener for search click
+			$('#searchButton').click(function(jQEvent) { // jQEvent added for isotope
+				jQEvent.preventDefault(); 							
+				var parsedCategories = parseCategoryStrings();
+				var categoryString = parsedCategories[0];
+				var catFilterString = parsedCategories[1];
+				init_search(searchTermToUse, catFilterString);
+				updateBreadcrumbs(categoryString, searchTermToUse);
+			});
+
+			// set up listener for user return in search bar
+			// currently this causes issues with chosen because there is also return for found categories
+			$(".default").keypress(function(event) {				
+				if (event.which == 13) {
+					var parsedCategories = parseCategoryStrings();  
+					init_search(searchTermToUse, parsedCategories[1]);
+					updateBreadcrumbs(parsedCategories[0], searchTermToUse);
+					return false;
+				}
+			}); 
+			
+			// LISTENER: ADD NEW LIST IN POPOVER 
+			$(".popover-input").keypress(function(event) {				
+				if (event.which == 13) {
+					var listName = this.value;
+					var objectIndex = this.getAttribute('yelpid');
+					model.addbookmark(businesses[objectIndex], listName);
+				}
+			}); 
+					
 		});
 	});
 });
 
+function parseCategoryStrings() {
+	var count = 0;					// no comma before first category string
+	var categoryString = "";		// string of actual category names for displaying in breadcrumbs
+	var catFilterString = "";		// category_filter names for passing to yelp 
+	$('.result-selected').each(function(index, value) {
+		if(count != 0) { categoryString +=","; catFilterString += ","; } 	// adds , BUT NO SPACE except before first and after last
+		catFilterString += value.getAttribute('data-alias');
+		categoryString += value.innerHTML;
+		count++;
+	});
+	return [categoryString, catFilterString];
+}
 
 
+/*--------- Model Class ----------*/
 
-/*** Model Class ***/
 
 function Model(){
 	
+	/*---- Model Methods: Search ----*/
+	
 	this.dosearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
+			
+			// Searches Yelp and sends results to yelp_result_handler()
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
-			//function for searching through bookmarks? note: only if offset = 0!
+			
+			// Function for searching through bookmarks. Need to add qualifiers, e.g. if offset = 0.
+			//bookmark_search(terms, category_filter);
 	};
 	
-	this.addbookmark = function(object, list_name){
+	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
+	 
+	this.addbookmark = function(object, listname){
 		add_bookmark(object, list_name);
 	};
 	
 	this.deletebookmark = function(object, listname){
-		
+		delete_bookmark(object, listname);
 	};
 	
-	this.createlist = function(object, listname){ // need to test!!! also, what is the order of inter/actions here btwn this and add bookmarks?
-		//check if there is an object or not, if not just:
+	this.createlist = function(listname){ 
 		 
 		// Create an empty list and store it
 		list = new List();
-		MM_store(list,listname);
+		MM_store(list, listname);
 	};
 	
-	this.deletelist = function(listname){
-		localStorage.removeItem(listname); // need to test!!! also, what happens if list doesn't exist?
+	this.deletelist = function(listname){ 
+		
+		// Delete old entry from storage
+		localStorage.removeItem(listname); 
+	
+		// Delete old entry from list index
+		index = JSON.parse(localStorage.getItem("list_index"));
+		index.splice(index.indexOf(listname), 1);
+		localStorage.setItem("list_index", JSON.stringify(index));
 	};
+	
+	this.renamelist = function(listname, newname){ 
+		
+		// Retrieve list and re-store under new name
+		list = MM_retrieve(listname);
+		MM_store(newname, list);
+
+		// Delete old entry
+		this.deletelist(listname);
+	}
 	
 	this.getlist = function(listname){
 		return getList(listname);
 	}
 	
-	this.getlist_index = function(){ //need to support an empty response in controller!!!
+	this.getlist_index = function(){ 
 		return getList("list_index");	
-	}
-	
-	this.rename_list = function(newname, listname){ //need to test. also, what happens if list doesn't exist?
-		// Retrieve list and restore under new name
-		list = MM_retrieve(listname);
-		MM_store(newname, list);
-		// Delete old entry
-		localStorage.removeItem(listname);
 	}
 	
 }
 
 
-/** Helper Functions for Model Class **/
+/*--------- Helper Functions for Model Class ----------*/
+
+/*---- Yelp Helper Functions ----*/
 
 function yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 	
 	// Set standard location
 	var near = 'New_York';
 	
-	// Call api
+	// Call Yelp API
 	yelp_api_get(terms, near, offset, sort, category_filter, radius_filter, tl_lat, tl_long, br_lat, br_long, yelp_result_handler);
 	
 }
 
-// List constructor
+/*--- Might Marks Helper Functions ---*/
+
+/* List Constructor */
 function List(listname, list){
 
 	// Set name
@@ -150,13 +175,26 @@ function List(listname, list){
 		this.bookmarks = list.bookmarks;
 	}
 	
-	/* List methods */
+	// List methods:
+	
 	this.addBookmark = function(object){
 		this.bookmarks.push(object);
 	}
 
 	this.removeBookmark = function (object) { 
-	      //??? how do i do this....
+	
+		// Loop through bookmarks array
+		for(var j in list.bookmarks){
+			
+			// Check bookmark name for object name, and if there's a match:
+			var name = list.bookmarks[j].name;
+			if(name.indexOf(object.name) != -1) {
+		
+				// Delete entry from bookmarks array
+				this.bookmarks.splice(j, 1);
+				return true;
+			}
+		}	
 	};
 
 	this.getBookmarks = function () { 
@@ -164,28 +202,43 @@ function List(listname, list){
 	};
 }
 
-function add_bookmark(object, list_name){
+/* Bookmark Adder */
+function add_bookmark(object, listname){
  	
 	// Get the list from storage and reinstantiate it as a List object
-	list = MM_retrieve(list_name);
+	list = MM_retrieve(listname);
 	if(list){
-		list = new List(list_name, list);
+		list = new List(listname, list);
 		// Add bookmark to list and store it
 		list.addBookmark(object);
-		MM_store(list_name, list);
+		MM_store(listname, list);
 	}
 	else{ // If it doesn't exist:	
 		// Create a new list and add bookmark as first item.
-		newlist = new List(list_name, "");
+		newlist = new List(listname, "");
 		newlist.addBookmark(object);
 
 		// Store in datastore with name as key.
-		MM_store(list_name, newlist);
+		MM_store(listname, newlist);
 
 	 }	
 }
 
-function bookmark_search(terms, category_filter){ // NEED TO ADD SUPPORT FOR MULTIPLE SEARCH TERMS and CATS!!
+function delete_bookmark(object, listname){
+	
+	// Get the list from storage and reinstantiate it as a List object
+	list = MM_retrieve(listname);
+	if(list){
+		list = new List(listname, list);
+		// Find the bookmark and delete it from the list
+		list.removeBookmark(object);
+		// Re-store the list
+		MM_store(listname, list);
+	}	
+}
+
+/* Bookmark Searcher */
+function bookmark_search(terms, category_filter){ 
 	
 	// Init. results array
 	var results = [];
@@ -235,29 +288,24 @@ function bookmark_search(terms, category_filter){ // NEED TO ADD SUPPORT FOR MUL
 				//}
 			}	
 		}
-	}
+	}	
 	
-	console.log(results);
-	// send return results objects to MM_result_handler
+	console.log(results); /* Notes to self:
+	// send return results objects to MM_result_handler, which needs to be written
+	// do cat match: .categories[0], which contains an array of cats, so need to check each... 
+	// also requires seperating out any cats by commas
+	// need to support multiple search terms, categories */
 
 }
+//TESTER:
+//bookmark_search("dining","thai");
 
-//do cat match, also requires seperating out any cats by columnas
 
-//search: name, snippet_text. cats: .categories[0], which contains an array of cats, so need to check each... 
-//look for modern, thai, dining, kick, 
-bookmark_search("dining","thai");
 
-function term_match(list, terms){
-	// check 
-}
-
-/********** STORAGE STUFF **********/
+/*--------- Local Storage Helper Functions for Model Class ----------*/
 
 /* Stores a bookmarks list */ 
 function MM_store(list_name, list){
-
-	console.log(list);
 
 	// Turn into string and store
 	localStorage.setItem(list_name, JSON.stringify(list));
@@ -278,11 +326,12 @@ function MM_retrieve(list_name){
 	
 }
 
+/* Adds new lists to list index */
 function addList_toIndex(listname){
-	
+
 	// Get list index from storage and check it 
 	index = localStorage.getItem("list_index");
-	if(index) { // If index exists
+	if(index){ // If index exists
 		index = JSON.parse(index);
 		// Check index for list name, and add it if it's not in the index
 		if($.inArray(listname, index) == -1){
@@ -300,13 +349,11 @@ function addList_toIndex(listname){
 	}
 }
 
+/* List Retriever */
 function getList(listname){
-	list = localStorage.getItem(listname);
-	list = JSON.parse(list);
+	list = JSON.parse(localStorage.getItem(listname));
 	return list;
 }
-
-
 
 
 
