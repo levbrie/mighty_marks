@@ -408,11 +408,9 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
-<<<<<<< HEAD
 // init_search("indian+food+upper+east+side", "");
-=======
-//init_search("indian+food+upper+east+side", "");
->>>>>>> fe14d71f3b262ed982b402557d18e7c57ce83be8
+
+
 
 
 /* Handles Yelp Search Results */
