@@ -30,7 +30,8 @@ function Model(){
 		 
 		// Create an empty list and store it
 		list = new List(listname, "");
-		MM_store(list, listname);
+		console.log(list);
+		MM_store(listname, list);
 	};
 	
 	this.deleteList = function(listname){ 
@@ -85,9 +86,6 @@ function Model(){
 	}
 	
 }
-
-
-
 
 
 /*--------- Helper Functions for Model Class ----------*/
@@ -194,6 +192,7 @@ function bookmark_search(terms, category_filter){
 	// Init. results and searchterm array
 	var results = [];
 	var something = [];
+	var newsome = [];
 	
 	// Check if 'terms' contains multiple search terms
 	var split = terms.indexOf(" ");
@@ -212,11 +211,11 @@ function bookmark_search(terms, category_filter){
 			// Check if 'category_filter' contains multiple search filters
 			var split = category_filter.indexOf(",");
 			if(split == -1){ // If not, just push terms into searchterms array
-				var searchterms = [];
+				var category_filters = [];
 				category_filters.push(category_filter);
 			}
 			else{
-				var category_filters = termsplitter(category_filter, ",", something);
+				var category_filters = termsplitter(category_filter, ",", newsome);
 				console.log(category_filters);
 			}
 	}
@@ -225,7 +224,7 @@ function bookmark_search(terms, category_filter){
 	index = getList("list_index");
 	for(var i in index){  
 		var list = getList(index[i]);
-		
+		console.log(list);
 		// Loop through bookmarks array
 		for(var j in list.bookmarks){
 
@@ -262,16 +261,37 @@ function bookmark_search(terms, category_filter){
 						}
 					}
 				}
-			}	
-
-
+			}
 			
-				//can probably use grep, filter, or in array for this since it should be an exact match
-				// with the categories array content.
-				//var cat = list.bookmarks[j].name;
-				//if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
-				//}
-		}	
+			// Looking through each category filter:
+			for(var l in category_filters){
+				console.log(category_filters[l]);
+					// Loop through categories
+					for(var m in list.bookmarks[j].categories){
+						cats = list.bookmarks[j].categories[m];
+						for(var z in cats){
+							console.log(cats[z]);
+							
+							// If there's a match:
+							if(cat[z].toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+
+								// Check if it's already in the results array and add it if it isn't 
+								var found = $(results).filter(function(){
+								        return this.name == list.bookmarks[j].name;
+									});
+								if(found.length <= 0){
+									results.push(list.bookmarks[j]);
+								}
+							}
+							
+						}
+					}	
+			}
+			
+			
+				
+		}
+			
 	}	
 
 	console.log(results); /* Notes to self:
@@ -282,7 +302,7 @@ function bookmark_search(terms, category_filter){
 
 }
 //TESTER:
-bookmark_search("eclectic luscious with indian noodles","thai,indian");
+//bookmark_search("eclectic luscious with indian noodles","thai,indian");
 
 
 function termsplitter(terms, marker, result){
@@ -388,7 +408,11 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
+<<<<<<< HEAD
 // init_search("indian+food+upper+east+side", "");
+=======
+//init_search("indian+food+upper+east+side", "");
+>>>>>>> fe14d71f3b262ed982b402557d18e7c57ce83be8
 
 
 /* Handles Yelp Search Results */
