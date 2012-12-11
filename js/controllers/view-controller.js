@@ -20,13 +20,15 @@
 						displayView("list");
 					}					
 				};
-				document.getElementById("display-map").onclick = function() {
-					if(currentView != "map") {						
-						deleteView(currentView);
-						currentView = "map";
-						displayView("map");
-					}					
-				};
+				
+				// map listener awaiting implementation
+				// document.getElementById("display-map").onclick = function() {
+					// if(currentView != "map") {						
+						// deleteView(currentView);
+						// currentView = "map";
+						// displayView("map");
+					// }					
+				// };
 				
 				//@ORRENKT: added grid item listener for triggering bookmarking
 				

@@ -120,6 +120,13 @@ h4.movietitle {color: #333;}
 	    color: white;
 	    text-shadow: 0 -1px 1px #B80806;
 	}
+	.ybtn-primary:hover {
+		background-color: #D80B06;
+	    background-image: linear-gradient(#EA050B, #C41200);
+	    border: 1px solid #A50508;
+	    color: #e8e8e8;
+	    text-shadow: 0 -1px 1px #B80806;
+	}
 	.ybtn {
 	    border-radius: 4px 4px 4px 4px;
 	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
@@ -325,7 +332,8 @@ radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px
 background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
 background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 }
-.levbtn {background: none repeat scroll 0 0 #444444; color: #e8e8e8; border-right: 2px solid #8a8a8a; text-shadow:none;}
+.levbtn {background: none repeat scroll 0 0 #4C004C; color: #fff; border-right: 2px solid #8a8a8a; text-shadow:none;}
 .levbtn:hover {background: #333; color: #fff;}
 a.levbtn2:hover {background: #333; color: #fff;}
 .levbtn2 {background: none repeat scroll 0 0 #444444; color: #e8e8e8; text-shadow: none;}
+/* #0088CC */
