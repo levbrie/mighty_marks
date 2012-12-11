@@ -7,7 +7,7 @@ function Model(){
 	
 	/*---- Model Methods: Search ----*/
 	
-	this.doSearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
+	this.dosearch = function(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long){
 			
 			// Searches Yelp and sends results to yelp_result_handler()
 			yelp_api_caller(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
@@ -18,22 +18,22 @@ function Model(){
 	
 	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
 	 
-	this.addBookmark = function(object, listname){
-		add_bookmark(object, listname);
+	this.addbookmark = function(object, listname){
+		add_bookmark(object, list_name);
 	};
 	
-	this.deleteBookmark = function(object, listname){
+	this.deletebookmark = function(object, listname){
 		delete_bookmark(object, listname);
 	};
 	
-	this.createList = function(listname){ 
+	this.createlist = function(listname){ 
 		 
 		// Create an empty list and store it
 		list = new List();
 		MM_store(list, listname);
 	};
 	
-	this.deleteList = function(listname){ 
+	this.deletelist = function(listname){ 
 		
 		// Delete old entry from storage
 		localStorage.removeItem(listname); 
@@ -44,49 +44,25 @@ function Model(){
 		localStorage.setItem("list_index", JSON.stringify(index));
 	};
 	
-	this.renameList = function(listname, newname){ 
+	this.renamelist = function(listname, newname){ 
 		
-		// Retrieve list
+		// Retrieve list and re-store under new name
 		list = MM_retrieve(listname);
-		// Re.init. as List object and change name
-		console.log(list);
-		newlist = new List(newname, list);
-		newlist.rename(newname);
-		//  Re-store under new name
-		MM_store(newname, newlist);
+		MM_store(newname, list);
 
 		// Delete old entry
-		this.deleteList(listname);
+		this.deletelist(listname);
 	}
 	
 	this.getlist = function(listname){
 		return getList(listname);
 	}
 	
-	this.getLists = function(){
-		
-		// Get list names
-		index = model.getListNames();
-
-		// Init. lists as array
-		lists = [];
-
-		// Loop through and get each of the lists' bookmarks
-		for(var i in index){  
-		 	list = model.getlist(index[i]);
-			lists.push(list);
-		}
-		console.log(lists);
-		return lists;
-	}
-	
-	this.getListNames = function(){ 
+	this.getlist_index = function(){ 
 		return getList("list_index");	
 	}
 	
 }
-
-
 
 
 
@@ -123,10 +99,6 @@ function List(listname, list){
 	}
 	
 	// List methods:
-	
-	this.rename = function(newname){
-		this.name = newname;
-	}
 	
 	this.addBookmark = function(object){
 		this.bookmarks.push(object);
@@ -329,11 +301,11 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 	var br_long = ""; //mapBounds.getNorthEast().lng()
 
 	model = new Model;
-	model.doSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	model.dosearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 
 }
 //TESTER:
-//init_search("indian+food+upper+east+side", "");
+//init_search("thai+food+upper+east+side", "");
 
 
 /* Handles Yelp Search Results */
@@ -381,6 +353,95 @@ function yelp_result_handler(data){
 }
 
 
+/*** This function handles all the API stuff. It takes in terms and a location 
+	 as inputs and returns a JSONP object as output.                  ***/
+
+function yelp_api_get(terms, near, offset, sort, category_filter, radius_filter, tl_lat, tl_long, br_lat, br_long, callback){
+	
+	var respo = [];
+	var auth = { 
+			
+	  // Set #1	
+	  consumerKey: "02S2W1qbJK7NPYyckezZxw", 
+	  consumerSecret: "tLlCcTEp71HMQq9RKDrc282_0oQ",
+	  accessToken: "8Eer0PGIp4OfmATqsblPJGsO-v1oBdPC",
+	  accessTokenSecret: "ZmNZIytfkbyAS4aUUFwB6ZmoFl4", 
+	  
+	  // Set #2
+	  // consumerKey: "fKqvDvDUVAv371YEG9dEYQ", 
+	  // consumerSecret: "I2TkNzqCMmgoIZGkjwIrQyHE9i8",
+	  // accessToken: "uH9VOjPKzdryWW8SPuJdzGPseml4gotI",
+	  // accessTokenSecret: "Attj9cutGfOpaC8Je13sqdssJO8",
+	
+	  serviceProvider: { 
+	    signatureMethod: "HMAC-SHA1"
+	  }
+	};
+
+	var accessor = {
+	  consumerSecret: auth.consumerSecret,
+	  tokenSecret: auth.accessTokenSecret
+	};
+
+	var parameters = [];
+	parameters.push(['term', terms]);
+	parameters.push(['location', near]);
+	// Check optional params
+	if(offset!=0){
+		parameters.push(['offset', offset]);
+	}
+	if(sort!=0){
+		parameters.push(['sort', sort]);
+	}
+	if(category_filter!=""){
+		parameters.push(['category_filter', category_filter]);
+	}
+	if(radius_filter!=""){
+		parameters.push(['radius_filter', radius_filter]);
+	}
+	if(tl_lat!=""){
+		parameters.push(['tl_lat', tl_lat]);
+		parameters.push(['tl_long', tl_lat]);
+		parameters.push(['br_lat', br_lat]);
+		parameters.push(['br_long', br_lat]);
+	}
+	parameters.push(['callback', 'cb']);
+	parameters.push(['oauth_consumer_key', auth.consumerKey]);
+	parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
+	parameters.push(['oauth_token', auth.accessToken]);
+	parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+
+	var message = { 
+	  'action': 'http://api.yelp.com/v2/search',
+	  'method': 'GET',
+	  'parameters': parameters 
+	};
+
+	OAuth.setTimestampAndNonce(message);
+	OAuth.SignatureMethod.sign(message, accessor);
+
+	var parameterMap = OAuth.getParameterMap(message.parameters);
+	parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
+	console.log(parameterMap);
+
+	$.ajax({
+	  'url': message.action,
+	  'data': parameterMap,
+	  'cache': true,
+	  'dataType': 'jsonp',
+	  //'jsonpCallback': 'cb',
+	  'success': callback,	
+	   error: function(request,error) {
+		      	alert('An error occurred');
+		        // console.log(request, error);
+		      }
+	});
+
+	return true;	
+}
+
+
+
 /*--------- Model Tester Functions ----------*/
 
 // LIST TESTER: 
@@ -406,21 +467,21 @@ function yelp_result_handler(data){
 	//model.search(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
 	
 	/* add bookmark and get list testers */
-	//model.addBookmark("what stuff?", "list3"); 
+	//model.addbookmark("what stuff?", "list3"); 
 	//list = model.getlist("list3");
 	//console.log(list);
 
 	/* get index tester */
-	//console.log(model.getListNames());
+	//console.log(model.getlist_index());
 	
 	/* rename tester */
-	//console.log(model.getListNames());
-	//model.renameList("list2", "mylist");
-	//console.log(model.getListNames());
+	//console.log(model.getlist_index());
+	//model.renamelist("list2", "mylist");
+	//console.log(model.getlist_index());
 	
 	/* delete list tester */
-	//console.log(model.getListNames());
-	//model.deleteList("somelist");
-	//console.log(model.getListNames());
+	//console.log(model.getlist_index());
+	//model.deletelist("somelist");
+	//console.log(model.getlist_index());
 	
 	
