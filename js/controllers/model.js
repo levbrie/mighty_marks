@@ -396,7 +396,7 @@ function getList(listname){
 
 /* Initiates a Search */
 function init_search(searchterms, categories){ //@levbrie added categories parameter for search with category_filter
-	
+
 	// Set query params to search string
 	// var terms = $('#search').val();
 	var terms = searchterms;
@@ -409,8 +409,16 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 	var tl_long = ""; //mapBounds.getSouthWest().lng() 
 	var br_lat = ""; //mapBounds.getNorthEast().lat()
 	var br_long = ""; //mapBounds.getNorthEast().lng()
+	
+	// Check searchTarget to see if search is for yelp or bookmarks:
+	if(searchTarget == "Yelp"){
+		model.doYelpSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	}
+	else{
+		model.doMMSearch(terms, category_filter);
+	}
 
-	model.doYelpSearch(terms, category_filter, offset, sort, radius_filter, tl_lat, tl_long, br_lat, br_long);
+	
 
 }
 //TESTER:
@@ -428,7 +436,7 @@ function yelp_result_handler(data){
 
 function MM_result_handler(data) {
 	mightyData = data;
-	// displayMightyData(currentView);
+	displayMightyData();
 	// FORMAT OF ARRAY: ["nameoflist", [bookmarks array]]
 }
 

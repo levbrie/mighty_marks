@@ -147,7 +147,7 @@
 					divText += "  No tags yet!!" + "</a></span>";
 					divText += "<span class='clear'><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
 					divText += "</div>";
-					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
+					//divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
 					divText += "</div><!-- end list-item -->";	
 				}
 								
@@ -385,74 +385,149 @@
 			
 			function displayMightyData() {
 
-				// Empty breadcrumbs 	
-				$('#breadcrumb').html('');
 
 				var divText = "";
 				var divText2 = "";
 
-				for(var i = 0; i < mightyData.length; i++) {
-					var listName = mightyData[i].name;
-					var bookmarks = mightyData[i].bookmarks;
-					for(var j=0; j<bookmarks.length; j++) {
-						var yelpObject = bookmarks[j];
-						divText += "<div class='span3 grid-item' id='gridMightyObject_"+i+"'>";     
-						divText += "<div class='picture'>";			
-						divText += "<a href='" + yelpObject.url + "' title='Title'>";
-						divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
-						divText += "<div class='image-overlay-link'></div>";
-						divText += "</a>";		
-						divText += "<div class='item-description alt'>";
-						divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
-						divText += catsToHTML(yelpObject);
-						divText += "<h6>MightyList: " + listName + "</h6>";
-						divText += reviewToHTML(yelpObject.snippet_text);
-						// divText += "<p>" + yelpObject.snippet_text + "</p>";
-						divText += "</div>";
-						divText += "<div class='post-meta'>";
-						// create bottom line
-						divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
-						divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
-						divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
-						divText += "  No tags yet!!" + "</a></span>";
-						divText += "<span><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
-						// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
-						divText += "</div>";
-						divText += "</div><!-- end picture --></div><!-- end grid-item -->";
+				console.log(searchTarget);
+				
+				// If this is an MM search
+				if(searchTarget == "MightyMarks"){
+						console.log(mightyData);
+						for(i in mightyData) {
+							var listName = mightyData[i][0];
+							var yelpObject = mightyData[i][1];
+							
+								divText += "<div class='span3 grid-item' id='gridMightyObject_"+i+"'>";     
+								divText += "<div class='picture'>";			
+								divText += "<a href='" + yelpObject.url + "' title='Title'>";
+								divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
+								divText += "<div class='image-overlay-link'></div>";
+								divText += "</a>";		
+								divText += "<div class='item-description alt'>";
+								divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
+								divText += catsToHTML(yelpObject);
+								divText += "<h6>MightyList: " + listName + "</h6>";
+								divText += reviewToHTML(yelpObject.snippet_text);
+								// divText += "<p>" + yelpObject.snippet_text + "</p>";
+								divText += "</div>";
+								divText += "<div class='post-meta'>";
+								// create bottom line
+								divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+								divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+								divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+								divText += "  No tags yet!!" + "</a></span>";
+								divText += "<span><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
+								// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+								divText += "</div>";
+								divText += "</div><!-- end picture --></div><!-- end grid-item -->";
+
+								// OKT: Add bookmarks to list view as well
+								divText2 += "<div class='list-item row";
+								// if(business_search(yelpObject.name, "").length != 0) { 	// @MODEL need to search for businesses and return array if found
+									// divText += " highlighted";
+								// }
+								divText2 += "' id='gridYelpObject_"+i+"'>";     //@ORRENKT: added an id marker for referencing later
+																										// @LEVBRIE added distinguishing name which will need parsing
+								divText2 += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
+								divText2 += "<div class='image-overlay-link'></div>";	
+								divText2 += "<div class='span8'><h5>";
+								divText2 += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
+								divText2 += yelpObject.name + "</a></h5>";
+								divText2 += catsToHTML(yelpObject);
+								divText2 += reviewToHTML(yelpObject.snippet_text);
+								divText2 += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+								divText2 += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+								divText2 += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+								divText2 += "  No tags yet!!" + "</a></span>";
+								divText2 += "<span class='clear'><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
+								divText2 += "</div>";
+								//divText2 += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
+								divText2 += "</div><!-- end list-item -->";
+							
+						}
+
+						document.getElementById('grid-wrapper').innerHTML = divText;				
+						document.getElementById('list-wrapper').innerHTML = divText2;
+
+						// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
+						 refreshPopovers();
+						searchTermToUse = "";
+						$('.dropdown-menu').find('input').click(function (e) {
+					    	e.stopPropagation();
+					  	});
+								
+					}		
+					
+					// If it's a bookmarks load
+					else{
 						
-						// OKT: Add bookmarks to list view as well
-						divText2 += "<div class='list-item row";
-						// if(business_search(yelpObject.name, "").length != 0) { 	// @MODEL need to search for businesses and return array if found
-							// divText += " highlighted";
-						// }
-						divText2 += "' id='gridYelpObject_"+i+"'>";     //@ORRENKT: added an id marker for referencing later
-																								// @LEVBRIE added distinguishing name which will need parsing
-						divText2 += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
-						divText2 += "<div class='image-overlay-link'></div>";	
-						divText2 += "<div class='span8'><h5>";
-						divText2 += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
-						divText2 += yelpObject.name + "</a></h5>";
-						divText2 += catsToHTML(yelpObject);
-						divText2 += reviewToHTML(yelpObject.snippet_text);
-						divText2 += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
-						divText2 += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
-						divText2 += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
-						divText2 += "  No tags yet!!" + "</a></span>";
-						divText2 += "<span class='clear'><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
-						divText2 += "</div>";
-						divText2 += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
-						divText2 += "</div><!-- end list-item -->";
+						// Empty breadcrumbs 	
+						$('#breadcrumb').html('');
+						
+						for(var i = 0; i < mightyData.length; i++) {
+							var listName = mightyData[i].name;
+							var bookmarks = mightyData[i].bookmarks;
+							for(var j=0; j<bookmarks.length; j++) {		
+								var yelpObject = bookmarks[j];
+								divText += "<div class='span3 grid-item' id='gridMightyObject_"+i+"'>";     
+								divText += "<div class='picture'>";			
+								divText += "<a href='" + yelpObject.url + "' title='Title'>";
+								divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
+								divText += "<div class='image-overlay-link'></div>";
+								divText += "</a>";		
+								divText += "<div class='item-description alt'>";
+								divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
+								divText += catsToHTML(yelpObject);
+								divText += "<h6>MightyList: " + listName + "</h6>";
+								divText += reviewToHTML(yelpObject.snippet_text);
+								// divText += "<p>" + yelpObject.snippet_text + "</p>";
+								divText += "</div>";
+								divText += "<div class='post-meta'>";
+								// create bottom line
+								divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+								divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+								divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+								divText += "  No tags yet!!" + "</a></span>";
+								divText += "<span><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
+								// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+								divText += "</div>";
+								divText += "</div><!-- end picture --></div><!-- end grid-item -->";
+
+								// OKT: Add bookmarks to list view as well
+								divText2 += "<div class='list-item row";
+								// if(business_search(yelpObject.name, "").length != 0) { 	// @MODEL need to search for businesses and return array if found
+									// divText += " highlighted";
+								// }
+								divText2 += "' id='gridYelpObject_"+i+"'>";     //@ORRENKT: added an id marker for referencing later
+																										// @LEVBRIE added distinguishing name which will need parsing
+								divText2 += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
+								divText2 += "<div class='image-overlay-link'></div>";	
+								divText2 += "<div class='span8'><h5>";
+								divText2 += "<a href='" + yelpObject.url + "' title='" + yelpObject.name + "'>";
+								divText2 += yelpObject.name + "</a></h5>";
+								divText2 += catsToHTML(yelpObject);
+								divText2 += reviewToHTML(yelpObject.snippet_text);
+								divText2 += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+								divText2 += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+								divText2 += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+								divText2 += "  No tags yet!!" + "</a></span>";
+								divText2 += "<span class='clear'><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
+								divText2 += "</div>";
+								//divText2 += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
+								divText2 += "</div><!-- end list-item -->";
+							}
+						}
+
+						document.getElementById('grid-wrapper').innerHTML = divText;				
+						document.getElementById('list-wrapper').innerHTML = divText2;
+
+						// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
+						 refreshPopovers();
+						searchTermToUse = "";
+						$('.dropdown-menu').find('input').click(function (e) {
+					    	e.stopPropagation();
+					  	});
+							
 					}
-				}
-
-				document.getElementById('grid-wrapper').innerHTML = divText;				
-				document.getElementById('list-wrapper').innerHTML = divText2;
-
-				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
-				 refreshPopovers();
-				searchTermToUse = "";
-				$('.dropdown-menu').find('input').click(function (e) {
-			    	e.stopPropagation();
-			  	});		
-		
-			}
+		}		

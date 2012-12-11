@@ -2,6 +2,7 @@
 // for changing views, adding bookmarks, etc.
 var resultsData;
 var mightyData;
+var searchTarget = "Yelp";
 // initializes chosen with all the yelp categories 
 // and then sets up listeners for search bar
 jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
@@ -9,6 +10,19 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 		
 		// Display bookmarks onload.
 		displayAllMightyMarks();
+		
+		//Fix navbar
+		$(".chzn-container chzn-container-multi chzn-container-active").css("height","30px");
+		
+		// Radio listeners
+		$("#Yelp").click(function(){
+			searchTarget = "Yelp";
+		});
+		$("#MightyMarks").click(function(){
+			searchTarget = "MightyMarks";
+		});
+		
+		
 		
 		// let's add in all of the yelp categories to our select box
 		// (in the future let's use mustache templates)
