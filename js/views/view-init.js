@@ -44,7 +44,7 @@ $(document).ready(function() {
       selector: "a[rel=tooltip]"
     })
     $('.tooltip-test').tooltip()
-    $('.popover-test').popover()
+    $('.popover-anchor').popover()
     // popover demo
     $("a[rel=popover]")
       .popover()

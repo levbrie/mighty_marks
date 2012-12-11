@@ -396,48 +396,9 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 /* Handles Yelp Search Results */
 function yelp_result_handler(data){
-	
-		var businesses = data.businesses;
-		var divText = "";
-
-		for(var i = 0; i < businesses.length; i++) {
-			var yelpObject = businesses[i];
-			// alert("PAST BUSINESS " + i);
-			// var div = document.createElement("div");
-			// div.setAttribute("class", "span3 portfolio-item");
-			divText += "<div class='span3 portfolio-item'><div class='picture'>";			
-			divText += "<a href='" + yelpObject.url + "' title='Title'>"
-			divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
-			divText += "<div class='image-overlay-link'></div>";
-			divText += "</a>";		
-			divText += "<div class='item-description alt'>";
-			divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
-			if(yelpObject.categories) {
-				var cats = yelpObject.categories;
-				divText += "<h6>Categories: ";
-				for(var j = 0; j < cats.length; cats++) {
-					divText += cats[j][0] + " ";
-				}
-				divText += "</h6>";		
-			}
-			divText += "<p>" + yelpObject.snippet_text + "</p>";
-			divText += "</div>";
-			divText += "<div class='post-meta'>";
-			divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-ico-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
-			divText += "</div>";
-			// jtext += " CATEGORY: " + val.title + " ";
-			// jtext += " ALIAS: " + val.alias + " ";
-			divText += "</div><!-- end picture --></div><!-- end portfolio-item -->";
-			// div.innerHTML = divText;
-			// gridDiv.appendChild(div);		
-		}
-		alert("ALL PARSED");
-		// addIsotopeItems(divText);
-		var $newItems = $(divText);
-		$('#portfolio-wrapper').isotope( 'insert', $newItems );
-	
+	resultsData = data;
+	displayView(currentView);
 }
-
 
 /*--------- Model Tester Functions ----------*/
 
