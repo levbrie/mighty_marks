@@ -54,6 +54,7 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 			// LISTENER: ADD NEW LIST IN POPOVER 
 			$(".popover-input").keypress(function(event) {				
 				if (event.which == 13) {
+					alert(this.value);
 					var listName = this.value;
 					var objectIndex = this.getAttribute('yelpid');
 					model.addbookmark(businesses[objectIndex], listName);
