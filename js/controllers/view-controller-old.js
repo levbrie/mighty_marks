@@ -71,3 +71,47 @@ function fetchCurrentYelpObjects() {
 function performSearch() {
 	
 }
+
+
+			function createBookmarkDropdown(yelpid) {
+				var text = "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu'>";
+				text += "<li><a tabindex='-1' href='#'>Action</a></li>";
+				text += "<li class='divider'></li>"
+ 
+  // <li><a tabindex='-1' href='#'>Something else here</a></li>
+//   
+  // <li><a tabindex='-1' href='#'>Separated link</a></li>
+// </ul>
+				var text = "<td>Popover</td><td><a class='btn popover-anchor' data-content=\""; 			// begin data-content (where popover content goes)
+				text += buildDataContent(yelpid);
+				text += "\" "; 											// end of data-content
+				text += "rel=\"popover\" href=\"#\" data-original-title=\"Add a bookmark:\"";
+				text += " data-html=\"true\">Click to toggle popover</a></td>";
+				return text;
+			}
+			
+			function buildDataContent(yelpid) {
+				var text = "<form action='' name='";
+				text += "popoverform_" + yelpid + "' class='form-inline' id='popoverForm_";
+				text += yelpid + "'>";				
+				text += "<input type='text' data-yelpid='" + yelpid + "' class='popover-input' placeholder='Start a new MightyList...'>";
+				text += "<button type='submit' class='btn popover-btn'>Add</button>";
+				text += "</form><a class='popover-item' href='levbrie.com' title=''>List 1</a>";
+				text += createPopoverList(yelpid);
+				return text;
+			}
+			
+			function createDropdownList(yelpid) {
+				var text = "";
+				var listNames = model.getListNames();
+			
+				if (listNames) {						// make sure listNames is not null
+					for (var i = 0; i < listNames.length; i++) {
+						text += " <li><a tabindex='-1' href='#' class='popover-item' data-list-name='";
+						text += listNames[i] + "' data-yelpid='" + yelpid + "' title=''><span>";
+						text += listNames[i] + "</span></a></li>";
+					}
+				}
+				return text;
+
+			}

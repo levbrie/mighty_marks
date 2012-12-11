@@ -29,7 +29,7 @@ function Model(){
 	this.createList = function(listname){ 
 		 
 		// Create an empty list and store it
-		list = new List();
+		list = new List(listname, "");
 		MM_store(list, listname);
 	};
 	
@@ -305,8 +305,6 @@ function getList(listname){
 	list = JSON.parse(localStorage.getItem(listname));
 	return list;
 }
-
-
 
 
 /*--------- Controller Functions (Unrelated to Model!) ----------*/
