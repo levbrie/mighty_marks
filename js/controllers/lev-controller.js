@@ -31,26 +31,7 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 
 			createListeners();										// set up listeners for page		
 			
-				/* ********* SET UP LIST MANAGEMENT *********** */
-				$('.btn-close').click(function(e){
-					e.preventDefault();
-					var $element = $(this).parent().parent();
-					$listName = $element.data("list-name");
-					myModel.deleteList($listName);
-					alert($listName);
-					$(this).parent().parent().fadeOut();
-				});
-				$('.btn-minimize').click(function(e){
-					e.preventDefault();
-					var $target = $(this).parent().parent().next('.box-content');
-					if($target.is(':visible')) $('i',$(this)).removeClass('icon-chevron-up').addClass('icon-chevron-down');
-					else 					   $('i',$(this)).removeClass('icon-chevron-down').addClass('icon-chevron-up');
-					$target.slideToggle();
-				});
-				$('.btn-setting').click(function(e){
-					e.preventDefault();
-					// $(this).parent().parent().addInputBar;
-				});	
+
 		});
 	});
 });
@@ -63,6 +44,11 @@ function createListeners() {
 	createMightyDropdownListener();
 	createListSpecificDropdownListener();
 	createNewListFromMenuListener();
+	
+	// management listeners
+	createDestroyListButtonListener();
+	createToggleListItemsListener();
+	createListEditListener();
 }
 
 function createSearchClickListener() {
@@ -111,7 +97,6 @@ function createMightyDropdownListener() {
 		if (event.which == 13) {
 			var listName = this.value;
 			var objectIndex = this.getAttribute('data-yelpid');
-			myModel.createList(listName);
 			myModel.addBookmark(resultsData.businesses[objectIndex], listName);
 			var message = "Nice! " + listName + ", your brand new MightyList has been successfully created!";
 			// generate success message
@@ -153,7 +138,7 @@ function createListSpecificDropdownListener() {
 // FOR ADDING NEW LIST WITH NO BOOKMARK
 function createNewListFromMenuListener() {
 	// LISTENER: ADD NEW LIST WITHOUT ANY BOOKMARK OBJECT 
-	$(document).on("keypress", "#newListAdder", function(event) {		
+	$(document).on("keypress", ".newListAdder", function(event) {		
 		// event.preventDefault();		
 		if (event.which == 13) {
 			var listName = this.value;
@@ -186,4 +171,46 @@ function parseCategoryStrings() {
 	});
 	return [categoryString, catFilterString];
 }
+
+
+
+/* ********* SET UP LIST MANAGEMENT *********** */
+function createDestroyListButtonListener() {
+	$(document).on("click", ".btn-close", function(e) {	
+			e.preventDefault();
+			var $element = $(this).parent().parent();
+			$listName = $element.data("list-name");
+			myModel.deleteList($listName);
+			var message = $listName + " successfully deleted!";
+			// generate success message
+			var error = generateNoty("error", message);    
+			// SET NOTIFICATION TIMEOUTS  
+			setTimeout(function() {
+		      $.noty.setText(error.options.id, 'I\'m closing now!'); // same as alert.setText('Text Override')
+		    }, 14000);
+		    setTimeout(function() {
+		      $.noty.close(error.options.id);
+		    }, 2000);
+			$(this).parent().parent().fadeOut();
+
+	});
+}
+function createToggleListItemsListener() {
+	$(document).on("click", ".btn-minimize", function(e) {	
+		e.preventDefault();
+		var $target = $(this).parent().parent().next('.box-content');
+		if($target.is(':visible')) $('i',$(this)).removeClass('icon-chevron-up').addClass('icon-chevron-down');
+		else 					   $('i',$(this)).removeClass('icon-chevron-down').addClass('icon-chevron-up');
+		$target.slideToggle();
+	});	
+}
+function createListEditListener() {
+	$(document).on("click", ".btn-setting", function(e) {	
+	// $('.btn-setting').click(function(e){
+		e.preventDefault();
+		// $(this).parent().parent().addInputBar;
+	});	
+}
+
+
 
