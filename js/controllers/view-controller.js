@@ -20,13 +20,15 @@
 						displayView("list");
 					}					
 				};
-				document.getElementById("display-map").onclick = function() {
-					if(currentView != "map") {						
-						deleteView(currentView);
-						currentView = "map";
-						displayView("map");
-					}					
-				};
+				
+				// map listener awaiting implementation
+				// document.getElementById("display-map").onclick = function() {
+					// if(currentView != "map") {						
+						// deleteView(currentView);
+						// currentView = "map";
+						// displayView("map");
+					// }					
+				// };
 				
 				//@ORRENKT: added grid item listener for triggering bookmarking
 				
@@ -64,6 +66,8 @@
 						displayGrid();
 				}				
 			}
+			
+
 
 			function displayGrid() {
 				var businesses = resultsData.businesses;
@@ -221,12 +225,13 @@
 			
 			function createDropdownList(yelpid) {
 				var text = "";
-				var listNames = model.getListNames();			
-				if (listNames) {						// make sure listNames is not null
-					for (var i = 0; i < listNames.length; i++) {
+				// var listNames = model.getListNames();		
+				var listOfLists = model.getLists();	
+				if (listOfLists) {						// make sure listNames is not null
+					for (var i = 0; i < listOfLists.length; i++) {
 						text += " <li><a tabindex='-1' href='#' class='dropdown-bookmark-item' data-list-name='";
-						text += listNames[i].name + "' data-yelpid='" + yelpid + "' title=''><span>";
-						text += listNames[i].name + "</span></a></li>";
+						text += listOfLists[i].name + "' data-yelpid='" + yelpid + "' title=''><span>";
+						text += listOfLists[i].name + "</span></a></li>";
 					}
 				}
 				return text;
@@ -280,7 +285,8 @@
 			}
 
 			function displayAllMightyMarks() {
-				
+				mightyData = model.getLists();
+				displayMightyData();
 			}
 			
 			function displayManagerModal() {
@@ -291,32 +297,126 @@
 				var modalBody = document.getElementById('modalBody');
 				modalBody.innerHTML = "";			
 				var text = "";				
-				var listNames = myModel.getListNames();			
-				if (listNames) {						// make sure listNames is not null
-					for (var i = 0; i < listNames.length; i++) {
-						text+= "<div class='box-header' data-list-name='";
-						text += listNames[i].name + "'>";
-						text+= "<h2><i class='icon-list'></i><span class='break'></span>";
-						text+= listNames[i].name;
-						text+= "</h2>";
-						text+= "<div class='box-icon'>";
-						text+= "<a class='btn-setting' href='#'>";
-						text+= "<i class='icon-wrench'></i>";
-						text+= "</a>";
-						text+= "<a class='btn-minimize' href='#'>";
-						text+= "<i class='icon-chevron-down'></i>";
-						text+= "</a>";
-						text+= "<a class='btn-close' href='#'>";
-						text+= "<i class='icon-minus-sign'></i>";
-						text+= "</a>";
-						text+= "</div>";
-						text+= "</div>";
+				// var listNames = model.getListNames();	
+				var listOfLists = model.getLists();
+				for(var i=0; i < listOfLists.length; i++) {
+				// $.each(listOfLists, function(key, val) {
+						text += createListEditBox("box-header", listOfLists[i].name, listOfLists[i].name);
+						// text+= "<div class='box-header' data-list-name='";
+						// text += listOfLists[i].name + "'>";
+						// text+= "<h2><i class='icon-list'></i><span class='break'></span>";
+						// text+= listOfLists[i].name;
+						// text+= "</h2>";
+						// text+= "<div class='box-icon'>";
+						// text+= "<a class='btn-setting' href='#'>";
+						// text+= "<i class='icon-wrench'></i>";
+						// text+= "</a>";
+						// text+= "<a class='btn-minimize' href='#'>";
+						// text+= "<i class='icon-chevron-down'></i>";
+						// text+= "</a>";
+						// text+= "<a class='btn-close' href='#'>";
+						// text+= "<i class='icon-minus-sign'></i>";
+						// text+= "</a>";
+						// text+= "</div>";
+						// text+= "</div>";
 						text+= "<div class='box-content' style='display:none;'>";
-						text+= "	<div class='alert alert-block'></div>";
-						text+= "	<p class='center'></p>";
+						var bookmarks = listOfLists[i].bookmarks;
+						if(bookmarks.length < 1) {
+							text += "<div class='alert alert-info'>";
+							text += "<button type='button' class='close' data-dismiss='alert'>×</button>";
+							text += "<strong>I'm waiting for MightyMarks!</strong> You still haven't added anything to this MightyList.";
+							text += "</div>";
+						} else {
+							for(var j=0; j < bookmarks.length; j++) {
+								text += createListEditBox("box-inner", bookmarks[j].name, listOfLists[i].name);
+							}							
+						}
+	
 						text+= "</div>";
-					}
-				}
+				// });	
+				}	
 				modalBody.innerHTML =  text;
 			}
 
+			function createListEditBox(className, editName, listName) {
+				var text = "";
+				text+= "<div class='" + className;
+				if(className == "box-header") {
+					text += "' data-list-name='";
+				} else {
+					text += "' data-list-name='" + listName + "'";			// give it a list name so we know what list
+					text += "' data-mark-name='";
+				}
+				text += editName + "'>";
+				if(className == "box-header") {
+					text+= "<h2><i class='icon-list'></i><span class='break'></span>";
+				} else {
+					text+= "<h2><i class='icon-bookmark'></i><span class='break'></span>";
+				}			
+				text+= editName;
+				text+= "</h2>";
+				text+= "<div class='box-icon'>";
+				if(className == "box-header") {
+					text+= "<a class='btn-setting' href='#'>";
+					text+= "<i class='icon-wrench'></i>";
+					text+= "</a>";
+					text+= "<a class='btn-minimize' href='#'>";
+					text+= "<i class='icon-chevron-down'></i>";
+					text+= "</a>";
+					text+= "<a class='btn-close' href='#'>";
+					text+= "<i class='icon-minus-sign'></i>";
+					text+= "</a>";
+				} else {					
+					text+= "<a class='btn-close-mark' href='#'>";
+					text+= "<i class='icon-minus-sign'></i>";
+					text+= "</a>";					
+				}
+				text+= "</div>";
+				text+= "</div>";
+				return text;
+			}
+			
+			function displayMightyData() {
+
+				var divText = "";
+
+				for(var i = 0; i < mightyData.length; i++) {
+					var listName = mightyData[i].name;
+					var bookmarks = mightyData[i].bookmarks;
+					for(var j=0; j<bookmarks.length; j++) {
+						var yelpObject = bookmarks[j];
+						divText += "<div class='span3 grid-item' id='gridMightyObject_"+i+"'>";     
+						divText += "<div class='picture'>";			
+						divText += "<a href='" + yelpObject.url + "' title='Title'>";
+						divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
+						divText += "<div class='image-overlay-link'></div>";
+						divText += "</a>";		
+						divText += "<div class='item-description alt'>";
+						divText += "<h5><a href='project.html'>" + yelpObject.name + "</a></h5>";
+						divText += catsToHTML(yelpObject);
+						divText += "<h6>MightyList: " + listName + "</h6>";
+						divText += reviewToHTML(yelpObject.snippet_text);
+						// divText += "<p>" + yelpObject.snippet_text + "</p>";
+						divText += "</div>";
+						divText += "<div class='post-meta'>";
+						// create bottom line
+						divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+						divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+						divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+						divText += "  No tags yet!!" + "</a></span>";
+						divText += "<span><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
+						// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+						divText += "</div>";
+						divText += "</div><!-- end picture --></div><!-- end grid-item -->";
+					}
+				}
+
+				document.getElementById('grid-wrapper').innerHTML = divText;
+				
+				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
+				// refreshPopovers();
+				searchTermToUse = "";
+				$('.dropdown-menu').find('input').click(function (e) {
+			    	e.stopPropagation();
+			  	});				
+			}

@@ -39,8 +39,11 @@
 		<script src="js/controllers/view-controller.js"></script>
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->		
 		<script>
-			var myModel = new Model();		// create global myModel variable
+			var model = new Model();		// create global model variable
+			  // @levbrie
+ 			var searchTermToUse = "";		// global variable to get search term to search
 			jQuery(function($) {// using failsafe $ alias to ensure jQuery loading
+				
 				    $('#myModal').modal({
 				    	show: false,
 				    	keyboard: true
@@ -163,7 +166,7 @@
 				<div class="nav-collapse collapse">
 					<div class="nav btn-toolbar pull-right padTopShort">
 						<div class="btn-group">
-							<a class="btn" id="display-map" href="#"><i class="icon-map-marker"></i></a>
+							<!-- <a class="btn" id="display-map" href="#"><i class="icon-map-marker"></i></a> --><!-- GOOGLE MAP TOGGLE -->
 							<a class="btn" id="display-grid" href="#"><i class="icon-th-large"></i></a>
 							<a class="btn" id="display-list" href="#"><i class="icon-th-list"></i></a>
 						</div>
@@ -204,9 +207,10 @@
 			<div class="row-fluid">
 				<span class="span12">
 					<div class="btn-group hbox">
-						<button class="flex_child_1 btn btn-large btn-primary btn-2" id="mightyMarksDisplay">My MightyMarks</button>
+						<button class="flex_child_1 btn btn-large ybtn-primary btn-2" id="mightyMarksDisplay">My MightyMarks</button>
 						<!-- USING YELP COLORS -->
-						<!-- <button class="flex_child_1 btn btn-large ybtn-primary btn-3" id="mightyManager"> --><a data-toggle="modal" class="flex_child_1 btn btn-large ybtn-primary btn-3" href="#myModal">Manage</a><!-- </button> -->
+						<!-- <button class="flex_child_1 btn btn-large ybtn-primary btn-3" id="mightyManager"> -->
+						<a data-toggle="modal" class="flex_child_1 btn btn-large ybtn-primary btn-3" href="#myModal">Manage</a><!-- </button> -->
 						<input class="flex_child_1 btn-6 newListAdder" placeholder="Add New List">
 					</div>
 				</span>

@@ -1,7 +1,7 @@
 // this holds the results of the latest search so they can be retrieved 
 // for changing views, adding bookmarks, etc.
 var resultsData;
-
+var mightyData;
 // initializes chosen with all the yelp categories 
 // and then sets up listeners for search bar
 jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
@@ -57,7 +57,18 @@ function createSearchClickListener() {
 		var parsedCategories = parseCategoryStrings();
 		var categoryString = parsedCategories[0];
 		var catFilterString = parsedCategories[1];
-		init_search(searchTermToUse, catFilterString);
+		if(searchTermToUse != "" && catFilterString != "") {
+			init_search(searchTermToUse, catFilterString);
+		} else if(searchTermToUse == ""){
+			init_search("", catFilterString);					// search on empty string if undefined (find by category)
+		} else if(searchTermToUse != "") {
+			init_search(searchTermToUse, "");						// search with no categories
+		} else {
+			// generate error message
+			var info = generateNoty("info", "Just so you know, you didn't provide any search terms or categories.");    
+			// SET NOTIFICATION TIMEOUTS  
+			setNotyTimeout(info);
+		}
 		updateBreadcrumbs(categoryString, searchTermToUse);
 	});	
 }
@@ -68,8 +79,10 @@ function createSearchKeyListener() {
 	$(document).on("keypress", ".default", function(event) {							
 		if (event.which == 13) {
 			var parsedCategories = parseCategoryStrings();  
-			init_search(searchTermToUse, parsedCategories[1]);
-			updateBreadcrumbs(parsedCategories[0], searchTermToUse);
+			if(searchTermToUse != "") {
+				init_search(searchTermToUse, parsedCategories[1]);		// search with term and categories
+				updateBreadcrumbs(parsedCategories[0], searchTermToUse);				
+			}
 			return false;
 		}
 	});	
@@ -96,7 +109,9 @@ function createMightyDropdownListener() {
 		if (event.which == 13) {
 			var listName = this.value;
 			var objectIndex = this.getAttribute('data-yelpid');
-			myModel.addBookmark(resultsData.businesses[objectIndex], listName);
+			console.log(model.getListNames());
+			model.addBookmark(resultsData.businesses[objectIndex], listName);
+			console.log(model.getListNames());
 			var message = "Nice! " + listName + ", your brand new MightyList has been successfully created!";
 			// generate success message
 			var success = generateNoty("success", message);    
@@ -118,8 +133,10 @@ function createListSpecificDropdownListener() {
 		event.preventDefault();				
 		var listName = this.getAttribute("data-list-name"); // data attribute that stores name of list
 		var objectIndex = this.getAttribute('data-yelpid');	// stores index in results of item we wish to add
-		// myModel.createList(listName);
-		myModel.addBookmark(resultsData.businesses[objectIndex], listName);
+		// model.createList(listName);
+		var result = resultsData.businesses[objectIndex];
+		alert(result.name + " " + result.categories[0] + " " + result.url);
+		model.addBookmark(resultsData.businesses[objectIndex], listName);
 		var busName = resultsData.businesses[objectIndex].name;
 		var message = "You just added " + busName + " to " + listName + ".  Nicely done!";
 		// generate success message
@@ -141,8 +158,8 @@ function createNewListFromMenuListener() {
 		// event.preventDefault();		
 		if (event.which == 13) {
 			var listName = this.value;
-			myModel.createList(listName);
-			// i want to put an if(myModel.createList(listName)) then success, otherwise error message already taken
+			model.createList(listName);
+			// i want to put an if(model.createList(listName)) then success, otherwise error message already taken
 			var message = "Nice! " + listName + ", your brand new MightyList has been successfully created!";
 			// generate success message
 			var success = generateNoty("success", message);    
@@ -179,7 +196,7 @@ function createDestroyListButtonListener() {
 			e.preventDefault();
 			var $element = $(this).parent().parent();
 			$listName = $element.data("list-name");
-			myModel.deleteList($listName);
+			model.deleteList($listName);
 			var message = $listName + " successfully deleted!";
 			// generate success message
 			var error = generateNoty("error", message);    
@@ -211,5 +228,35 @@ function createListEditListener() {
 	});	
 }
 
+/* ********* SET UP INDIVIDUAL BOOKMARKS MANAGEMENT *********** */
+function createDestroyMarkButtonListener() {
+	$(document).on("click", ".btn-close-mark", function(e) {	
+			e.preventDefault();
+			var $element = $(this).parent().parent();
+			var $markName = $element.data("mark-name");
+			var $listName = $element.data("list-name");
+			model.deleteBookmark($markName, $listName);
+			var message = $markName + " successfully deleted!";
+			// generate success message
+			var error = generateNoty("error", message);    
+			// SET NOTIFICATION TIMEOUTS  
+			setTimeout(function() {
+		      $.noty.setText(error.options.id, 'I\'m closing now!'); // same as alert.setText('Text Override')
+		    }, 14000);
+		    setTimeout(function() {
+		      $.noty.close(error.options.id);
+		    }, 2000);
+			$(this).parent().parent().fadeOut();
+	});
+}
 
+// set timer to make given notification disappear after a certain number of milliseconds
+function setNotyTimeout(notyObject) {
+	setTimeout(function() {
+      $.noty.setText(notyObject.options.id, 'I\'m closing now!'); // same as alert.setText('Text Override')
+    }, 14000);
+    setTimeout(function() {
+      $.noty.close(notyObject.options.id);
+    }, 2000);
+}
 
