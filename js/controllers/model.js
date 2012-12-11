@@ -143,7 +143,7 @@ function List(listname, list){
 		
 				// Delete entry from bookmarks array
 				this.bookmarks.splice(j, 1);
-				return true;
+				return true; 
 			}
 		}	
 	};
@@ -191,8 +191,35 @@ function delete_bookmark(object, listname){
 /* Bookmark Searcher */
 function bookmark_search(terms, category_filter){ 
 	
-	// Init. results array
+	// Init. results and searchterm array
 	var results = [];
+	var something = [];
+	
+	// Check if 'terms' contains multiple search terms
+	var split = terms.indexOf(" ");
+	if(split == -1){ // If not, just push terms into searchterms array
+		var searchterms = [];
+		searchterms.push(terms);
+	}
+	else{
+		var searchterms = termsplitter(terms, " ", something);
+		console.log(searchterms);
+	}	
+	
+	// If there's a category filter
+	if(category_filter != ""){
+			
+			// Check if 'category_filter' contains multiple search filters
+			var split = category_filter.indexOf(",");
+			if(split == -1){ // If not, just push terms into searchterms array
+				var searchterms = [];
+				category_filters.push(category_filter);
+			}
+			else{
+				var category_filters = termsplitter(category_filter, ",", something);
+				console.log(category_filters);
+			}
+	}
 	
 	// Get list index, loop through lists
 	index = getList("list_index");
@@ -201,25 +228,17 @@ function bookmark_search(terms, category_filter){
 		
 		// Loop through bookmarks array
 		for(var j in list.bookmarks){
-			
-			// Check bookmark name for search term, and if there's a match:
+
+			// Check bookmark name 
 			var name = list.bookmarks[j].name;
-			if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
-				
-				// Check if it's already in the results array and add it if it isn't 
-				var found = $(results).filter(function(){
-				        return this.name == list.bookmarks[j].name;
-					});
-				if(found.length <= 0){
-					results.push(list.bookmarks[j]);
-				}
-			}
-			
-			// Check bookmark snippet for search term, and if there's a match:
-			var snippet = list.bookmarks[j].snippet_text;
-			if(snippet.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
-				if($.inArray(list.bookmarks[j], results) == -1){
-					
+
+			// Looking through each searchterm:
+			for(k in searchterms){
+
+				terms = searchterms[k];
+
+				if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+
 					// Check if it's already in the results array and add it if it isn't 
 					var found = $(results).filter(function(){
 					        return this.name == list.bookmarks[j].name;
@@ -228,19 +247,33 @@ function bookmark_search(terms, category_filter){
 						results.push(list.bookmarks[j]);
 					}
 				}
-			}
+
+				// Check bookmark snippet for search term, and if there's a match:
+				var snippet = list.bookmarks[j].snippet_text;
+				if(snippet.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
+					if($.inArray(list.bookmarks[j], results) == -1){
+
+						// Check if it's already in the results array and add it if it isn't 
+						var found = $(results).filter(function(){
+						        return this.name == list.bookmarks[j].name;
+							});
+						if(found.length <= 0){
+							results.push(list.bookmarks[j]);
+						}
+					}
+				}
+			}	
+
+
 			
-			// Check bookmark categories for category filter if it exists. And if there's a match:
-			if(category_filter != ""){
 				//can probably use grep, filter, or in array for this since it should be an exact match
 				// with the categories array content.
 				//var cat = list.bookmarks[j].name;
 				//if(name.toLowerCase().indexOf(terms.toLowerCase()) != -1) {
 				//}
-			}	
-		}
+		}	
 	}	
-	
+
 	console.log(results); /* Notes to self:
 	// send return results objects to MM_result_handler, which needs to be written
 	// do cat match: .categories[0], which contains an array of cats, so need to check each... 
@@ -249,8 +282,32 @@ function bookmark_search(terms, category_filter){
 
 }
 //TESTER:
-//bookmark_search("dining","thai");
+bookmark_search("eclectic luscious with indian noodles","thai,indian");
 
+
+function termsplitter(terms, marker, result){
+	
+	// If there is an instance of the marker
+	console.log(terms.indexOf(marker)+"!!?");
+	if(terms.indexOf(marker) > -1){
+
+		result.push(terms.substring(0, terms.indexOf(marker)));
+		terms = terms.substring(terms.indexOf(marker)+1);
+
+		if(terms.indexOf(marker) > -1){
+			termsplitter(terms, marker, result);
+			return result;
+		}
+		else{
+			result.push(terms);
+			return result;
+		}
+	}
+	else{
+		return result;
+	}	
+	
+}
 
 
 /*--------- Local Storage Helper Functions for Model Class ----------*/
@@ -331,7 +388,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
-//init_search("indian+food+upper+east+side", "");
+init_search("indian+food+upper+east+side", "");
 
 
 /* Handles Yelp Search Results */
