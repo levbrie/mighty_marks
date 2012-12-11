@@ -6,6 +6,10 @@ var mightyData;
 // and then sets up listeners for search bar
 jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery loading
 	jQuery(document).ready(function() {
+		
+		//
+		
+		
 		// let's add in all of the yelp categories to our select box
 		// (in the future let's use mustache templates)
 		$.getJSON('./json/category.json', function(data) {
@@ -134,7 +138,7 @@ function createListSpecificDropdownListener() {
 		var objectIndex = this.getAttribute('data-yelpid');	// stores index in results of item we wish to add
 		// model.createList(listName);
 		var result = resultsData.businesses[objectIndex];
-		alert(result.name + " " + result.categories[0] + " " + result.url);
+		//alert(result.name + " " + result.categories[0] + " " + result.url);
 		model.addBookmark(resultsData.businesses[objectIndex], listName);
 		var busName = resultsData.businesses[objectIndex].name;
 		var message = "You just added " + busName + " to " + listName + ".  Nicely done!";
@@ -169,6 +173,7 @@ function createNewListFromMenuListener() {
 		    setTimeout(function() {
 		      $.noty.close(success.options.id);
 		    }, 2000);
+			displayListsForManagement();
 			return false;
 		}
 	});
