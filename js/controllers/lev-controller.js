@@ -46,6 +46,7 @@ function createListeners() {
 	
 	// management listeners
 	createDestroyListButtonListener();
+	createDestroyMarkButtonListener();
 	createToggleListItemsListener();
 	createListEditListener();
 }
@@ -191,13 +192,14 @@ function parseCategoryStrings() {
 /* ********* SET UP LIST MANAGEMENT *********** */
 function createDestroyListButtonListener() {
 	$(document).on("click", ".btn-close", function(e) {	
-			e.preventDefault();
+			e.preventDefault();			
 			var $element = $(this).parent().parent();
-			$listName = $element.data("list-name");
+			var $listName = $element.data("list-name");
 			model.deleteList($listName);
 			var message = $listName + " successfully deleted!";
 			// generate success message
-			var error = generateNoty("error", message);    
+			var error2 = generateNoty("error", message); 
+			   
 			// SET NOTIFICATION TIMEOUTS  
 			setTimeout(function() {
 		      $.noty.setText(error.options.id, 'I\'m closing now!'); // same as alert.setText('Text Override')
@@ -206,8 +208,9 @@ function createDestroyListButtonListener() {
 		      $.noty.close(error.options.id);
 		    }, 2000);
 			$(this).parent().parent().fadeOut();
-
+			$(this).parent().parent().next().fadeOut();
 	});
+	
 }
 function createToggleListItemsListener() {
 	$(document).on("click", ".btn-minimize", function(e) {	
@@ -228,8 +231,9 @@ function createListEditListener() {
 
 /* ********* SET UP INDIVIDUAL BOOKMARKS MANAGEMENT *********** */
 function createDestroyMarkButtonListener() {
+	
 	$(document).on("click", ".btn-close-mark", function(e) {	
-			e.preventDefault();
+			e.preventDefault();			
 			var $element = $(this).parent().parent();
 			var $markName = $element.data("mark-name");
 			var $listName = $element.data("list-name");
@@ -246,6 +250,7 @@ function createDestroyMarkButtonListener() {
 		    }, 2000);
 			$(this).parent().parent().fadeOut();
 	});
+
 }
 
 // set timer to make given notification disappear after a certain number of milliseconds

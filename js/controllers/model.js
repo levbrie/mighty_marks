@@ -26,8 +26,8 @@ function Model(){
 		add_bookmark(object, listname);
 	};
 	
-	this.deleteBookmark = function(object, listname){
-		delete_bookmark(object, listname);
+	this.deleteBookmark = function(markname, listname){
+		delete_bookmark(markname, listname);
 	};
 	
 	this.createList = function(listname){ 		 
@@ -133,14 +133,14 @@ function List(listname, list){
 		this.bookmarks.push(object);
 	}
 
-	this.removeBookmark = function (object) { 
+	this.removeBookmark = function (markname) { 
 	
 		// Loop through bookmarks array
 		for(var j in list.bookmarks){
 			
 			// Check bookmark name for object name, and if there's a match:
 			var name = list.bookmarks[j].name;
-			if(name.indexOf(object.name) != -1) {
+			if(name.indexOf(markname) != -1) {
 		
 				// Delete entry from bookmarks array
 				this.bookmarks.splice(j, 1);
@@ -176,14 +176,14 @@ function add_bookmark(object, listname){
 	 }	
 }
 
-function delete_bookmark(object, listname){
+function delete_bookmark(markname, listname){
 	
 	// Get the list from storage and reinstantiate it as a List object
 	list = MM_retrieve(listname);
 	if(list){
 		list = new List(listname, list);
 		// Find the bookmark and delete it from the list
-		list.removeBookmark(object);
+		list.removeBookmark(markname);
 		// Re-store the list
 		MM_store(listname, list);
 	}	
