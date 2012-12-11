@@ -19,7 +19,7 @@ function Model(){
 	/*---- Model Methods: Create, Edit and Retrieve Lists and Bookmarks ----*/
 	 
 	this.addbookmark = function(object, listname){
-		add_bookmark(object, list_name);
+		add_bookmark(object, listname);
 	};
 	
 	this.deletebookmark = function(object, listname){
@@ -44,11 +44,16 @@ function Model(){
 		localStorage.setItem("list_index", JSON.stringify(index));
 	};
 	
-	this.renamelist = function(listname, newname){ 
+	this.renameList = function(listname, newname){ 
 		
-		// Retrieve list and re-store under new name
+		// Retrieve list
 		list = MM_retrieve(listname);
-		MM_store(newname, list);
+		// Re.init. as List object and change name
+		console.log(list);
+		newlist = new List(newname, list);
+		newlist.rename(newname);
+		//  Re-store under new name
+		MM_store(newname, newlist);
 
 		// Delete old entry
 		this.deletelist(listname);
@@ -58,12 +63,28 @@ function Model(){
 		return getList(listname);
 	}
 	
-	this.getlist_index = function(){ 
+	this.getLists = function(){
+		
+		// Get list names
+		index = model.getListNames();
+
+		// Init. lists as array
+		lists = [];
+
+		// Loop through and get each of the lists' bookmarks
+		for(var i in index){  
+		 	list = model.getlist(index[i]);
+			lists.push(list);
+		}
+		console.log(lists);
+		return lists;
+	}
+	
+	this.getListNames = function(){ 
 		return getList("list_index");	
 	}
 	
 }
-
 
 
 /*--------- Helper Functions for Model Class ----------*/
@@ -99,6 +120,10 @@ function List(listname, list){
 	}
 	
 	// List methods:
+	
+	this.rename = function(newname){
+		this.name = newname;
+	}
 	
 	this.addBookmark = function(object){
 		this.bookmarks.push(object);
@@ -305,7 +330,7 @@ function init_search(searchterms, categories){ //@levbrie added categories param
 
 }
 //TESTER:
-//init_search("thai+food+upper+east+side", "");
+//init_search("indian+food+upper+east+side", "");
 
 
 /* Handles Yelp Search Results */
@@ -383,16 +408,16 @@ function yelp_result_handler(data){
 	//console.log(list);
 
 	/* get index tester */
-	//console.log(model.getlist_index());
+	//console.log(model.getListNames());
 	
 	/* rename tester */
-	//console.log(model.getlist_index());
-	//model.renamelist("list2", "mylist");
-	//console.log(model.getlist_index());
+	//console.log(model.getListNames());
+	//model.renameList("list2", "mylist");
+	//console.log(model.getListNames());
 	
 	/* delete list tester */
-	//console.log(model.getlist_index());
+	//console.log(model.getListNames());
 	//model.deletelist("somelist");
-	//console.log(model.getlist_index());
+	//console.log(model.getListNames());
 	
 	

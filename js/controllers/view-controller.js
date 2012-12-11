@@ -27,6 +27,10 @@
 						displayView("map");
 					}					
 				};
+				
+				//@ORRENKT: added grid item listener for triggering bookmarking
+				
+				
 			});
 			
 			function deleteView(view) {
@@ -67,7 +71,7 @@
 
 				for(var i = 0; i < businesses.length; i++) {
 					var yelpObject = businesses[i];
-					divText += "<div class='span3 grid-item'><div class='picture'>";			
+					divText += "<div class='span3 grid-item' id='"+i+"'><div class='picture'>";			//@ORRENKT: added an id marker for referencing later
 					divText += "<a href='" + yelpObject.url + "' title='Title'>";
 					divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
 					divText += "<div class='image-overlay-link'></div>";
