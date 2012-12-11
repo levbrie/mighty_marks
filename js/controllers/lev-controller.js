@@ -29,7 +29,28 @@ jQuery(function($) {// !!IMPORTANT: using failsafe $ alias to ensure jQuery load
 			$(".chzn-select").chosen();								// initialize chosen
 			$(".chzn-choices").addClass("search-query span4");		// add classes to chosen.js ul tag in order to size search bar
 
-			createListeners();										// set up listeners for page					
+			createListeners();										// set up listeners for page		
+			
+				/* ********* SET UP LIST MANAGEMENT *********** */
+				$('.btn-close').click(function(e){
+					e.preventDefault();
+					var $element = $(this).parent().parent();
+					$listName = $element.data("list-name");
+					myModel.deleteList($listName);
+					alert($listName);
+					$(this).parent().parent().fadeOut();
+				});
+				$('.btn-minimize').click(function(e){
+					e.preventDefault();
+					var $target = $(this).parent().parent().next('.box-content');
+					if($target.is(':visible')) $('i',$(this)).removeClass('icon-chevron-up').addClass('icon-chevron-down');
+					else 					   $('i',$(this)).removeClass('icon-chevron-down').addClass('icon-chevron-up');
+					$target.slideToggle();
+				});
+				$('.btn-setting').click(function(e){
+					e.preventDefault();
+					// $(this).parent().parent().addInputBar;
+				});	
 		});
 	});
 });
@@ -77,10 +98,10 @@ function createAllMarksDisplayListener() {
 }
 
 function createMightyManagerListener() {
-	$(document).on("click", "#mightyManager", function(jQEvent) { // jQEvent added for isotope
-		jQEvent.preventDefault(); 							
-		displayManagerModal();
-	});	
+	// $(document).on("click", "#mightyManager", function(jQEvent) { // jQEvent added for isotope
+		// jQEvent.preventDefault(); 							
+		// displayManagerModal();
+	// });	
 }
 
 function createMightyDropdownListener() {

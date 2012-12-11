@@ -39,12 +39,114 @@
 		<script src="js/controllers/view-controller.js"></script>
 		<script src="js/views/view-init.js"></script><!-- Initialize javascript functions in view -->		
 		<script>
-			var myModel = new Model;		// create global myModel variable
+			var myModel = new Model();		// create global myModel variable
+			jQuery(function($) {// using failsafe $ alias to ensure jQuery loading
+				    $('#myModal').modal({
+				    	show: false,
+				    	keyboard: true
+				    })
+				    $('#myModal').on('show', function () {
+  						displayListsForManagement();
+					})
+				// $('#myModal').on('hidden', function() {
+					// // canvasForModal.restore();
+				// })
+				// $('#myModal').on('shown', function() {
+					// var winWidth = window.innerWidth * 0.8;
+					// var winHeight = window.innerHeight * 0.8;
+				// })
+			});
+			
 		</script>
 		<title>MightyMarks</title>
 	</head>
 
 	<body>
+			<!-- sample modal content -->
+			<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h2>
+						Manage Your Lists
+					</h2>
+				</div>
+				<div class="modal-body" id="modalBody">
+					<div class="box-header" data-list-name="My List">
+						<h2>
+							<i class="icon-list"></i>
+							<span class="break"></span>
+							List Name
+						</h2>
+						<div class="box-icon">
+							<a class="btn-setting" href="#">
+								<i class="icon-wrench"></i>
+							</a>
+							<a class="btn-minimize" href="#">
+								<i class="icon-chevron-down"></i>
+							</a>
+							<a class="btn-close" href="#">
+								<i class="icon-minus-sign"></i>
+							</a>
+						</div>
+					</div>
+					<div class="box-content" style="display:none;">
+						<div class="alert alert-block"></div>
+						<p class="center"></p>
+					</div>
+					<div class="box-header">
+						<h2>
+							<i class="icon-list"></i>
+							<span class="break"></span>
+							List Name
+						</h2>
+						<div class="box-icon">
+							<a class="btn-setting" href="#">
+								<i class="icon-wrench"></i>
+							</a>
+							<a class="btn-minimize" href="#">
+								<i class="icon-chevron-up"></i>
+							</a>
+							<a class="btn-close" href="#">
+								<i class="icon-minus-sign"></i>
+							</a>
+						</div>
+					</div>
+					<h4><a href="index.html">Check out the Slideshow on the home page!</a></h4>
+					<p>
+						or...
+					</p>
+					<h4>60 Second How To</h4>
+					<p>
+						This image manipulator is designed to be as intuitive as possible.
+					</p>
+					<h4>Views</h4>
+					<p>
+						There are two primary views - Slideshow Gallery and Grid. The slideshow gallery is displayed by
+						default and enables the user to both edit images in place and move to the previous or next image
+						either by clicking on the left or right ends of the screen, or by making a line gesture right or left
+					</p>
+					<h4>Gestures</h4>
+					<p>
+						All gestures available are displayed by default, although viewing the info for gestures can be toggled
+						on or off using the button at the top of the screen.
+					</p>
+
+					<h4>Gestures</h4>
+					<p>
+						Gestures should be self-explanatory and are as follows:
+					</p>
+					<div class="modalimg">
+						<img src="img/gestures/gestures-white.png" alt="Gesture Illustrations for Application" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal">
+						Close
+					</button>
+				</div>
+			</div>
 		<!-- ====================== NAVBAR ====================== -->
 		<div id="nav-cream" class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -103,7 +205,7 @@
 					<div class="btn-group hbox">
 						<button class="flex_child_1 btn btn-large btn-primary btn-2" id="mightyMarksDisplay">My MightyMarks</button>
 						<!-- USING YELP COLORS -->
-						<button class="flex_child_1 btn btn-large ybtn-primary btn-3" id="mightyManager">Manage</button>
+						<!-- <button class="flex_child_1 btn btn-large ybtn-primary btn-3" id="mightyManager"> --><a data-toggle="modal" class="flex_child_1 btn btn-large ybtn-primary btn-3" href="#myModal">Manage</a><!-- </button> -->
 						<input id="newListAdder" class="flex_child_1 btn-6" placeholder="Add New List">
 					</div>
 				</span>

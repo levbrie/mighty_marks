@@ -286,4 +286,38 @@
 			function displayManagerModal() {
 				
 			}
+			
+			function displayListsForManagement() {	
+				var modalBody = document.getElementById('modalBody');
+				modalBody.innerHTML = "";			
+				var text = "";				
+				var listNames = myModel.getListNames();			
+				if (listNames) {						// make sure listNames is not null
+					for (var i = 0; i < listNames.length; i++) {
+						text+= "<div class='box-header' data-list-name='";
+						text += listNames[i].name + "'>";
+						text+= "<h2><i class='icon-list'></i><span class='break'></span>";
+						text+= listNames[i].name;
+						text+= "</h2>";
+						text+= "<div class='box-icon'>";
+						text+= "<a class='btn-setting' href='#'>";
+						text+= "<i class='icon-wrench'></i>";
+						text+= "</a>";
+						text+= "<a class='btn-minimize' href='#'>";
+						text+= "<i class='icon-chevron-down'></i>";
+						text+= "</a>";
+						text+= "<a class='btn-close' href='#'>";
+						text+= "<i class='icon-minus-sign'></i>";
+						text+= "</a>";
+						text+= "</div>";
+						text+= "</div>";
+						text+= "<div class='box-content' style='display:none;'>";
+						text+= "	<div class='alert alert-block'></div>";
+						text+= "	<p class='center'></p>";
+						text+= "</div>";
+					}
+				}
+				alert("SOMETHING");
+				modalBody.innerHTML =  text;
+			}
 
