@@ -83,7 +83,13 @@
 					// divText += "<p>" + yelpObject.snippet_text + "</p>";
 					divText += "</div>";
 					divText += "<div class='post-meta'>";
-					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
+					// create bottom line
+					divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count;
+					divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
+					divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
+					divText += "  No tags yet!!" + "</a></span>";
+					divText += "<span>" + createBookmarkPopover(i) + "</span>";
+					// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
 					divText += "</div>";
 					divText += "</div><!-- end picture --></div><!-- end grid-item -->";	
 				}
@@ -101,6 +107,9 @@
 					// elem.onclick = function(evt) { displaySliderWith(currimg); };
 				// }
 				document.getElementById('grid-wrapper').innerHTML = divText;
+				
+				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
+				refreshPopovers();
 			}
 			
 			function displayList() {
@@ -127,6 +136,8 @@
 					divText += "</div><!-- end list-item -->";	
 				}
 				document.getElementById('list-wrapper').innerHTML = divText;
+				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
+				refreshPopovers();
 			}
 			
 			function catsToHTML(obj) {
@@ -154,25 +165,37 @@
 			}
 			
 			function createBookmarkPopover(yelpid) {
-				var text = "<a class='btn' data-content='<form class='form-inline'>";
-				text += "'<input type='text' data-yelpid='" + yelpid + "' class='popover-input' placeholder='Start a new MightyList...'>";
-				text += "<!-- <button type='submit' class='btn'>Add</button> -->";
-				text += "</form>";
+				var text = "<td>Popover</td><td><a class='btn popover-anchor' data-content=\""; 			// begin data-content (where popover content goes)
+				text += buildDataContent(yelpid);
+				text += "\" "; 											// end of data-content
+				text += "rel=\"popover\" href=\"#\" data-original-title=\"Add a bookmark:\"";
+				text += " data-html=\"true\">Click to toggle popover</a></td>";
+				return text;
+			}
+			
+			function buildDataContent(yelpid) {
+				var text = "<form class='form-inline' id='popoverForm_";
+				text += yelpid + "'>";				
+				text += "<input type='text' data-yelpid='" + yelpid + "' class='popover-input' placeholder='Start a new MightyList...'>";
+				text += "<button type='submit' class='btn popover-btn'>Add</button>";
+				text += "</form><a class='popover-item' href='levbrie.com' title=''>List 1</a>";
 				text += createPopoverList(yelpid);
-				text += "rel='popover' href='#' data-original-title='Add a bookmark:'";
-				text += " data-html='true'>Click to toggle popover</a>";
 				return text;
 			}
 			
 			function createPopoverList(yelpid) {
 				var text = "";
 				var listNames = model.getListNames();
-				for(var i=0; i < listNames.length; i++) {
-					text += "<a href='#' class='popover-item' href='levbrie.com' data-list-name='";
-					text += listNames[i] + "' data-yelpid='" + yelpid + "' title=''><span>";
-					text += listNames[i] + "</span></a>";
+			
+				if (listNames) {						// make sure listNames is not null
+					for (var i = 0; i < listNames.length; i++) {
+						text += "<a href='#' class='popover-item' href='levbrie.com' data-list-name='";
+						text += listNames[i] + "' data-yelpid='" + yelpid + "' title=''><span>";
+						text += listNames[i] + "</span></a>";
+					}
 				}
 				return text;
+
 			}
 			
 			
@@ -200,4 +223,13 @@
 				}
 				return text;
 			}
+
+			function refreshPopovers() {
+				$('.popover-anchor').popover()
+				// popover demo
+				$("a[rel=popover]").popover().click(function(e) {
+					e.preventDefault()	// prevents browser from moving window to top of page (because of href="#")
+				})
+			}
+
 
