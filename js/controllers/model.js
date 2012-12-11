@@ -311,8 +311,7 @@ function bookmark_search(terms, category_filter){
 
 }
 //TESTER:
-bookmark_search("eclectic luscious with indian noodles","thai,indian");
-
+//bookmark_search("eclectic luscious with indian noodles","thai,indian");
 
 function termsplitter(terms, marker, result){
 	
