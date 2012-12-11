@@ -143,7 +143,7 @@ function List(listname, list){
 		
 				// Delete entry from bookmarks array
 				this.bookmarks.splice(j, 1);
-				return true;
+				return true; 
 			}
 		}	
 	};
