@@ -317,7 +317,6 @@
 						text+= "</div>";
 					}
 				}
-				alert("SOMETHING");
 				modalBody.innerHTML =  text;
 			}
 

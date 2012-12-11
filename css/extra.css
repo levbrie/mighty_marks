@@ -45,10 +45,10 @@ h4.movietitle {color: #333;}
 	h1#title { 	font-size: 40px; font-family: "oswald"; font-size: 17pt; font-weight: 400; color: #666;
 	    		left: 129px; position: relative; width: 130px; text-align: left;  float: left;}
 
-	#newListAdder {background: #A8A8A8 url('../img/icons/plus-35x35.png') no-repeat right center; 
+	.hbox .newListAdder, .modal-header .newListAdder {background: #A8A8A8 url('../img/icons/plus-35x35.png') no-repeat right center; 
 		color: #fff; font-size: 16px; border: 1px solid #686868;line-height: normal; padding: 9px 14px;
 		box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);} 
-
+	
 	/* SEARCH */
 	.chzn-container .chzn-results li.opt-cat-level1 {font-family: sans-serif; font-size: 14px; color: #999;cursor: default;font-weight: bold; text-align: left; padding: 5px 10px;}
 	.chzn-container .chzn-results li.opt-cat-level2 {font-family: sans-serif; font-size: 12px; color: #444;cursor: default; text-align: left; padding-left: 20px;}
