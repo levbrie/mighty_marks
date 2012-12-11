@@ -8,16 +8,16 @@ function yelp_api_get(terms, near, offset, sort, category_filter, radius_filter,
 	var auth = { 
 			
 	  // Set #1	
-	  // consumerKey: "02S2W1qbJK7NPYyckezZxw", 
-	  // consumerSecret: "tLlCcTEp71HMQq9RKDrc282_0oQ",
-	  // accessToken: "8Eer0PGIp4OfmATqsblPJGsO-v1oBdPC",
-	  // accessTokenSecret: "ZmNZIytfkbyAS4aUUFwB6ZmoFl4", 
+	   consumerKey: "02S2W1qbJK7NPYyckezZxw", 
+	   consumerSecret: "tLlCcTEp71HMQq9RKDrc282_0oQ",
+	   accessToken: "8Eer0PGIp4OfmATqsblPJGsO-v1oBdPC",
+	   accessTokenSecret: "ZmNZIytfkbyAS4aUUFwB6ZmoFl4", 
 	  
 	  // Set #2
-	  consumerKey: "fKqvDvDUVAv371YEG9dEYQ", 
-	  consumerSecret: "I2TkNzqCMmgoIZGkjwIrQyHE9i8",
-	  accessToken: "uH9VOjPKzdryWW8SPuJdzGPseml4gotI",
-	  accessTokenSecret: "Attj9cutGfOpaC8Je13sqdssJO8",
+	  //consumerKey: "fKqvDvDUVAv371YEG9dEYQ", 
+	  //consumerSecret: "I2TkNzqCMmgoIZGkjwIrQyHE9i8",
+	  //accessToken: "uH9VOjPKzdryWW8SPuJdzGPseml4gotI",
+	  //accessTokenSecret: "Attj9cutGfOpaC8Je13sqdssJO8",
 	
 	  serviceProvider: { 
 	    signatureMethod: "HMAC-SHA1"

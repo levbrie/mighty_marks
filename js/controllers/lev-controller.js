@@ -79,10 +79,8 @@ function createSearchKeyListener() {
 	$(document).on("keypress", ".default", function(event) {							
 		if (event.which == 13) {
 			var parsedCategories = parseCategoryStrings();  
-			if(searchTermToUse != "") {
 				init_search(searchTermToUse, parsedCategories[1]);		// search with term and categories
 				updateBreadcrumbs(parsedCategories[0], searchTermToUse);				
-			}
 			return false;
 		}
 	});	
