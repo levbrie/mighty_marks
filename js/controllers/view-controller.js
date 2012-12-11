@@ -71,7 +71,14 @@
 
 				for(var i = 0; i < businesses.length; i++) {
 					var yelpObject = businesses[i];
-					divText += "<div class='span3 grid-item' id='"+i+"'><div class='picture'>";			//@ORRENKT: added an id marker for referencing later
+					divText += "<div class='span3 grid-item' id='gridYelpObject_"+i+"'>";     //@ORRENKT: added an id marker for referencing later
+																				// @LEVBRIE added distinguishing name which will need parsing
+					// if(business_search(yelpObject.name, "").length != 0) { 	// @MODEL need to search for businesses and return array if found
+						// divText += "<div class='picture-highlighted'>";
+					// }
+					// else {
+						divText += "<div class='picture'>";
+					// }			
 					divText += "<a href='" + yelpObject.url + "' title='Title'>";
 					divText += "<img src='" + yelpObject.image_url + "' alt=''/>";
 					divText += "<div class='image-overlay-link'></div>";
@@ -88,28 +95,20 @@
 					divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
 					divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
 					divText += "  No tags yet!!" + "</a></span>";
-					divText += "<span>" + createBookmarkPopover(i) + "</span>";
+					divText += "<span><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
 					// divText += "<span><i class='mini-ico-comment'></i>  " + yelpObject.review_count + " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  " + yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> " + "  No tags yet!!" + "</a></span>";
 					divText += "</div>";
 					divText += "</div><!-- end picture --></div><!-- end grid-item -->";	
 				}
-				// addIsotopeItems(divText);
-				// var $newItems = $(divText);
-				// $('#grid-wrapper').isotope( 'insert', $newItems );
 
-				// now wire click events for each
-				// for(i = 0; i<20; i++) {
-					// var currimg = i+1;
-					// var imgId = "image-" + currimg;
-					// alert("imgId - " + imgId);
-					// var elem = document.getElementById(imgId)
-					// alert("elem: " + elem.innerHTML);
-					// elem.onclick = function(evt) { displaySliderWith(currimg); };
-				// }
 				document.getElementById('grid-wrapper').innerHTML = divText;
 				
 				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
-				refreshPopovers();
+				// refreshPopovers();
+				searchTermToUse = "";
+				$('.dropdown-menu').find('input').click(function (e) {
+			    	e.stopPropagation();
+			  	});
 			}
 			
 			function displayList() {
@@ -117,8 +116,13 @@
 				var divText = "";
 
 				for(var i = 0; i < businesses.length; i++) {
-					var yelpObject = businesses[i];
-					divText += "<div class='list-item row'>";			
+					var yelpObject = businesses[i];			
+					divText += "<div class='list-item row"
+					// if(business_search(yelpObject.name, "").length != 0) { 	// @MODEL need to search for businesses and return array if found
+						// divText += " highlighted";
+					// }
+					divText += "' id='gridYelpObject_"+i+"'>";     //@ORRENKT: added an id marker for referencing later
+																							// @LEVBRIE added distinguishing name which will need parsing
 					divText += "<div class='span2'><img src='" + yelpObject.image_url + "' alt=''/></div>";
 					divText += "<div class='image-overlay-link'></div>";	
 					divText += "<div class='span8'><h5>";
@@ -130,14 +134,19 @@
 					divText += " Reviews</span><span><i class='mini-icoNN-iphone'></i> <a href='#'>  ";
 					divText += yelpObject.phone + "  " + " </a></span><span><i class='mini-ico-tags'></i> <a href='#'> ";
 					divText += "  No tags yet!!" + "</a></span>";
-					divText += "<span>" + createBookmarkPopover(i) + "</span>";
+					divText += "<span class='clear'><i class='mini-ico-plus'></i>" + createMightyDropdown(i) + "</span>";
 					divText += "</div>";
 					divText += "<div class='span1 pull-right'><a class='btn collapsed' href='#'>More <span class='caret'></span></a></div>";
 					divText += "</div><!-- end list-item -->";	
 				}
+								
 				document.getElementById('list-wrapper').innerHTML = divText;
 				// AFTER ADDING NEW POPOVERS WE MUST SETUP POPOVER LISTENERS FROM BOOTSTRAP AGAIN LIKE SO 
 				refreshPopovers();
+				searchTermToUse = "";
+				$('.dropdown-menu').find('input').click(function (e) {
+			    	e.stopPropagation();
+			  	});
 			}
 			
 			function catsToHTML(obj) {
@@ -174,7 +183,8 @@
 			}
 			
 			function buildDataContent(yelpid) {
-				var text = "<form class='form-inline' id='popoverForm_";
+				var text = "<form action='' name='";
+				text += "popoverform_" + yelpid + "' class='form-inline' id='popoverForm_";
 				text += yelpid + "'>";				
 				text += "<input type='text' data-yelpid='" + yelpid + "' class='popover-input' placeholder='Start a new MightyList...'>";
 				text += "<button type='submit' class='btn popover-btn'>Add</button>";
@@ -195,7 +205,31 @@
 					}
 				}
 				return text;
-
+			}
+			
+			function createMightyDropdown(yelpid) {
+				var text = "<div class='dropdown'>";
+				text += "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>Add to MightyMarks!</a>";
+				text += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu'>";
+				text += "<li><input type='text' data-yelpid='" + yelpid + "' name='mightyDropInput" + yelpid + "'";
+				text += " class='mightyDropInput' placeholder='Start a new MightyList...'></li>"; 
+				text += "<li class='divider'></li>";
+				text += createDropdownList(yelpid);
+				text += "</ul></div>";
+				return text;
+			}
+			
+			function createDropdownList(yelpid) {
+				var text = "";
+				var listNames = model.getListNames();			
+				if (listNames) {						// make sure listNames is not null
+					for (var i = 0; i < listNames.length; i++) {
+						text += " <li><a tabindex='-1' href='#' class='dropdown-bookmark-item' data-list-name='";
+						text += listNames[i].name + "' data-yelpid='" + yelpid + "' title=''><span>";
+						text += listNames[i].name + "</span></a></li>";
+					}
+				}
+				return text;
 			}
 			
 			
@@ -203,7 +237,7 @@
 			function updateBreadcrumbs(catString, searchTerms) {
 				var div = document.getElementById('breadcrumb');
 				var text = "<ul class='breadcrumb'>";
-				alert("CATSTRING " + catString);
+				// alert("CATSTRING " + catString);
 				text += parseCatsToBreadcrumbs(catString);
 				text += "<li class='active'>Search Terms: ";
 				text += searchTerms + "</li>";
@@ -214,7 +248,7 @@
 			// parses comma-delimited string of categories and separates them into formatted breadcrumbs
 			function parseCatsToBreadcrumbs(catsCommas) {
 				var catsArray = catsCommas.split(',');
-				alert("CATS ARRAY 0 " + catsArray[0]);
+				// alert("CATS ARRAY 0 " + catsArray[0]);
 				var text = "";
 				for(var i=0; i < catsArray.length; i++) {
 					text += "<li><a href='#'>";
@@ -232,4 +266,24 @@
 				})
 			}
 
+			// generate custom notification 
+			function generateNoty(notyType, message) {
+				var n = noty({
+					text : message,
+					type : notyType,
+					dismissQueue : false,
+					layout : 'top',
+					theme : 'defaultTheme'
+				});
+				console.log(notyType + ' - ' + n.options.id);
+   	 			return n;
+			}
+
+			function displayAllMightyMarks() {
+				
+			}
+			
+			function displayManagerModal() {
+				
+			}
 

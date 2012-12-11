@@ -45,7 +45,9 @@ h4.movietitle {color: #333;}
 	h1#title { 	font-size: 40px; font-family: "oswald"; font-size: 17pt; font-weight: 400; color: #666;
 	    		left: 129px; position: relative; width: 130px; text-align: left;  float: left;}
 
-
+	#newListAdder {background: #A8A8A8 url('../img/icons/plus-35x35.png') no-repeat right center; 
+		color: #fff; font-size: 16px; border: 1px solid #686868;line-height: normal; padding: 9px 14px;
+		box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);} 
 
 	/* SEARCH */
 	.chzn-container .chzn-results li.opt-cat-level1 {font-family: sans-serif; font-size: 14px; color: #999;cursor: default;font-weight: bold; text-align: left; padding: 5px 10px;}
@@ -171,21 +173,25 @@ h4.movietitle {color: #333;}
 
 /* Images Overlay
 =================================================================== */
-.picture { position: relative; }
+.highlightedResult {background-color: #E3EDFF;}	/* highlights found results */
+.picture, .picture-highlighted { position: relative; }
 	
 .picture .item-description { padding: 5px 15px; border: none; margin: 0px; }
 
 .post .picture,
 #grid-wrapper .picture { position: relative; background: #fff; padding: 3px;  border: 1px solid #fcfcfc;
 	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.25); box-shadow: 0px 1px 1px rgba(0,0,0,.25); }
+.post .picture-highlighted,
+#grid-wrapper .picture-highlighted { position: relative; background: #E3EDFF; padding: 3px;  border: 1px solid #fcfcfc;
+	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.25); box-shadow: 0px 1px 1px rgba(0,0,0,.25); }
 
-.post .picture,	
-#grid-wrapper .picture .item-description { margin-bottom: 0px; padding: 5px; border: none; margin: 0px; }
+.post .picture,	.post .picture-highlighted,
+#grid-wrapper .picture .item-description, #grid-wrapper .picture-highlighted .item-description{ margin-bottom: 0px; padding: 5px; border: none; margin: 0px; }
 #grid-wrapper .grid-item, #list-wrapper .list-item {margin-bottom: 20px;}
 .list-item {    border: 1px solid #E5E5E5; border-radius: 4px 4px 4px 4px; padding: 5px; margin-bottom: 2px;}
 
 	
-.picture img {width: 100%; height: auto; }
+.picture img, .picture-highlighted img {width: 100%; height: auto; }
 
 .image-overlay-link,
 .image-overlay-zoom {
@@ -261,7 +267,8 @@ h4.movietitle {color: #333;}
 .popover-content span {padding-left: 15px;}
 .popover-item {}
 .form-inline input.popover-input {padding: 6px 0px;text-align: center;}
-    
-    
-    
+
+
+.dropdown {display:inline-block;}
+
    
